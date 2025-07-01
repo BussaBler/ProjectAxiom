@@ -1,4 +1,3 @@
-[submodule "Axiom/vendor/GLFW"]
-	path = Axiom/vendor/GLFW
+[submodule "Axiom/vendor/GLFW/glfw"]
+	path = Axiom/vendor/GLFW/glfw
 	url = https://github.com/BussaBler/glfw.git
-	branch = master
