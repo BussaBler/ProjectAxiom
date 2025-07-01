@@ -1,0 +1,32 @@
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual C++ cache files
+*.VC.db
+*.VC.opendb
+
+.vs/
+
+# Visual C++ generated files
+ipch/
+*.pch
+*.obj
+*.o
+*.ilk
+*.pdb
+*.ipdb
+*.iobj
+
+# Build folders
+Debug*/
+Release*/
+x64/
+x86/
+
+# Visual C++ project user settings
+*.vcxproj.user
+
+Axiom/vendor/VulkanSDK/
