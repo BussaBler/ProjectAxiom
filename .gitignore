@@ -29,4 +29,4 @@ x86/
 # Visual C++ project user settings
 *.vcxproj.user
 
-VulkanSDK/*
+/Axiom/vendor/VulkanSDK/*
