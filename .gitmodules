@@ -2,3 +2,6 @@
 [submodule "Axiom/vendor/GLFW"]
 	path = Axiom/vendor/GLFW
 	url = https://github.com/BussaBler/glfw.git
+[submodule "Axiom/vendor/ImGui"]
+	path = Axiom/vendor/ImGui
+	url = https://github.com/BussaBler/imgui.git
