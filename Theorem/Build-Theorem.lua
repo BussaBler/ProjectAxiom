@@ -8,17 +8,17 @@ project "Theorem"
     objdir ("Bin-Int/" .. OutputDir .. "/%{prj.name}")
 
     files {
-        "src/**.h",
-        "src/**.cpp",
+        "Source/**.h",
+        "Source/**.cpp",
     }
 
     vpaths {
-        ["src/*"] = "src/**"
+        ["Source/*"] = "Source/**"
     }
 
     includedirs {
-        "src",
-        "%{wks.location}/Axiom/src",
+        "Source",
+        "%{wks.location}/Axiom/Source",
         "%{wks.location}/Axiom/%{IncludeDir.glm}",
         "%{wks.location}/Axiom/%{IncludeDir.glfw}",
         "%{wks.location}/Axiom/%{IncludeDir.vulkan}",
