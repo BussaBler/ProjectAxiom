@@ -1,27 +1,39 @@
-Import('env', 'Debug', 'Release')
-from SCons.Script import Dir, ARGUMENTS
-from SCons.Script import Return
-import os
+Import('base_env', 'debug_env', 'release_env', 'build_info')
+from SCons.Script import Dir, Return
 
-# Select build config
-config = ARGUMENTS.get('config', 'Debug').lower()
-builder = Debug if config == 'debug' else Release
+# ============================================================================
+# Build Configuration
+# ============================================================================
 
-# Gather editor sources
-theorem_dir = Dir('../../Theorem/Source')
-theorem_src = theorem_dir.glob('*.cpp')
+platform = build_info['platform']
+architecture = build_info['architecture']
+compiler = build_info['compiler']
+config = build_info['config']
+config_name = config.capitalize()
 
-# Common include paths
-builder.Append(CPPPATH=[
+# Select the appropriate environment
+current_env = debug_env if config.lower() == 'debug' else release_env
+
+# ============================================================================
+# Theorem Application Build
+# ============================================================================
+
+theorem_src_dir = Dir('../../Theorem/Source')
+theorem_sources = theorem_src_dir.glob('*.cpp')
+
+# Configure include paths
+current_env.Append(CPPPATH=[
     '../../Theorem/Source',
     '../../Axiom/Source',
     '../../Axiom/Source/Axiom',
 ])
 
-builder.Prepend(
-    LIBS=['Axiom', 'ImGui']
-)
+# Link with required libraries (order matters)
+current_env.Prepend(LIBS=['Axiom', 'ImGui'])
 
-# Build the executable
-program = builder.Program('Theorem', theorem_src)
-Return('program')
+# Set object file output directory
+current_env['OBJPREFIX'] = f'../Bin-Int/{platform}-{architecture}/{config_name}/'
+
+# Build the Theorem executable
+theorem_program = current_env.Program('Theorem', theorem_sources)
+Return('theorem_program')
