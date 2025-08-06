@@ -1,0 +1,27 @@
+Import('env', 'Debug', 'Release')
+from SCons.Script import Dir, ARGUMENTS
+from SCons.Script import Return
+import os
+
+# Select build config
+config = ARGUMENTS.get('config', 'Debug').lower()
+builder = Debug if config == 'debug' else Release
+
+# Gather editor sources
+theorem_dir = Dir('../../Theorem/Source')
+theorem_src = theorem_dir.glob('*.cpp')
+
+# Common include paths
+builder.Append(CPPPATH=[
+    '../../Theorem/Source',
+    '../../Axiom/Source',
+    '../../Axiom/Source/Axiom',
+])
+
+builder.Prepend(
+    LIBS=['Axiom', 'ImGui']
+)
+
+# Build the executable
+program = builder.Program('Theorem', theorem_src)
+Return('program')

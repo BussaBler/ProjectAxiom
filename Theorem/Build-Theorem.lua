@@ -19,10 +19,9 @@ project "Theorem"
     includedirs {
         "Source",
         "%{wks.location}/Axiom/Source",
+        "%{wks.location}/Axiom/Source/Axiom",
         "%{wks.location}/Axiom/%{IncludeDir.glm}",
-        "%{wks.location}/Axiom/%{IncludeDir.glfw}",
         "%{wks.location}/Axiom/%{IncludeDir.vulkan}",
-        "%{wks.location}/Axiom/%{IncludeDir.spdlog}",
     }
 
     links {

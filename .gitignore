@@ -28,5 +28,9 @@ x86/
 
 # Visual C++ project user settings
 *.vcxproj.user
+*.vcxproj
+*.vcxproj.filters
 
 /Axiom/vendor/VulkanSDK/*
+build/
+.sconsign.dblite

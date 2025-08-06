@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Axiom\src;..\Axiom\vendor\glm;..\Axiom\vendor\VulkanSDK\1.4.321.1\Include;..\Axiom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;..\Axiom\Source;..\Axiom\Source\Axiom;..\Axiom\vendor\glm;..\Axiom\vendor\VulkanSDK\1.4.321.1\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Axiom\src;..\Axiom\vendor\glm;..\Axiom\vendor\VulkanSDK\1.4.321.1\Include;..\Axiom;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;..\Axiom\Source;..\Axiom\Source\Axiom;..\Axiom\vendor\glm;..\Axiom\vendor\VulkanSDK\1.4.321.1\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -94,10 +94,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TheoremApplication.h" />
+    <ClInclude Include="Source\TheoremApplication.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TheoremApplication.cpp" />
+    <ClCompile Include="Source\TheoremApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Axiom\Axiom.vcxproj">
