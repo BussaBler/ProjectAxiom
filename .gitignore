@@ -30,7 +30,8 @@ x86/
 *.vcxproj.user
 *.vcxproj
 *.vcxproj.filters
+*.sln
 
 /Axiom/vendor/VulkanSDK/*
-build/
+Build/
 .sconsign.dblite

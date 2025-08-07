@@ -1,39 +1,43 @@
 Import('base_env', 'debug_env', 'release_env', 'build_info')
 from SCons.Script import Dir, Return
 
-# ============================================================================
-# Build Configuration
-# ============================================================================
-
 platform = build_info['platform']
 architecture = build_info['architecture']
 compiler = build_info['compiler']
 config = build_info['config']
 config_name = config.capitalize()
+vsproj = build_info['vsproj']
 
-# Select the appropriate environment
 current_env = debug_env if config.lower() == 'debug' else release_env
-
-# ============================================================================
-# Theorem Application Build
-# ============================================================================
 
 theorem_src_dir = Dir('../../Theorem/Source')
 theorem_sources = theorem_src_dir.glob('*.cpp')
 
-# Configure include paths
 current_env.Append(CPPPATH=[
     '../../Theorem/Source',
     '../../Axiom/Source',
     '../../Axiom/Source/Axiom',
 ])
 
-# Link with required libraries (order matters)
 current_env.Prepend(LIBS=['Axiom', 'ImGui'])
 
-# Set object file output directory
 current_env['OBJPREFIX'] = f'../Bin-Int/{platform}-{architecture}/{config_name}/'
 
-# Build the Theorem executable
 theorem_program = current_env.Program('Theorem', theorem_sources)
-Return('theorem_program')
+
+theorem_project = None
+if vsproj:
+    theorem_headers = theorem_src_dir.glob('*.h')
+
+    current_env['CPPPATH'] = [Dir(path) for path in current_env['CPPPATH']]
+
+    theorem_project = current_env.MSVSProject(
+        target='../../Theorem/Theorem' + current_env['MSVSPROJECTSUFFIX'],
+        srcs=[str(f) for f in theorem_sources],
+        incs=[str(f) for f in theorem_headers],
+        buildtarget=theorem_program,
+        variant=[f'{config_name}|x64'],
+        auto_build_solution=0
+    )
+
+Return('theorem_program', 'theorem_project')
