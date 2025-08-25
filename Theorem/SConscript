@@ -30,14 +30,17 @@ if vsproj:
     theorem_headers = theorem_src_dir.glob('*.h')
 
     current_env['CPPPATH'] = [Dir(path) for path in current_env['CPPPATH']]
+    variant_key = f'{config_name}|x64'
+    dbg = {'LocalDebuggerWorkingDirectory': r'$(ProjectDir)..\\Build\\Theorem'}
 
     theorem_project = current_env.MSVSProject(
         target='../../Theorem/Theorem' + current_env['MSVSPROJECTSUFFIX'],
         srcs=[str(f) for f in theorem_sources],
         incs=[str(f) for f in theorem_headers],
         buildtarget=theorem_program,
-        variant=[f'{config_name}|x64'],
-        auto_build_solution=0
+        variant=[variant_key],
+        auto_build_solution=0,
+        DebugSettings=dbg
     )
 
 Return('theorem_program', 'theorem_project')

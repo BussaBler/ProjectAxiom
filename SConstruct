@@ -79,12 +79,12 @@ def get_build_flags(compiler):
     """Return build flags based on compiler type"""
     if compiler == 'msvc':
         return {
-            'debug_ccflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS'],
-            'release_ccflags': ['/O2', '/EHsc', '/nologo', '/FS'],
+            'debug_ccflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS', '/MDd'],
+            'release_ccflags': ['/O2', '/EHsc', '/nologo', '/FS', '/MD'],
             'debug_linkflags': ['/DEBUG', '/nologo'],
             'release_linkflags': ['/nologo'],
             'debug_defines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
-            'release_defines': ['AX_RELEASE']
+            'release_defines': ['AX_RELEASE'],
         }
     else:  # GCC or Clang
         return {
@@ -173,7 +173,7 @@ axiom_lib, axiom_project = SConscript('Axiom/SConscript',
             exports=['base_env', 'debug_env', 'release_env', 'build_info'])
 
 theorem_app, theorem_project = SConscript('Theorem/SConscript',
-            variant_dir='Build/Theorem', 
+            variant_dir='Build/Theorem',
             duplicate=0,
             exports=['base_env', 'debug_env', 'release_env', 'build_info'])
 
