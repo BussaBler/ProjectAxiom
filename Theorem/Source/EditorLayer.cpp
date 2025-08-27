@@ -1,6 +1,6 @@
 #include "EditorLayer.h"
 
-EditorLayer::EditorLayer() : Layer("EditorLayer"), cameraPosition(0.0f, 0.0f, -30.0f) {
+EditorLayer::EditorLayer() : Layer("EditorLayer"), cameraPosition(0.0f, 0.0f, 30.0f) {
 
 }
 
@@ -13,22 +13,21 @@ void EditorLayer::onDetach() {
 }
 
 void EditorLayer::onUpdate() {
+	Math::Mat4 translation = Math::Mat4::translate(Math::Vec3(cameraPosition.x(), cameraPosition.y(), cameraPosition.z()));
+	Math::Mat4 view = translation.inverse();
+	Axiom::RendererSystem::setViewMatrix(view);
 	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::W)) {
-		cameraPosition.z() += 0.01f;
+		cameraPosition += view.getForward() * 0.01f;
 	}
 	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::S)) {
-		cameraPosition.z() -= 0.01f;
+		cameraPosition += view.getBackward() * 0.01f;
 	}
 	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::A)) {
-		cameraPosition.x() += 0.01f;
+		cameraPosition += view.getLeft() * 0.01f;
 	}
 	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::D)) {
-		cameraPosition.x() -= 0.01f;
+		cameraPosition += view.getRight() * 0.01f;
 	}
-	Math::Mat4 translation = Math::Mat4::translate(Math::Vec3(-cameraPosition.x(), -cameraPosition.y(), -cameraPosition.z()));
-	Math::Mat4 view = translation.inverse();
-	// This will not stay here, we will have a camera class later
-	Axiom::RendererSystem::setViewMatrix(view);
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
