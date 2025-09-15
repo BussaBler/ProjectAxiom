@@ -13,21 +13,7 @@ void EditorLayer::onDetach() {
 }
 
 void EditorLayer::onUpdate() {
-	Math::Mat4 translation = Math::Mat4::translate(Math::Vec3(cameraPosition.x(), cameraPosition.y(), cameraPosition.z()));
-	Math::Mat4 view = translation.inverse();
-	Axiom::RendererSystem::setViewMatrix(view);
-	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::W)) {
-		cameraPosition += view.getForward() * 0.01f;
-	}
-	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::S)) {
-		cameraPosition += view.getBackward() * 0.01f;
-	}
-	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::A)) {
-		cameraPosition += view.getLeft() * 0.01f;
-	}
-	if (Axiom::Input::isKeyPressed(Axiom::KeyCode::D)) {
-		cameraPosition += view.getRight() * 0.01f;
-	}
+
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
