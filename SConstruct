@@ -73,7 +73,7 @@ base_env.Append(
 if target_platform.startswith('windows'):
     base_env.Append(LIBS=['vulkan-1', 'user32', 'gdi32', 'winmm'])
 else:
-    base_env.Append(LIBS=['vulkan', 'x11'])
+    base_env.Append(LIBS=['vulkan', 'X11'])
 
 def get_build_flags(compiler):
     """Return build flags based on compiler type"""
