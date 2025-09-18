@@ -67,7 +67,7 @@ base_env = Environment(
 
 base_env.Append(
     CPPPATH=[os.path.join(vulkan_sdk, 'Include'), os.path.join(vulkan_sdk, 'include')],
-    LIBPATH=[os.path.abspath('build/Axiom'), os.path.abspath('build/ImGui')],
+    LIBPATH=[os.path.abspath('Build/Axiom'), os.path.abspath('Build/ImGui')],
 )
 
 if target_platform.startswith('windows'):
