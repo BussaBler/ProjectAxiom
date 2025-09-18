@@ -31,6 +31,7 @@ x86/
 *.vcxproj
 *.vcxproj.filters
 *.sln
+.vscode/
 
 /Axiom/vendor/VulkanSDK/*
 Build/
