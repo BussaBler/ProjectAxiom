@@ -1,4 +1,1 @@
 
-[submodule "Axiom/vendor/ImGui"]
-	path = Axiom/Vendor/ImGui
-	url = https://github.com/BussaBler/imgui.git

@@ -1,195 +1,227 @@
 import os, shutil, platform, multiprocessing
-from SCons.Script import Environment, Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption
+from SCons.Script import Environment, Progress
+from SCons.Script import Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption
 
 SetOption('num_jobs', multiprocessing.cpu_count())
-target_platform = ARGUMENTS.get('platform', 'windows').lower()
-build_config = ARGUMENTS.get('config', 'Debug').lower()
+targetPlatform = ARGUMENTS.get('platform', 'windows').lower()
+buildConfig = ARGUMENTS.get('config', 'debug').lower()
 vsproj = ARGUMENTS.get('vsproj', 'no').lower() in ['yes', 'true', '1']
 verbose = ARGUMENTS.get('verbose', 'no').lower() in ['yes', 'true', '1']
 architecture = platform.machine()
 if architecture == 'AMD64':
     architecture = 'x86_64'
 
-def detect_msvc():
-    """Check if MSVC compiler is available"""
-    test_env = Environment(ENV=os.environ)
-    if test_env.Detect('cl'):
-        return True
-    return bool(os.environ.get('VSINSTALLDIR') or os.environ.get('VCINSTALLDIR'))
+COLORS = {
+    'reset': '\033[0m',
+    'bold': '\033[1m',
+    'green': '\033[32m',
+    'blue': '\033[34m',
+    'yellow': '\033[33m',
+    'cyan': '\033[36m',
+    'magenta': '\033[35m',
+    'red': '\033[31m'
+}
 
-def detect_compiler_tools():
-    """Detect and return appropriate compiler tools for the target platform"""
-    if target_platform.startswith('windows'):
-        use_mingw = ARGUMENTS.get('use_mingw', 'no').lower() in ['yes', 'true', '1']
-        if not use_mingw and detect_msvc():
-            return ['msvc', 'mslib', 'mslink'], 'msvc'
-        elif shutil.which('g++'):
-            return ['gcc', 'g++', 'ar', 'link'], 'gcc'
-        else:
-            print("ERROR: No compiler found; install MSVC or MinGW.")
-            Exit(1)
-    elif target_platform.startswith('linux'):
-        if shutil.which('g++'):
-            return ['gcc', 'g++', 'ar', 'link'], 'gcc'
-        elif shutil.which('clang++'):
-            return ['clang', 'clang++', 'ar', 'link'], 'clang'
-        else:
-            print("ERROR: install g++ or clang++")
-            Exit(1)
-    elif target_platform.startswith('darwin'):
-        return ['clang', 'clang++', 'ar', 'link'], 'clang'
+def detectMsvc():
+    env = Environment(tools=['default', 'msvc'])
+
+    if not (env.WhereIs('cl') or env.WhereIs('cl.exe')):
+        return False
+    return True
+
+def printWithColor(*objects, color, sep=' ', end='\n', file=None, flush=False):
+    print(f'{color}', end='', file=file, flush=flush)
+    print(*objects, '\033[0m', sep=sep, end=end, file=file, flush=flush)
+
+def detectCompilerTools():
+    """detect and return appropriate compiler tools for the target platform"""
+    if targetPlatform.startswith('windows'):
+        compilerType = ARGUMENTS.get('compiler', 'msvc').lower()
+        match compilerType:
+            case 'msvc':
+                if detectMsvc():
+                    return ['msvc', 'mslib', 'mslink'], 'msvc'
+                else:
+                    printWithColor("ERROR: No MSVC compiler found; install a valid MSVC compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'):
+                    return ['gcc', 'g++', 'ar', 'link'], 'gcc'
+                else:
+                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'):
+                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link'], 'clang'
+                else:
+                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
+    elif targetPlatform.startswith('linux'):
+        compilerType = ARGUMENTS.get('compiler', 'gcc').lower()
+        match compilerType:
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'):
+                    return ['gcc', 'g++', 'ar', 'link'], 'gcc'
+                else:
+                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'):
+                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link'], 'clang'
+                else:
+                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
     else:
-        print(f"ERROR: Unsupported platform: {target_platform}")
+        printWithColor(f'Current platform {targetPlatform} not supported.', color=COLORS['red'])
         Exit(1)
 
-tools, compiler_type = detect_compiler_tools()
 
-if vsproj and compiler_type == 'msvc':
+tools, compilerType = detectCompilerTools()
+
+printWithColor(f"Platform: {targetPlatform}, Compiler: {compilerType}, Architecture: {architecture}", color=COLORS['cyan'])
+if vsproj and compilerType == 'msvc':
     tools.extend(['msvs'])
-    print(f"Platform: {target_platform}, Compiler: {compiler_type}, Architecture: {architecture}")
-    print("Visual Studio project generation enabled")
-else:
-    print(f"Platform: {target_platform}, Compiler: {compiler_type}, Architecture: {architecture}")
+    printWithColor("Visual Studio project generation enabled", color=COLORS['cyan'])
 
-vulkan_sdk = os.environ.get('VULKAN_SDK')
-if not vulkan_sdk or not os.path.isdir(vulkan_sdk):
-    print("ERROR: Set VULKAN_SDK environment variable to your Vulkan SDK root")
+vulkanSdk = os.environ.get('VULKAN_SDK')
+if not vulkanSdk or not os.path.isdir(vulkanSdk):
+    printWithColor("ERROR: Set VULKAN_SDK environment variable to your Vulkan SDK root", color=COLORS['red'])
     Exit(1)
 
-if vsproj and compiler_type != 'msvc':
-    print("ERROR: Visual Studio project generation requires MSVC compiler")
+if vsproj and compilerType != 'msvc':
+    printWithColor("ERROR: Visual Studio project generation requires MSVC compiler", color=COLORS['red'])
     Exit(1)
 
-base_env = Environment(
+baseEnv = Environment(
     tools=tools,
     ENV=os.environ,
 )
 
-base_env.Append(
-    CPPPATH=[os.path.join(vulkan_sdk, 'Include'), os.path.join(vulkan_sdk, 'include')],
+baseEnv.Append(
+    CPPPATH=[os.path.join(vulkanSdk, 'Include'), os.path.join(vulkanSdk, 'include')],
     LIBPATH=[os.path.abspath('Build/Axiom'), os.path.abspath('Build/ImGui')],
 )
 
-if target_platform.startswith('windows'):
-    base_env.Append(LIBS=['vulkan-1', 'user32', 'gdi32', 'winmm'])
+if targetPlatform.startswith('windows'):
+    baseEnv.Append(LIBS=['vulkan-1', 'user32', 'gdi32', 'winmm'])
 else:
-    base_env.Append(LIBS=['vulkan', 'X11'])
+    baseEnv.Append(LIBS=['vulkan', 'X11'])
 
-def get_build_flags(compiler):
-    """Return build flags based on compiler type"""
+def getBuildFlags(compiler):
+    """return build flags based on compiler type"""
     if compiler == 'msvc':
         return {
-            'debug_ccflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS', '/MDd'],
-            'release_ccflags': ['/O2', '/EHsc', '/nologo', '/FS', '/MD'],
-            'debug_linkflags': ['/DEBUG', '/nologo'],
-            'release_linkflags': ['/nologo'],
-            'debug_defines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
-            'release_defines': ['AX_RELEASE'],
+            'debugCcflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS', '/MDd', '/permissive-'],
+            'releaseCcflags': ['/O2', '/EHsc', '/nologo', '/FS', '/MD'],
+            'debugLinkflags': ['/DEBUG', '/nologo'],
+            'releaseLinkflags': ['/nologo'],
+            'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
+            'releaseDefines': ['AX_RELEASE'],
         }
     else:  # GCC or Clang
         return {
-            'debug_ccflags': ['-g', '-O0'],
-            'release_ccflags': ['-O3', '-march=native'],
-            'debug_linkflags': [],
-            'release_linkflags': [],
-            'debug_defines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
-            'release_defines': ['AX_RELEASE']
+            'debugCcflags': ['-g', '-O0', '-pedantic'],
+            'releaseCcflags': ['-O3', '-march=native'],
+            'debugLinkflags': [],
+            'releaseLinkflags': [],
+            'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
+            'releaseDefines': ['AX_RELEASE']
         }
 
-flags = get_build_flags(compiler_type)
+flags = getBuildFlags(compilerType)
 
-debug_env = base_env.Clone(
-    CCFLAGS=flags['debug_ccflags'],
-    LINKFLAGS=flags['debug_linkflags'],
-    CPPDEFINES=flags['debug_defines']
+debugEnv = baseEnv.Clone(
+    CCFLAGS=flags['debugCcflags'],
+    LINKFLAGS=flags['debugLinkflags'],
+    CPPDEFINES=flags['debugDefines']
 )
 
-release_env = base_env.Clone(
-    CCFLAGS=flags['release_ccflags'],
-    LINKFLAGS=flags['release_linkflags'],
-    CPPDEFINES=flags['release_defines']
+releaseEnv = baseEnv.Clone(
+    CCFLAGS=flags['releaseCcflags'],
+    LINKFLAGS=flags['releaseLinkflags'],
+    CPPDEFINES=flags['releaseDefines']
 )
 
-build_info = {
-    'platform': target_platform,
+buildInfo = {
+    'platform': targetPlatform,
     'architecture': architecture,
-    'compiler': compiler_type,
-    'config': build_config,
-    'vulkan_sdk': vulkan_sdk,
+    'compiler': compilerType,
+    'config': buildConfig,
+    'vulkanSdk': vulkanSdk,
     'vsproj': vsproj
 }
 
-def setup_output(env):
+def setupOutputColors(env):
     if verbose:
         return {}
     
-    colors = {
-        'reset': '\033[0m',
-        'bold': '\033[1m',
-        'green': '\033[32m',
-        'blue': '\033[34m',
-        'yellow': '\033[33m',
-        'cyan': '\033[36m',
-        'magenta': '\033[35m'
-    }
-    
-    disable_colors = ARGUMENTS.get('no-color', 'no').lower() in ['yes', 'true', '1']
-    if disable_colors:
-        colors = {key: '' for key in colors}
-    
-    env['CXXCOMSTR'] = f"{colors['green']}[COMPILE]{colors['reset']} $SOURCE"
-    env['CCCOMSTR'] = f"{colors['green']}[COMPILE]{colors['reset']} $SOURCE"
-    env['LINKCOMSTR'] = f"{colors['yellow']}[LINK]{colors['reset']} $TARGET"
-    env['ARCOMSTR'] = f"{colors['blue']}[ARCHIVE]{colors['reset']} $TARGET"
-    env['RANLIBCOMSTR'] = f"{colors['blue']}[RANLIB]{colors['reset']} $TARGET"
-    env['LIBCOMSTR'] = f"{colors['blue']}[LIB]{colors['reset']} $TARGET"
-    
-    return colors
+    disableColors = ARGUMENTS.get('no-color', 'no').lower() in ['yes', 'true', '1']
+    if disableColors:
+        env['CXXCOMSTR'] = f"{COLORS['reset']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env['CCCOMSTR'] = f"{COLORS['reset']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env['LINKCOMSTR'] = f"{COLORS['reset']}[LINK]{COLORS['reset']} $TARGET"
+        env['ARCOMSTR'] = f"{COLORS['reset']}[ARCHIVE]{COLORS['reset']} $TARGET"
+        env['RANLIBCOMSTR'] = f"{COLORS['reset']}[RANLIB]{COLORS['reset']} $TARGET"
+        env['LIBCOMSTR'] = f"{COLORS['reset']}[LIB]{COLORS['reset']} $TARGET"
+    else:
+        env['CXXCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env['CCCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env['LINKCOMSTR'] = f"{COLORS['yellow']}[LINK]{COLORS['reset']} $TARGET"
+        env['ARCOMSTR'] = f"{COLORS['blue']}[ARCHIVE]{COLORS['reset']} $TARGET"
+        env['RANLIBCOMSTR'] = f"{COLORS['blue']}[RANLIB]{COLORS['reset']} $TARGET"
+        env['LIBCOMSTR'] = f"{COLORS['blue']}[LIB]{COLORS['reset']} $TARGET"
 
-def setup_progress_indicator():
+
+def printInfo():
     action = 'Cleaning' if GetOption('clean') else 'Building'
-    print(f"\n{action} {build_config.capitalize()} configuration for {target_platform}-{architecture}")
-    print(f"   Compiler: {compiler_type}")
-    print(f"   Vulkan SDK: {vulkan_sdk}")
+    printWithColor(f'\n{action} {buildConfig.capitalize()} configuration for {targetPlatform}-{architecture}', color=COLORS['cyan'])
+    printWithColor(f' Compiler: {compilerType}', color=COLORS['magenta'])
+    printWithColor(f' Vulkan SDK: {vulkanSdk}', color=COLORS['magenta'])
     if not verbose:
-        print("   (Use 'verbose=yes' to see full command lines)")
+        printWithColor(' (Use \'verbose=yes\' to see full command lines)', color=COLORS['yellow'])
     print("")
-    
     return None
 
-setup_progress_indicator()
-colors = setup_output(base_env)
-setup_output(debug_env)
-setup_output(release_env)
+printInfo()
+setupOutputColors(baseEnv)
+setupOutputColors(debugEnv)
+setupOutputColors(releaseEnv)
 
-imgui_lib, imgui_project = SConscript('Axiom/Vendor/ImGui/SConscript', 
+imguiLib, imguiProject = SConscript('Axiom/Vendor/ImGui/SConscript', 
             variant_dir='Build/ImGui',
-            duplicate=0, 
-            exports=['base_env', 'debug_env', 'release_env', 'build_info'])
+            duplicate=0,
+            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
 
-axiom_lib, axiom_project = SConscript('Axiom/SConscript', 
+axiomLib, axiomProject = SConscript('Axiom/SConscript', 
             variant_dir='Build/Axiom', 
             duplicate=0, 
-            exports=['base_env', 'debug_env', 'release_env', 'build_info'])
+            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
 
-theorem_app, theorem_project = SConscript('Theorem/SConscript',
+theoremApp, theoremProject = SConscript('Theorem/SConscript',
             variant_dir='Build/Theorem',
             duplicate=0,
-            exports=['base_env', 'debug_env', 'release_env', 'build_info'])
+            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
 
-if vsproj and compiler_type == 'msvc':
-    axiom_solution = base_env.MSVSSolution(
-        target='AxiomEngine' + base_env['MSVSSOLUTIONSUFFIX'],
-        projects=[imgui_project, axiom_project, theorem_project],
+if vsproj and compilerType == 'msvc':
+    axiom_solution = baseEnv.MSVSSolution(
+        target='AxiomEngine' + baseEnv['MSVSSOLUTIONSUFFIX'],
+        projects=[imguiProject, axiomProject, theoremProject],
         variant=['Debug|x64']
     )
 
     Alias('AxiomEngine', axiom_solution)
     Default('AxiomEngine')
 
-    action = 'cleaned' if GetOption('clean') else 'generated'
-    print(f"Visual Studio projects and solution will be {action}:")
-    print("  - ImGui.vcxproj")
-    print("  - Axiom.vcxproj")
-    print("  - Theorem.vcxproj")
-    print("  - AxiomEngine.sln")
+    if GetOption('clean'):
+        action = 'cleaned'
+        color = COLORS['red']
+        symbol = '-'
+    else:
+        action = 'generated'
+        color = COLORS['green']
+        symbol = '+'
+    printWithColor(f'Visual Studio projects and solution will be {action}:', color=COLORS['cyan'])
+    printWithColor(f' {symbol}', 'ImGui.vcproj', color=color)
+    printWithColor(f' {symbol}', 'Axiom.vcxproj', color=color)
+    printWithColor(f' {symbol}', 'Theorem.vcxproj', color=color)
+    printWithColor(f' {symbol}', 'AxiomEngine.sln', color=color)

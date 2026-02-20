@@ -1,46 +1,46 @@
-Import('base_env', 'debug_env', 'release_env', 'build_info')
+Import('baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo')
 from SCons.Script import Dir, Return
 
-platform = build_info['platform']
-architecture = build_info['architecture']
-compiler = build_info['compiler']
-config = build_info['config']
-config_name = config.capitalize()
-vsproj = build_info['vsproj']
+platform = buildInfo['platform']
+architecture = buildInfo['architecture']
+compiler = buildInfo['compiler']
+config = buildInfo['config']
+configName = config.capitalize()
+vsproj = buildInfo['vsproj']
 
-current_env = debug_env if config.lower() == 'debug' else release_env
+currentEnv = debugEnv if config.lower() == 'debug' else releaseEnv
 
-theorem_src_dir = Dir('../../Theorem/Source')
-theorem_sources = theorem_src_dir.glob('*.cpp')
+theoremSrcDir = Dir('../../Theorem/Source')
+theoremSources = theoremSrcDir.glob('*.cpp')
 
-current_env.Append(CPPPATH=[
+currentEnv.Append(CPPPATH=[
     '../../Theorem/Source',
     '../../Axiom/Source',
     '../../Axiom/Source/Axiom',
 ])
 
-current_env.Prepend(LIBS=['Axiom', 'ImGui'])
+currentEnv.Prepend(LIBS=['Axiom', 'ImGui'])
 
-current_env['OBJPREFIX'] = f'../Bin-Int/{platform}-{architecture}/{config_name}/'
+currentEnv['OBJPREFIX'] = f'../Bin-Int/{platform}-{architecture}/{configName}/'
 
-theorem_program = current_env.Program('Theorem', theorem_sources)
+theoremApp = currentEnv.Program('Theorem', theoremSources)
 
-theorem_project = None
+theoremProject = None
 if vsproj:
-    theorem_headers = theorem_src_dir.glob('*.h')
+    theoremHeaders = theoremSrcDir.glob('*.h')
 
-    current_env['CPPPATH'] = [Dir(path) for path in current_env['CPPPATH']]
-    variant_key = f'{config_name}|x64'
+    currentEnv['CPPPATH'] = [Dir(path) for path in currentEnv['CPPPATH']]
+    variant_key = f'{configName}|x64'
     dbg = {'LocalDebuggerWorkingDirectory': r'$(ProjectDir)..\\Build\\Theorem'}
 
-    theorem_project = current_env.MSVSProject(
-        target='../../Theorem/Theorem' + current_env['MSVSPROJECTSUFFIX'],
-        srcs=[str(f) for f in theorem_sources],
-        incs=[str(f) for f in theorem_headers],
-        buildtarget=theorem_program,
+    theoremProject = currentEnv.MSVSProject(
+        target='../../Theorem/Theorem' + currentEnv['MSVSPROJECTSUFFIX'],
+        srcs=[str(f) for f in theoremSources],
+        incs=[str(f) for f in theoremHeaders],
+        buildtarget=theoremApp,
         variant=[variant_key],
         auto_build_solution=0,
         DebugSettings=dbg
     )
 
-Return('theorem_program', 'theorem_project')
+Return('theoremApp', 'theoremProject')
