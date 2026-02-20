@@ -30,6 +30,7 @@ x86/
 *.vcxproj.user
 *.vcxproj
 *.vcxproj.filters
+*.vcproj
 *.sln
 .vscode/
 
