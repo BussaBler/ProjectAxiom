@@ -46,7 +46,7 @@ def buildCMakeLibs(env):
     if targetPlatform == 'windows':
         expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.lib')
     else:
-        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'libshaderc_combined.a')
+        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', 'libshaderc_combined.a')
 
     if os.path.exists(expectedLib):
         printWithColor(f"Found existing Shaderc library at {expectedLib}, skipping build.", color=COLORS['yellow'])
@@ -68,7 +68,8 @@ def buildCMakeLibs(env):
         '-DSHADERC_SKIP_TESTS=ON',
         '-DSHADERC_SKIP_EXAMPLES=ON',
         '-DSHADERC_SKIP_COPYRIGHT_CHECK=ON',
-        '-DSHADERC_ENABLE_SHARED_CRT=ON'
+        '-DSHADERC_ENABLE_SHARED_CRT=ON',
+        f'-DCMAKE_BUILD_TYPE={buildConfig.capitalize()}'
     ]
 
     cmakeBuildCmd = [
