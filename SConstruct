@@ -46,7 +46,7 @@ def buildCMakeLibs(env):
     if targetPlatform == 'windows':
         expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.lib')
     else:
-        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.a')
+        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'libshaderc_combined.a')
 
     if os.path.exists(expectedLib):
         printWithColor(f"Found existing Shaderc library at {expectedLib}, skipping build.", color=COLORS['yellow'])
