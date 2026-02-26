@@ -49,7 +49,7 @@ def buildCMakeLibs(env):
         expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.a')
 
     if os.path.exists(expectedLib):
-        printWithColor(f"Found existing ShaderC library at {expectedLib}, skipping build.", color=COLORS['yellow'])
+        printWithColor(f"Found existing Shaderc library at {expectedLib}, skipping build.", color=COLORS['yellow'])
         return expectedLib
     
     spirvToolsDir = os.path.join(shadercDir, 'third_party', 'spirv-tools', 'CMakeLists.txt')
@@ -58,7 +58,7 @@ def buildCMakeLibs(env):
         try:
             subprocess.run([sys.executable, syncScript], check=True)
         except:
-            printWithColor("ERROR: Failed to sync ShaderC dependencies. Ensure you have Python installed and try again.", color=COLORS['red'])
+            printWithColor("ERROR: Failed to sync Shaderc dependencies. Ensure you have Python installed and try again.", color=COLORS['red'])
             Exit(1)
     
     cmakeConfigCmd = [
@@ -79,13 +79,13 @@ def buildCMakeLibs(env):
     ]
 
     printWithColor('[VENDOR]', color=COLORS['green'], end='')
-    printWithColor('Building ShaderC library (this might take a while)', color=COLORS['reset'])
+    printWithColor('Building Shaderc library (this might take a while)', color=COLORS['reset'])
     try:
         sconsEnvVars = env['ENV']
         subprocess.run(cmakeConfigCmd, check=True, stdout=subprocess.DEVNULL, env=sconsEnvVars)
         subprocess.run(cmakeBuildCmd, check=True, stdout=subprocess.DEVNULL, env=sconsEnvVars)
     except subprocess.CalledProcessError as e:
-        printWithColor(f"ERROR: Failed to build ShaderC library. Command '{' '.join(e.cmd)}' exited with code {e.returncode}.", color=COLORS['red'])
+        printWithColor(f"ERROR: Failed to build Shaderc library. Command '{' '.join(e.cmd)}' exited with code {e.returncode}.", color=COLORS['red'])
         Exit(1)
 
     return expectedLib
@@ -152,7 +152,7 @@ baseEnv = Environment(
 if renderBackend == 'vulkan':
     shadercLibPath = buildCMakeLibs(baseEnv)
     baseEnv.Append(
-        CPPPATH=[Dir('Vendor/Vulkan/Include'), Dir('Vendor/ShaderC/libshaderc/include')],
+        CPPPATH=[Dir('Vendor/Vulkan/Include'), Dir('Vendor/Shaderc/libshaderc/include')],
         LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
         LIBS=['shaderc_combined']
     )
