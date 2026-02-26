@@ -1,4 +1,5 @@
-Import('baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo')
+Import('baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib')
+
 from SCons.Script import Dir, Return
 
 platform = buildInfo['platform']
@@ -8,39 +9,43 @@ config = buildInfo['config']
 configName = config.capitalize()
 vsproj = buildInfo['vsproj']
 
-currentEnv = debugEnv if config.lower() == 'debug' else releaseEnv
+localEnv = (debugEnv if config.lower() == 'debug' else releaseEnv).Clone()
 
-theoremSrcDir = Dir('../../Theorem/Source')
-theoremSources = theoremSrcDir.glob('*.cpp')
+coreSources = Glob('Source/*.cpp')
+coreSources += Glob('Source/*/*.cpp')
 
-currentEnv.Append(CPPPATH=[
-    '../../Theorem/Source',
-    '../../Axiom/Source',
-    '../../Axiom/Source/Axiom',
-])
+localEnv.Append(
+    CPPPATH=[
+        Dir('#/Theorem/Source'),
+        Dir('#/Axiom/Source'),
+    ],
+    LIBPATH=[
+        Dir(f'#/Bin/{configName}/Axiom')
+    ]
+)
 
-currentEnv.Prepend(LIBS=['Axiom', 'ImGui'])
+localEnv.Prepend(LIBS=[axiomLib])
 
-currentEnv['OBJPREFIX'] = f'../Bin-Int/{platform}-{architecture}/{configName}/'
-
-theoremApp = currentEnv.Program('Theorem', theoremSources)
+theoremApp = localEnv.Program(f'#Bin/{configName}/Theorem/Theorem', coreSources)
 
 theoremProject = None
 if vsproj:
-    theoremHeaders = theoremSrcDir.glob('*.h')
+    theoremSources = Glob('Source/*.cpp') + Glob('Source/*/*.cpp')
+    theoremHeaders = Glob('Source/*.h') + Glob('Source/*/*.h')
+    localEnv['CPPPATH'] = [Dir(path) for path in localEnv['CPPPATH']]
 
-    currentEnv['CPPPATH'] = [Dir(path) for path in currentEnv['CPPPATH']]
-    variant_key = f'{configName}|x64'
-    dbg = {'LocalDebuggerWorkingDirectory': r'$(ProjectDir)..\\Build\\Theorem'}
+    debugSettings = {
+        'WorkingDirectory': '$(TargetDir)',
+    }
 
-    theoremProject = currentEnv.MSVSProject(
-        target='../../Theorem/Theorem' + currentEnv['MSVSPROJECTSUFFIX'],
+    theoremProject = localEnv.MSVSProject(
+        target='#/Theorem/Theorem' + localEnv['MSVSPROJECTSUFFIX'],
         srcs=[str(f) for f in theoremSources],
         incs=[str(f) for f in theoremHeaders],
         buildtarget=theoremApp,
-        variant=[variant_key],
+        variant=[f'{configName}|x64'],
         auto_build_solution=0,
-        DebugSettings=dbg
+        DebugSettings=debugSettings
     )
 
 Return('theoremApp', 'theoremProject')

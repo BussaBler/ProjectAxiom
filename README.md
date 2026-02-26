@@ -6,7 +6,7 @@ Axiom is a game engine project with an accompanying editor application called Th
 
 ## Build System
 
-The project uses SCons as its build system. It supports the following configurations:
+The project uses SCons as it's build system. It supports the following configurations:
 
 - **platform**: Target platform (Windows or Linux)
 - **config**: Build configuration (e.g., Debug, Release)

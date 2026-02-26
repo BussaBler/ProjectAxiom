@@ -1,5 +1,6 @@
-import os, shutil, platform, multiprocessing
-from SCons.Script import Environment, Progress
+import os, shutil, platform, multiprocessing, subprocess
+import sys
+from SCons.Script import Environment, Dir, Depends
 from SCons.Script import Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption
 
 SetOption('num_jobs', multiprocessing.cpu_count())
@@ -7,9 +8,12 @@ targetPlatform = ARGUMENTS.get('platform', 'windows').lower()
 buildConfig = ARGUMENTS.get('config', 'debug').lower()
 vsproj = ARGUMENTS.get('vsproj', 'no').lower() in ['yes', 'true', '1']
 verbose = ARGUMENTS.get('verbose', 'no').lower() in ['yes', 'true', '1']
+renderBackend = ARGUMENTS.get('renderer', 'vulkan').lower()
 architecture = platform.machine()
 if architecture == 'AMD64':
     architecture = 'x86_64'
+
+CPPVER = '23'
 
 COLORS = {
     'reset': '\033[0m',
@@ -32,6 +36,59 @@ def detectMsvc():
 def printWithColor(*objects, color, sep=' ', end='\n', file=None, flush=False):
     print(f'{color}', end='', file=file, flush=flush)
     print(*objects, '\033[0m', sep=sep, end=end, file=file, flush=flush)
+
+def buildCMakeLibs(env):
+    vendorDir = Dir('Vendor').get_path()
+    shadercDir = os.path.join(vendorDir, 'ShaderC')
+
+    shadercBuildDir = os.path.join(shadercDir, 'Build')
+
+    if targetPlatform == 'windows':
+        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.lib')
+    else:
+        expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.a')
+
+    if os.path.exists(expectedLib):
+        printWithColor(f"Found existing ShaderC library at {expectedLib}, skipping build.", color=COLORS['yellow'])
+        return expectedLib
+    
+    spirvToolsDir = os.path.join(shadercDir, 'third_party', 'spirv-tools', 'CMakeLists.txt')
+    if not os.path.exists(spirvToolsDir):
+        syncScript = os.path.join(shadercDir, 'utils', 'git-sync-deps')
+        try:
+            subprocess.run([sys.executable, syncScript], check=True)
+        except:
+            printWithColor("ERROR: Failed to sync ShaderC dependencies. Ensure you have Python installed and try again.", color=COLORS['red'])
+            Exit(1)
+    
+    cmakeConfigCmd = [
+        'cmake',
+        '-S', shadercDir,
+        '-B', shadercBuildDir,
+        '-DSHADERC_SKIP_TESTS=ON',
+        '-DSHADERC_SKIP_EXAMPLES=ON',
+        '-DSHADERC_SKIP_COPYRIGHT_CHECK=ON',
+        '-DSHADERC_ENABLE_SHARED_CRT=ON'
+    ]
+
+    cmakeBuildCmd = [
+        'cmake',
+        '--build', shadercBuildDir,
+        '--config', buildConfig.capitalize(),
+        '--parallel', str(multiprocessing.cpu_count())
+    ]
+
+    printWithColor('[VENDOR]', color=COLORS['green'], end='')
+    printWithColor('Building ShaderC library (this might take a while)', color=COLORS['reset'])
+    try:
+        sconsEnvVars = env['ENV']
+        subprocess.run(cmakeConfigCmd, check=True, stdout=subprocess.DEVNULL, env=sconsEnvVars)
+        subprocess.run(cmakeBuildCmd, check=True, stdout=subprocess.DEVNULL, env=sconsEnvVars)
+    except subprocess.CalledProcessError as e:
+        printWithColor(f"ERROR: Failed to build ShaderC library. Command '{' '.join(e.cmd)}' exited with code {e.returncode}.", color=COLORS['red'])
+        Exit(1)
+
+    return expectedLib
 
 def detectCompilerTools():
     """detect and return appropriate compiler tools for the target platform"""
@@ -83,11 +140,6 @@ if vsproj and compilerType == 'msvc':
     tools.extend(['msvs'])
     printWithColor("Visual Studio project generation enabled", color=COLORS['cyan'])
 
-vulkanSdk = os.environ.get('VULKAN_SDK')
-if not vulkanSdk or not os.path.isdir(vulkanSdk):
-    printWithColor("ERROR: Set VULKAN_SDK environment variable to your Vulkan SDK root", color=COLORS['red'])
-    Exit(1)
-
 if vsproj and compilerType != 'msvc':
     printWithColor("ERROR: Visual Studio project generation requires MSVC compiler", color=COLORS['red'])
     Exit(1)
@@ -97,18 +149,24 @@ baseEnv = Environment(
     ENV=os.environ,
 )
 
-baseEnv.Append(
-    CPPPATH=[os.path.join(vulkanSdk, 'Include'), os.path.join(vulkanSdk, 'include')],
-    LIBPATH=[os.path.abspath('Build/Axiom'), os.path.abspath('Build/ImGui')],
-)
+if renderBackend == 'vulkan':
+    shadercLibPath = buildCMakeLibs(baseEnv)
+    baseEnv.Append(
+        CPPPATH=[Dir('Vendor/Vulkan/Include'), Dir('Vendor/ShaderC/libshaderc/include')],
+        LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
+        LIBS=['shaderc_combined']
+    )
+else:
+    printWithColor(f"ERROR: Renderer backend '{renderBackend}' not supported.", color=COLORS['red'])
+    Exit(1)
 
 if targetPlatform.startswith('windows'):
-    baseEnv.Append(LIBS=['vulkan-1', 'user32', 'gdi32', 'winmm'])
+    baseEnv.Append(LIBS=['user32', 'gdi32', 'winmm'])
 else:
-    baseEnv.Append(LIBS=['vulkan', 'X11'])
+    baseEnv.Append(LIBS=['X11'])
 
 def getBuildFlags(compiler):
-    """return build flags based on compiler type"""
+    # return build flags based on compiler type
     if compiler == 'msvc':
         return {
             'debugCcflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS', '/MDd', '/permissive-'],
@@ -117,6 +175,7 @@ def getBuildFlags(compiler):
             'releaseLinkflags': ['/nologo'],
             'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
             'releaseDefines': ['AX_RELEASE'],
+            'version': ['/std:c++' + CPPVER + 'preview']
         }
     else:  # GCC or Clang
         return {
@@ -125,7 +184,8 @@ def getBuildFlags(compiler):
             'debugLinkflags': [],
             'releaseLinkflags': [],
             'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
-            'releaseDefines': ['AX_RELEASE']
+            'releaseDefines': ['AX_RELEASE'],
+            'version': ['-std=c++' + CPPVER]
         }
 
 flags = getBuildFlags(compilerType)
@@ -133,13 +193,15 @@ flags = getBuildFlags(compilerType)
 debugEnv = baseEnv.Clone(
     CCFLAGS=flags['debugCcflags'],
     LINKFLAGS=flags['debugLinkflags'],
-    CPPDEFINES=flags['debugDefines']
+    CPPDEFINES=flags['debugDefines'],
+    CXXFLAGS=flags['version']
 )
 
 releaseEnv = baseEnv.Clone(
     CCFLAGS=flags['releaseCcflags'],
     LINKFLAGS=flags['releaseLinkflags'],
-    CPPDEFINES=flags['releaseDefines']
+    CPPDEFINES=flags['releaseDefines'],
+    CXXFLAGS=flags['version']
 )
 
 buildInfo = {
@@ -147,7 +209,6 @@ buildInfo = {
     'architecture': architecture,
     'compiler': compilerType,
     'config': buildConfig,
-    'vulkanSdk': vulkanSdk,
     'vsproj': vsproj
 }
 
@@ -176,7 +237,7 @@ def printInfo():
     action = 'Cleaning' if GetOption('clean') else 'Building'
     printWithColor(f'\n{action} {buildConfig.capitalize()} configuration for {targetPlatform}-{architecture}', color=COLORS['cyan'])
     printWithColor(f' Compiler: {compilerType}', color=COLORS['magenta'])
-    printWithColor(f' Vulkan SDK: {vulkanSdk}', color=COLORS['magenta'])
+    printWithColor(f' Renderer: {renderBackend}', color=COLORS['magenta'])
     if not verbose:
         printWithColor(' (Use \'verbose=yes\' to see full command lines)', color=COLORS['yellow'])
     print("")
@@ -187,29 +248,28 @@ setupOutputColors(baseEnv)
 setupOutputColors(debugEnv)
 setupOutputColors(releaseEnv)
 
-imguiLib, imguiProject = SConscript('Axiom/Vendor/ImGui/SConscript', 
-            variant_dir='Build/ImGui',
-            duplicate=0,
-            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
-
 axiomLib, axiomProject = SConscript('Axiom/SConscript', 
-            variant_dir='Build/Axiom', 
-            duplicate=0, 
+            variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
+            src_dir='Axiom',
+            duplicate=0,
             exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
 
 theoremApp, theoremProject = SConscript('Theorem/SConscript',
-            variant_dir='Build/Theorem',
+            variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
+            src_dir='Theorem',
             duplicate=0,
-            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
+            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib'])
+
+Depends(theoremProject, axiomProject)
 
 if vsproj and compilerType == 'msvc':
-    axiom_solution = baseEnv.MSVSSolution(
+    axiomSolution = baseEnv.MSVSSolution(
         target='AxiomEngine' + baseEnv['MSVSSOLUTIONSUFFIX'],
-        projects=[imguiProject, axiomProject, theoremProject],
+        projects=[axiomProject, theoremProject],
         variant=['Debug|x64']
     )
 
-    Alias('AxiomEngine', axiom_solution)
+    Alias('AxiomEngine', axiomSolution)
     Default('AxiomEngine')
 
     if GetOption('clean'):
@@ -221,7 +281,6 @@ if vsproj and compilerType == 'msvc':
         color = COLORS['green']
         symbol = '+'
     printWithColor(f'Visual Studio projects and solution will be {action}:', color=COLORS['cyan'])
-    printWithColor(f' {symbol}', 'ImGui.vcproj', color=color)
     printWithColor(f' {symbol}', 'Axiom.vcxproj', color=color)
     printWithColor(f' {symbol}', 'Theorem.vcxproj', color=color)
     printWithColor(f' {symbol}', 'AxiomEngine.sln', color=color)
