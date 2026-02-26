@@ -39,7 +39,7 @@ def printWithColor(*objects, color, sep=' ', end='\n', file=None, flush=False):
 
 def buildCMakeLibs(env):
     vendorDir = Dir('Vendor').get_path()
-    shadercDir = os.path.join(vendorDir, 'ShaderC')
+    shadercDir = os.path.join(vendorDir, 'Shaderc')
 
     shadercBuildDir = os.path.join(shadercDir, 'Build')
 
