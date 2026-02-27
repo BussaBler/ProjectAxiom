@@ -9,6 +9,7 @@ buildConfig = ARGUMENTS.get('config', 'debug').lower()
 vsproj = ARGUMENTS.get('vsproj', 'no').lower() in ['yes', 'true', '1']
 verbose = ARGUMENTS.get('verbose', 'no').lower() in ['yes', 'true', '1']
 renderBackend = ARGUMENTS.get('renderer', 'vulkan').lower()
+compilerType = ARGUMENTS.get('compiler', 'msvc').lower()
 architecture = platform.machine()
 if architecture == 'AMD64':
     architecture = 'x86_64'
@@ -41,9 +42,9 @@ def buildCMakeLibs(env):
     vendorDir = Dir('Vendor').get_path()
     shadercDir = os.path.join(vendorDir, 'Shaderc')
 
-    shadercBuildDir = os.path.join(shadercDir, 'Build')
+    shadercBuildDir = os.path.join(shadercDir, f'Build/{compilerType}')
 
-    if targetPlatform == 'windows':
+    if compilerType == 'msvc':
         expectedLib = os.path.join(shadercBuildDir, 'libshaderc', buildConfig.capitalize(), 'shaderc_combined.lib')
     else:
         expectedLib = os.path.join(shadercBuildDir, 'libshaderc', 'libshaderc_combined.a')
@@ -72,6 +73,24 @@ def buildCMakeLibs(env):
         f'-DCMAKE_BUILD_TYPE={buildConfig.capitalize()}'
     ]
 
+    if compilerType == 'msvc':
+        cmakeConfigCmd.extend([
+            '-DCMAKE_C_COMPILER=cl',
+            '-DCMAKE_CXX_COMPILER=cl'
+            ])
+    elif compilerType in ['gcc', 'g++']:
+        cmakeConfigCmd.extend([
+            '-DCMAKE_C_COMPILER=gcc',
+            '-DCMAKE_CXX_COMPILER=g++'
+            ])
+        if targetPlatform == 'windows':
+            cmakeConfigCmd.extend(['-G', 'MinGW Makefiles'])
+    elif compilerType == 'clang':
+        cmakeConfigCmd.extend([
+            '-DCMAKE_C_COMPILER=clang',
+            '-DCMAKE_CXX_COMPILER=clang++'
+        ])
+
     cmakeBuildCmd = [
         'cmake',
         '--build', shadercBuildDir,
@@ -94,38 +113,36 @@ def buildCMakeLibs(env):
 def detectCompilerTools():
     """detect and return appropriate compiler tools for the target platform"""
     if targetPlatform.startswith('windows'):
-        compilerType = ARGUMENTS.get('compiler', 'msvc').lower()
         match compilerType:
             case 'msvc':
                 if detectMsvc():
-                    return ['msvc', 'mslib', 'mslink'], 'msvc'
+                    return ['msvc', 'mslib', 'mslink']
                 else:
                     printWithColor("ERROR: No MSVC compiler found; install a valid MSVC compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
             case 'gcc' | 'g++':
                 if shutil.which('g++') or shutil.which('gcc'):
-                    return ['gcc', 'g++', 'ar', 'link'], 'gcc'
+                    return ['gcc', 'g++', 'ar', 'link']
                 else:
                     printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
             case 'clang':
                 if shutil.which('clang') or shutil.which('clang++'):
-                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link'], 'clang'
+                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
                 else:
                     printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
     elif targetPlatform.startswith('linux'):
-        compilerType = ARGUMENTS.get('compiler', 'gcc').lower()
         match compilerType:
             case 'gcc' | 'g++':
                 if shutil.which('g++') or shutil.which('gcc'):
-                    return ['gcc', 'g++', 'ar', 'link'], 'gcc'
+                    return ['gcc', 'g++', 'ar', 'link']
                 else:
                     printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
             case 'clang':
                 if shutil.which('clang') or shutil.which('clang++'):
-                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link'], 'clang'
+                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
                 else:
                     printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
@@ -134,7 +151,7 @@ def detectCompilerTools():
         Exit(1)
 
 
-tools, compilerType = detectCompilerTools()
+tools = detectCompilerTools()
 
 printWithColor(f"Platform: {targetPlatform}, Compiler: {compilerType}, Architecture: {architecture}", color=COLORS['cyan'])
 if vsproj and compilerType == 'msvc':
