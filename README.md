@@ -16,6 +16,9 @@ The project uses SCons as it's build system. It supports the following configura
 
 On Windows, it is recommended to use the MSVC compiler (default). Visual Studio project file generation is only available with the MSVC compiler.
 
+[!NOTE]
+To enable Vulkan Validation Layers in Debug builds, ensure the Vulkan SDK is installed on your system. These layers provide essential error checking and debugging information that is not present in the standard driver.
+
 Examples of build commands:
 ```bash
 scons config=Debug platform=Windows compiler=msvc vsproj=yes
