@@ -6,5 +6,9 @@
 class TheoremApplication : public Axiom::Application {
 public:
 	TheoremApplication(const Axiom::ApplicationInfo& appInfo);
+	~TheoremApplication();
+
+private:
+	EditorLayer* editorLayer = nullptr;
 };
 

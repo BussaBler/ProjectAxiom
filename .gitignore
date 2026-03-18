@@ -19,6 +19,7 @@ ipch/
 *.pdb
 *.ipdb
 *.iobj
+.clang-format
 
 # Build folders
 Debug*/

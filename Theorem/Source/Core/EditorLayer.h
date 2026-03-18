@@ -9,10 +9,12 @@ public:
 	void onAttach() override;
 	void onDetach() override;
 	void onUpdate() override;
+	void onUIRender() override;
 	void onEvent(Axiom::Event& event) override;
+	void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
 private:
-	Math::Vec3 cameraPosition;
-	Math::Vec3 cameraRotation;
+	Axiom::RenderPass renderPass{};
+	Math::uVec2 viewportSize{ 0, 0 };
 };
 

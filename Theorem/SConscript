@@ -43,6 +43,7 @@ if vsproj:
         srcs=[str(f) for f in theoremSources],
         incs=[str(f) for f in theoremHeaders],
         buildtarget=theoremApp,
+        runfile=theoremApp,
         variant=[f'{configName}|x64'],
         auto_build_solution=0,
         DebugSettings=debugSettings

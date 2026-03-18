@@ -281,14 +281,14 @@ theoremApp, theoremProject = SConscript('Theorem/SConscript',
 Depends(theoremProject, axiomProject)
 
 if vsproj and compilerType == 'msvc':
-    axiomSolution = baseEnv.MSVSSolution(
-        target='AxiomEngine' + baseEnv['MSVSSOLUTIONSUFFIX'],
-        projects=[axiomProject, theoremProject],
-        variant=['Debug|x64']
+    projectAxiomSolution = baseEnv.MSVSSolution(
+        target='ProjectAxiom' + baseEnv['MSVSSOLUTIONSUFFIX'],
+        projects=[theoremProject, axiomProject],
+        variant=['Debug|x64'],
     )
 
-    Alias('AxiomEngine', axiomSolution)
-    Default('AxiomEngine')
+    Alias('ProjectAxiom', projectAxiomSolution)
+    Default('ProjectAxiom')
 
     if GetOption('clean'):
         action = 'cleaned'
