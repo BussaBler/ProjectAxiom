@@ -10,7 +10,7 @@ void EditorLayer::onAttach() {
 	colorAttachment.loadOp = Axiom::LoadOp::Clear;
 	colorAttachment.storeOp = Axiom::StoreOp::Store;
 	colorAttachment.clearColor = Math::Vec4(0.0f, 0.0f, 1.0f, 1.0f);
-	viewportSize = Axiom::Renderer::getCurrentRenderTargetSize();
+	viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
 	renderPass.colorAttachments[0] = colorAttachment;
 	renderPass.colorAttachmentCount = 1;
@@ -30,6 +30,7 @@ void EditorLayer::onUIRender() {
 	if (Axiom::UI::button("Test Button", Math::Vec2(0.0f, 0.0f), Math::Vec2(100.0f, 100.0f))) {
 		Axiom::AX_LOG_INFO("Button clicked!");
 	}
+	Axiom::UI::text("Hello World!", Math::Vec2(200.0f, 200.0f), Math::Vec4(1.0f, 0.0f, 0.0f, 1.0f), 48);
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
@@ -37,8 +38,8 @@ void EditorLayer::onEvent(Axiom::Event& event) {
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
-	renderPass.colorAttachments[0].texture = Axiom::Renderer::getCurrentRenderTarget();
-	viewportSize = Axiom::Renderer::getCurrentRenderTargetSize();
+	renderPass.colorAttachments[0].texture = Axiom::Application::getRenderer()->getCurrentRenderTarget();
+	viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 	renderPass.width = static_cast<uint32_t>(viewportSize.x());
 	renderPass.height = static_cast<uint32_t>(viewportSize.y());
 

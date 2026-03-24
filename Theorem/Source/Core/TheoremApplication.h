@@ -9,6 +9,5 @@ public:
 	~TheoremApplication();
 
 private:
-	EditorLayer* editorLayer = nullptr;
 };
 
