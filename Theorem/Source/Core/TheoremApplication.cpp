@@ -2,6 +2,7 @@
 
 TheoremApplication::TheoremApplication(const Axiom::ApplicationInfo& appInfo) : Axiom::Application(appInfo) {
 	pushLayer<EditorLayer>();
+	pushOverlay<Axiom::ConsoleLayer>();
 }
 
 TheoremApplication::~TheoremApplication() {

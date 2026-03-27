@@ -9,7 +9,7 @@ void EditorLayer::onAttach() {
 	Axiom::RenderAttachment colorAttachment;
 	colorAttachment.loadOp = Axiom::LoadOp::Clear;
 	colorAttachment.storeOp = Axiom::StoreOp::Store;
-	colorAttachment.clearColor = Math::Vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	colorAttachment.clearColor = Math::Vec4(1.0f);
 	viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
 	renderPass.colorAttachments[0] = colorAttachment;
@@ -27,10 +27,7 @@ void EditorLayer::onUpdate() {
 }
 
 void EditorLayer::onUIRender() {
-	if (Axiom::UI::button("Test Button", Math::Vec2(0.0f, 0.0f), Math::Vec2(100.0f, 100.0f))) {
-		Axiom::AX_LOG_INFO("Button clicked!");
-	}
-	Axiom::UI::text("Hello World!", Math::Vec2(200.0f, 200.0f), Math::Vec4(1.0f, 0.0f, 0.0f, 1.0f), 48);
+	Axiom::UI::text("AXIOM", Math::Vec2(640.0f, 48.0f), Math::Vec4(0.0f, 0.0f, 0.0f, 1.0f), 48);
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {

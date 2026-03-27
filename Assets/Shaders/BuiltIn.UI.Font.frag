@@ -16,10 +16,14 @@ void main() {
     vec3 msd = texture(uFontTexture, vUV).rgb;
     float sd = median(msd.r, msd.g, msd.b) - 0.5;
     
-    vec2 fw = fwidth(vUV) * textureSize(uFontTexture, 0);
-    float screenPxDistance = 4.0 * (sd / length(fw));
+    vec2 texSize = vec2(textureSize(uFontTexture, 0));
+    vec2 dx = dFdx(vUV) * texSize;
+    vec2 dy = dFdy(vUV) * texSize;
+    
+    float toPixels = 4.0 * inversesqrt(0.5 * (dot(dx, dx) + dot(dy, dy)));
+    float screenPxDistance = toPixels * sd;
     
     float alpha = clamp(screenPxDistance + 0.5, 0.0, 1.0);
     
-    oColor = vec4(vColor.rgb, vColor.a * alpha);
+    oColor = vec4(vColor.rgb * alpha, vColor.a * alpha);
 }
