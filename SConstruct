@@ -266,18 +266,27 @@ setupOutputColors(baseEnv)
 setupOutputColors(debugEnv)
 setupOutputColors(releaseEnv)
 
+env = buildConfig == 'debug' and debugEnv or releaseEnv
+
+axImageLoaderLib = SConscript('Vendor/AxImageLoader/SConscript', 
+    variant_dir=f'Bin-Int/{buildConfig.capitalize()}/AxImageLoader',
+    src_dir='Vendor/AxImageLoader',
+    duplicate=0,
+    exports=['env'])
+
 axiomLib, axiomProject = SConscript('Axiom/SConscript', 
-            variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
-            src_dir='Axiom',
-            duplicate=0,
-            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
+    variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
+    src_dir='Axiom',
+    duplicate=0,
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
 
 theoremApp, theoremProject = SConscript('Theorem/SConscript',
-            variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
-            src_dir='Theorem',
-            duplicate=0,
-            exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib'])
+    variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
+    src_dir='Theorem',
+    duplicate=0,
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib'])
 
+Depends(axiomLib, axImageLoaderLib)
 Depends(theoremProject, axiomProject)
 
 if vsproj and compilerType == 'msvc':

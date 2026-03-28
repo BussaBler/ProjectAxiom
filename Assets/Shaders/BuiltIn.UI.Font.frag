@@ -1,10 +1,11 @@
-#version 460
+#version 460 core
 #pragma shader_stage(fragment)
 
 layout(location = 0) in vec2 vUV;
 layout(location = 1) in vec4 vColor;
 
-layout(binding = 0) uniform sampler2D uFontTexture;
+layout(binding = 0) uniform texture2D uFontTexture;
+layout(binding = 1) uniform sampler uFontSampler;
 
 layout(location = 0) out vec4 oColor;
 
@@ -13,10 +14,10 @@ float median(float r, float g, float b) {
 }
 
 void main() {
-    vec3 msd = texture(uFontTexture, vUV).rgb;
+    vec3 msd = texture(sampler2D(uFontTexture, uFontSampler), vUV).rgb;
     float sd = median(msd.r, msd.g, msd.b) - 0.5;
     
-    vec2 texSize = vec2(textureSize(uFontTexture, 0));
+    vec2 texSize = vec2(textureSize(sampler2D(uFontTexture, uFontSampler), 0));
     vec2 dx = dFdx(vUV) * texSize;
     vec2 dy = dFdy(vUV) * texSize;
     

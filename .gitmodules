@@ -2,3 +2,6 @@
 [submodule "Vendor/Shaderc"]
 	path = Vendor/Shaderc
 	url = https://github.com/google/shaderc.git
+[submodule "Vendor/AxImageLoader"]
+	path = Vendor/AxImageLoader
+	url = https://github.com/BussaBler/AxImageLoader.git

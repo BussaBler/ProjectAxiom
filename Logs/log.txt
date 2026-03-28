@@ -1,0 +1,13 @@
+[2026-03-28 17:40:16.7869090][INFO][CORE] Application started: Axiom Application
+[2026-03-28 17:40:16.8027960][INFO][CORE] Current working directory: C:\Users\Bussab\Documents\USP\Codes C++\ProjectAxiom
+[2026-03-28 17:40:16.8031575][INFO][CORE] Creating a Win32 window Axiom Engine (1280, 720)
+[2026-03-28 17:40:16.8225531][INFO][CORE] Initializing Vulkan Device...
+[2026-03-28 17:40:16.8306395][DEBUG][CORE] Required Vulkan Device Extension: VK_KHR_surface
+[2026-03-28 17:40:16.8311368][DEBUG][CORE] Required Vulkan Device Extension: VK_EXT_debug_utils
+[2026-03-28 17:40:16.8315072][DEBUG][CORE] Required Vulkan Device Extension: VK_KHR_win32_surface
+[2026-03-28 17:40:16.9633035][DEBUG][CORE] Found Vulkan Adapter: NVIDIA GeForce RTX 4070 Ti (API Version: 1.4.329 | Driver Version: 2497200128 | Vendor ID: 4318 | Device ID: 10114)
+[2026-03-28 17:40:16.9708305][DEBUG][CORE] Selected Vulkan Adapter: NVIDIA GeForce RTX 4070 Ti
+[2026-03-28 17:40:17.0405991][DEBUG][CORE] Creating Vulkan memory pool with size 256000000 bytes and memory type index 1.
+[2026-03-28 17:40:17.0430926][DEBUG][CORE] Creating Vulkan memory pool with size 256000000 bytes and memory type index 2.
+[2026-03-28 17:40:17.1365887][INFO][CORE] Initializing UI system...
+[2026-03-28 17:40:32.0848813][INFO][CORE] Shutting down UI system...
