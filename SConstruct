@@ -3,8 +3,19 @@ import sys
 from SCons.Script import Environment, Dir, Depends
 from SCons.Script import Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption
 
+def getPlatform():
+    osName = platform.system().lower()
+    if osName.startswith('win'):
+        return 'windows'
+    elif osName.startswith('linux'):
+        return 'linux'
+    elif osName.startswith('darwin'):
+        return 'macos'
+    else:
+        return osName
+
 SetOption('num_jobs', multiprocessing.cpu_count())
-targetPlatform = ARGUMENTS.get('platform', 'windows').lower()
+targetPlatform = ARGUMENTS.get('platform', getPlatform()).lower()
 buildConfig = ARGUMENTS.get('config', 'debug').lower()
 vsproj = ARGUMENTS.get('vsproj', 'no').lower() in ['yes', 'true', '1']
 verbose = ARGUMENTS.get('verbose', 'no').lower() in ['yes', 'true', '1']
@@ -146,6 +157,20 @@ def detectCompilerTools():
                 else:
                     printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
                     Exit(1)
+    elif targetPlatform.startswith('macos'):
+        match compilerType:
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'):
+                    return ['gcc', 'g++', 'ar', 'link']
+                else:
+                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'):
+                    return ['clang', 'clang++', 'ar', 'applelink']
+                else:
+                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
+                    Exit(1)
     else:
         printWithColor(f'Current platform {targetPlatform} not supported.', color=COLORS['red'])
         Exit(1)
@@ -180,8 +205,10 @@ else:
 
 if targetPlatform.startswith('windows'):
     baseEnv.Append(LIBS=['user32', 'gdi32', 'winmm'])
-else:
+elif targetPlatform.startswith('linux'):
     baseEnv.Append(LIBS=['X11'])
+elif targetPlatform.startswith('macos'):
+    baseEnv.Append(FRAMEWORKS=['Cocoa', 'IOKit', 'CoreVideo'])
 
 def getBuildFlags(compiler):
     # return build flags based on compiler type
@@ -195,12 +222,22 @@ def getBuildFlags(compiler):
             'releaseDefines': ['AX_RELEASE'],
             'version': ['/std:c++' + CPPVER + 'preview']
         }
-    else:  # GCC or Clang
+    elif compiler == 'gcc' or compiler == 'g++':
         return {
             'debugCcflags': ['-g', '-O0', '-pedantic'],
             'releaseCcflags': ['-O3', '-march=native'],
             'debugLinkflags': [],
             'releaseLinkflags': [],
+            'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
+            'releaseDefines': ['AX_RELEASE'],
+            'version': ['-std=c++' + CPPVER]
+        }
+    else:
+        return {
+            'debugCcflags': ['-g', '-O0', '-pedantic', '-fexperimental-library'],
+            'releaseCcflags': ['-O3', '-march=native', '-fexperimental-library'],
+            'debugLinkflags': ['-fexperimental-library'],
+            'releaseLinkflags': ['-fexperimental-library'],
             'debugDefines': ['AX_DEBUG', 'AX_ENABLE_ASSERTS'],
             'releaseDefines': ['AX_RELEASE'],
             'version': ['-std=c++' + CPPVER]

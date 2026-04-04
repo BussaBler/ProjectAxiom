@@ -3,6 +3,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+.DS_Store
 
 # Visual C++ cache files
 *.VC.db

@@ -30,6 +30,14 @@ localEnv = (debugEnv if config.lower() == 'debug' else releaseEnv).Clone()
 coreSources = Glob('Source/*.cpp')
 coreSources += Glob('Source/*/*.cpp')
 
+platformMap = {
+    'windows': {'define': 'AX_PLATFORM_WINDOWS', 'path': 'Source/Platform/Windows/*.cpp'},
+    'linux': {'define': 'AX_PLATFORM_LINUX', 'path': 'Source/Platform/Linux/*.cpp'},
+    'macos': {'define': 'AX_PLATFORM_MACOS', 'path': 'Source/Platform/MacOS/*.cpp'}
+}
+
+key = next((k for k in platformMap if platform.startswith(k)), None)
+
 localEnv.Append(
     CPPPATH=[
         Dir('#/Theorem/Source'),
@@ -37,7 +45,8 @@ localEnv.Append(
     ],
     LIBPATH=[
         Dir(f'#/Bin/{configName}/Axiom')
-    ]
+    ],
+    CPPDEFINES=[platformMap[key]['define']] if key else []
 )
 
 localEnv.Prepend(LIBS=[axiomLib])
