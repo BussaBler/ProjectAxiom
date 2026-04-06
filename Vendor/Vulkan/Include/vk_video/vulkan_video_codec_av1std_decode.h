@@ -74,14 +74,14 @@ typedef struct StdVideoDecodeAV1PictureInfo {
     uint8_t reserved2[3];
     uint8_t OrderHints[STD_VIDEO_AV1_NUM_REF_FRAMES];
     uint32_t expectedFrameId[STD_VIDEO_AV1_NUM_REF_FRAMES];
-    const StdVideoAV1TileInfo *pTileInfo;
-    const StdVideoAV1Quantization *pQuantization;
-    const StdVideoAV1Segmentation *pSegmentation;
-    const StdVideoAV1LoopFilter *pLoopFilter;
-    const StdVideoAV1CDEF *pCDEF;
-    const StdVideoAV1LoopRestoration *pLoopRestoration;
-    const StdVideoAV1GlobalMotion *pGlobalMotion;
-    const StdVideoAV1FilmGrain *pFilmGrain;
+    const StdVideoAV1TileInfo* pTileInfo;
+    const StdVideoAV1Quantization* pQuantization;
+    const StdVideoAV1Segmentation* pSegmentation;
+    const StdVideoAV1LoopFilter* pLoopFilter;
+    const StdVideoAV1CDEF* pCDEF;
+    const StdVideoAV1LoopRestoration* pLoopRestoration;
+    const StdVideoAV1GlobalMotion* pGlobalMotion;
+    const StdVideoAV1FilmGrain* pFilmGrain;
 } StdVideoDecodeAV1PictureInfo;
 
 typedef struct StdVideoDecodeAV1ReferenceInfoFlags {

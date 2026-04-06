@@ -95,9 +95,9 @@ typedef struct StdVideoEncodeH264ReferenceListsInfo {
     uint8_t refList1ModOpCount;
     uint8_t refPicMarkingOpCount;
     uint8_t reserved1[7];
-    const StdVideoEncodeH264RefListModEntry *pRefList0ModOperations;
-    const StdVideoEncodeH264RefListModEntry *pRefList1ModOperations;
-    const StdVideoEncodeH264RefPicMarkingEntry *pRefPicMarkingOperations;
+    const StdVideoEncodeH264RefListModEntry* pRefList0ModOperations;
+    const StdVideoEncodeH264RefListModEntry* pRefList1ModOperations;
+    const StdVideoEncodeH264RefPicMarkingEntry* pRefPicMarkingOperations;
 } StdVideoEncodeH264ReferenceListsInfo;
 
 typedef struct StdVideoEncodeH264PictureInfo {
@@ -110,7 +110,7 @@ typedef struct StdVideoEncodeH264PictureInfo {
     int32_t PicOrderCnt;
     uint8_t temporal_id;
     uint8_t reserved1[3];
-    const StdVideoEncodeH264ReferenceListsInfo *pRefLists;
+    const StdVideoEncodeH264ReferenceListsInfo* pRefLists;
 } StdVideoEncodeH264PictureInfo;
 
 typedef struct StdVideoEncodeH264ReferenceInfo {
@@ -133,7 +133,7 @@ typedef struct StdVideoEncodeH264SliceHeader {
     uint8_t reserved1;
     StdVideoH264CabacInitIdc cabac_init_idc;
     StdVideoH264DisableDeblockingFilterIdc disable_deblocking_filter_idc;
-    const StdVideoEncodeH264WeightTable *pWeightTable;
+    const StdVideoEncodeH264WeightTable* pWeightTable;
 } StdVideoEncodeH264SliceHeader;
 
 #ifdef __cplusplus

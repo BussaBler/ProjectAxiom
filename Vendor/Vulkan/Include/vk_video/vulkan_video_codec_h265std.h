@@ -157,8 +157,8 @@ typedef struct StdVideoH265HrdParameters {
     uint8_t cpb_cnt_minus1[STD_VIDEO_H265_SUBLAYERS_LIST_SIZE];
     uint16_t elemental_duration_in_tc_minus1[STD_VIDEO_H265_SUBLAYERS_LIST_SIZE];
     uint16_t reserved[3];
-    const StdVideoH265SubLayerHrdParameters *pSubLayerHrdParametersNal;
-    const StdVideoH265SubLayerHrdParameters *pSubLayerHrdParametersVcl;
+    const StdVideoH265SubLayerHrdParameters* pSubLayerHrdParametersNal;
+    const StdVideoH265SubLayerHrdParameters* pSubLayerHrdParametersVcl;
 } StdVideoH265HrdParameters;
 
 typedef struct StdVideoH265VpsFlags {
@@ -192,9 +192,9 @@ typedef struct StdVideoH265VideoParameterSet {
     uint32_t vps_time_scale;
     uint32_t vps_num_ticks_poc_diff_one_minus1;
     uint32_t reserved3;
-    const StdVideoH265DecPicBufMgr *pDecPicBufMgr;
-    const StdVideoH265HrdParameters *pHrdParameters;
-    const StdVideoH265ProfileTierLevel *pProfileTierLevel;
+    const StdVideoH265DecPicBufMgr* pDecPicBufMgr;
+    const StdVideoH265HrdParameters* pHrdParameters;
+    const StdVideoH265ProfileTierLevel* pProfileTierLevel;
 } StdVideoH265VideoParameterSet;
 
 typedef struct StdVideoH265ScalingLists {
@@ -253,7 +253,7 @@ typedef struct StdVideoH265SequenceParameterSetVui {
     uint8_t max_bits_per_min_cu_denom;
     uint8_t log2_max_mv_length_horizontal;
     uint8_t log2_max_mv_length_vertical;
-    const StdVideoH265HrdParameters *pHrdParameters;
+    const StdVideoH265HrdParameters* pHrdParameters;
 } StdVideoH265SequenceParameterSetVui;
 
 typedef struct StdVideoH265PredictorPaletteEntries {
@@ -353,13 +353,13 @@ typedef struct StdVideoH265SequenceParameterSet {
     uint32_t conf_win_right_offset;
     uint32_t conf_win_top_offset;
     uint32_t conf_win_bottom_offset;
-    const StdVideoH265ProfileTierLevel *pProfileTierLevel;
-    const StdVideoH265DecPicBufMgr *pDecPicBufMgr;
-    const StdVideoH265ScalingLists *pScalingLists;
-    const StdVideoH265ShortTermRefPicSet *pShortTermRefPicSet;
-    const StdVideoH265LongTermRefPicsSps *pLongTermRefPicsSps;
-    const StdVideoH265SequenceParameterSetVui *pSequenceParameterSetVui;
-    const StdVideoH265PredictorPaletteEntries *pPredictorPaletteEntries;
+    const StdVideoH265ProfileTierLevel* pProfileTierLevel;
+    const StdVideoH265DecPicBufMgr* pDecPicBufMgr;
+    const StdVideoH265ScalingLists* pScalingLists;
+    const StdVideoH265ShortTermRefPicSet* pShortTermRefPicSet;
+    const StdVideoH265LongTermRefPicsSps* pLongTermRefPicsSps;
+    const StdVideoH265SequenceParameterSetVui* pSequenceParameterSetVui;
+    const StdVideoH265PredictorPaletteEntries* pPredictorPaletteEntries;
 } StdVideoH265SequenceParameterSet;
 
 typedef struct StdVideoH265PpsFlags {
@@ -431,8 +431,8 @@ typedef struct StdVideoH265PictureParameterSet {
     uint16_t column_width_minus1[STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_COLS_LIST_SIZE];
     uint16_t row_height_minus1[STD_VIDEO_H265_CHROMA_QP_OFFSET_TILE_ROWS_LIST_SIZE];
     uint32_t reserved3;
-    const StdVideoH265ScalingLists *pScalingLists;
-    const StdVideoH265PredictorPaletteEntries *pPredictorPaletteEntries;
+    const StdVideoH265ScalingLists* pScalingLists;
+    const StdVideoH265PredictorPaletteEntries* pPredictorPaletteEntries;
 } StdVideoH265PictureParameterSet;
 
 #ifdef __cplusplus

@@ -106,15 +106,15 @@ typedef struct StdVideoEncodeAV1PictureInfo {
     int8_t ref_frame_idx[STD_VIDEO_AV1_REFS_PER_FRAME];
     uint8_t reserved1[3];
     uint32_t delta_frame_id_minus_1[STD_VIDEO_AV1_REFS_PER_FRAME];
-    const StdVideoAV1TileInfo *pTileInfo;
-    const StdVideoAV1Quantization *pQuantization;
-    const StdVideoAV1Segmentation *pSegmentation;
-    const StdVideoAV1LoopFilter *pLoopFilter;
-    const StdVideoAV1CDEF *pCDEF;
-    const StdVideoAV1LoopRestoration *pLoopRestoration;
-    const StdVideoAV1GlobalMotion *pGlobalMotion;
-    const StdVideoEncodeAV1ExtensionHeader *pExtensionHeader;
-    const uint32_t *pBufferRemovalTimes;
+    const StdVideoAV1TileInfo* pTileInfo;
+    const StdVideoAV1Quantization* pQuantization;
+    const StdVideoAV1Segmentation* pSegmentation;
+    const StdVideoAV1LoopFilter* pLoopFilter;
+    const StdVideoAV1CDEF* pCDEF;
+    const StdVideoAV1LoopRestoration* pLoopRestoration;
+    const StdVideoAV1GlobalMotion* pGlobalMotion;
+    const StdVideoEncodeAV1ExtensionHeader* pExtensionHeader;
+    const uint32_t* pBufferRemovalTimes;
 } StdVideoEncodeAV1PictureInfo;
 
 typedef struct StdVideoEncodeAV1ReferenceInfoFlags {
@@ -129,7 +129,7 @@ typedef struct StdVideoEncodeAV1ReferenceInfo {
     StdVideoAV1FrameType frame_type;
     uint8_t OrderHint;
     uint8_t reserved1[3];
-    const StdVideoEncodeAV1ExtensionHeader *pExtensionHeader;
+    const StdVideoEncodeAV1ExtensionHeader* pExtensionHeader;
 } StdVideoEncodeAV1ReferenceInfo;
 
 #ifdef __cplusplus

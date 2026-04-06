@@ -10,8 +10,8 @@ class EditorLayer : public Axiom::Layer {
     void onDetach() override;
     void onUpdate() override;
     void onUIRender() override;
-    void onEvent(Axiom::Event &event) override;
-    void onRender(Axiom::CommandBuffer *commandBuffer) override;
+    void onEvent(Axiom::Event& event) override;
+    void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
   private:
     Axiom::RenderPass renderPass{};

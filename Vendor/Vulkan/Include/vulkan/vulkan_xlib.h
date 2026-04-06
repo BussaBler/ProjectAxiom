@@ -23,25 +23,25 @@ extern "C" {
 typedef VkFlags VkXlibSurfaceCreateFlagsKHR;
 typedef struct VkXlibSurfaceCreateInfoKHR {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     VkXlibSurfaceCreateFlagsKHR flags;
-    Display *dpy;
+    Display* dpy;
     Window window;
 } VkXlibSurfaceCreateInfoKHR;
 
-typedef VkResult(VKAPI_PTR *PFN_vkCreateXlibSurfaceKHR)(VkInstance instance, const VkXlibSurfaceCreateInfoKHR *pCreateInfo,
-                                                        const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
-typedef VkBool32(VKAPI_PTR *PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, Display *dpy,
+typedef VkResult(VKAPI_PTR* PFN_vkCreateXlibSurfaceKHR)(VkInstance instance, const VkXlibSurfaceCreateInfoKHR* pCreateInfo,
+                                                        const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+typedef VkBool32(VKAPI_PTR* PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, Display* dpy,
                                                                                VisualID visualID);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkCreateXlibSurfaceKHR(VkInstance instance, const VkXlibSurfaceCreateInfoKHR *pCreateInfo,
-                                                      const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateXlibSurfaceKHR(VkInstance instance, const VkXlibSurfaceCreateInfoKHR* pCreateInfo,
+                                                      const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
 #endif
 
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkBool32 VKAPI_CALL vkGetPhysicalDeviceXlibPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, Display *dpy,
+VKAPI_ATTR VkBool32 VKAPI_CALL vkGetPhysicalDeviceXlibPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, Display* dpy,
                                                                              VisualID visualID);
 #endif
 #endif

@@ -219,7 +219,7 @@ typedef struct StdVideoH264SequenceParameterSetVui {
     uint8_t chroma_sample_loc_type_top_field;
     uint8_t chroma_sample_loc_type_bottom_field;
     uint32_t reserved1;
-    const StdVideoH264HrdParameters *pHrdParameters;
+    const StdVideoH264HrdParameters* pHrdParameters;
 } StdVideoH264SequenceParameterSetVui;
 
 typedef struct StdVideoH264SpsFlags {
@@ -271,9 +271,9 @@ typedef struct StdVideoH264SequenceParameterSet {
     uint32_t frame_crop_top_offset;
     uint32_t frame_crop_bottom_offset;
     uint32_t reserved2;
-    const int32_t *pOffsetForRefFrame;
-    const StdVideoH264ScalingLists *pScalingLists;
-    const StdVideoH264SequenceParameterSetVui *pSequenceParameterSetVui;
+    const int32_t* pOffsetForRefFrame;
+    const StdVideoH264ScalingLists* pScalingLists;
+    const StdVideoH264SequenceParameterSetVui* pSequenceParameterSetVui;
 } StdVideoH264SequenceParameterSet;
 
 typedef struct StdVideoH264PpsFlags {
@@ -298,7 +298,7 @@ typedef struct StdVideoH264PictureParameterSet {
     int8_t pic_init_qs_minus26;
     int8_t chroma_qp_index_offset;
     int8_t second_chroma_qp_index_offset;
-    const StdVideoH264ScalingLists *pScalingLists;
+    const StdVideoH264ScalingLists* pScalingLists;
 } StdVideoH264PictureParameterSet;
 
 #ifdef __cplusplus

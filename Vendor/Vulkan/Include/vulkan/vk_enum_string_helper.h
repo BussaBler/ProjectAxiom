@@ -11415,7 +11415,7 @@ static inline std::string string_VkAccelerationStructureCreateFlagsKHR(VkAcceler
 // clang-format on
 
 // Same thing as string_VkStructureType, but prints out the API name
-static inline const char *string_VkStructureName(VkStructureType input_value) {
+static inline const char* string_VkStructureName(VkStructureType input_value) {
     switch (input_value) {
     case VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER:
         return "VkBufferMemoryBarrier";

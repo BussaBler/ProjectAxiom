@@ -23,26 +23,26 @@ extern "C" {
 typedef VkFlags VkScreenSurfaceCreateFlagsQNX;
 typedef struct VkScreenSurfaceCreateInfoQNX {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     VkScreenSurfaceCreateFlagsQNX flags;
-    struct _screen_context *context;
-    struct _screen_window *window;
+    struct _screen_context* context;
+    struct _screen_window* window;
 } VkScreenSurfaceCreateInfoQNX;
 
-typedef VkResult(VKAPI_PTR *PFN_vkCreateScreenSurfaceQNX)(VkInstance instance, const VkScreenSurfaceCreateInfoQNX *pCreateInfo,
-                                                          const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
-typedef VkBool32(VKAPI_PTR *PFN_vkGetPhysicalDeviceScreenPresentationSupportQNX)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex,
-                                                                                 struct _screen_window *window);
+typedef VkResult(VKAPI_PTR* PFN_vkCreateScreenSurfaceQNX)(VkInstance instance, const VkScreenSurfaceCreateInfoQNX* pCreateInfo,
+                                                          const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+typedef VkBool32(VKAPI_PTR* PFN_vkGetPhysicalDeviceScreenPresentationSupportQNX)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex,
+                                                                                 struct _screen_window* window);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkCreateScreenSurfaceQNX(VkInstance instance, const VkScreenSurfaceCreateInfoQNX *pCreateInfo,
-                                                        const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateScreenSurfaceQNX(VkInstance instance, const VkScreenSurfaceCreateInfoQNX* pCreateInfo,
+                                                        const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
 #endif
 
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
 VKAPI_ATTR VkBool32 VKAPI_CALL vkGetPhysicalDeviceScreenPresentationSupportQNX(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex,
-                                                                               struct _screen_window *window);
+                                                                               struct _screen_window* window);
 #endif
 #endif
 
@@ -52,14 +52,14 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vkGetPhysicalDeviceScreenPresentationSupportQNX(V
 #define VK_QNX_EXTERNAL_MEMORY_SCREEN_BUFFER_EXTENSION_NAME "VK_QNX_external_memory_screen_buffer"
 typedef struct VkScreenBufferPropertiesQNX {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     VkDeviceSize allocationSize;
     uint32_t memoryTypeBits;
 } VkScreenBufferPropertiesQNX;
 
 typedef struct VkScreenBufferFormatPropertiesQNX {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     VkFormat format;
     uint64_t externalFormat;
     uint64_t screenUsage;
@@ -73,27 +73,27 @@ typedef struct VkScreenBufferFormatPropertiesQNX {
 
 typedef struct VkImportScreenBufferInfoQNX {
     VkStructureType sType;
-    const void *pNext;
-    struct _screen_buffer *buffer;
+    const void* pNext;
+    struct _screen_buffer* buffer;
 } VkImportScreenBufferInfoQNX;
 
 typedef struct VkExternalFormatQNX {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     uint64_t externalFormat;
 } VkExternalFormatQNX;
 
 typedef struct VkPhysicalDeviceExternalMemoryScreenBufferFeaturesQNX {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     VkBool32 screenBufferImport;
 } VkPhysicalDeviceExternalMemoryScreenBufferFeaturesQNX;
 
-typedef VkResult(VKAPI_PTR *PFN_vkGetScreenBufferPropertiesQNX)(VkDevice device, const struct _screen_buffer *buffer, VkScreenBufferPropertiesQNX *pProperties);
+typedef VkResult(VKAPI_PTR* PFN_vkGetScreenBufferPropertiesQNX)(VkDevice device, const struct _screen_buffer* buffer, VkScreenBufferPropertiesQNX* pProperties);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkGetScreenBufferPropertiesQNX(VkDevice device, const struct _screen_buffer *buffer, VkScreenBufferPropertiesQNX *pProperties);
+VKAPI_ATTR VkResult VKAPI_CALL vkGetScreenBufferPropertiesQNX(VkDevice device, const struct _screen_buffer* buffer, VkScreenBufferPropertiesQNX* pProperties);
 #endif
 #endif
 

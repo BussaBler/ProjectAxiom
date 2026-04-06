@@ -52,9 +52,9 @@ typedef struct StdVideoDecodeVP9PictureInfo {
     uint8_t tile_cols_log2;
     uint8_t tile_rows_log2;
     uint16_t reserved1[3];
-    const StdVideoVP9ColorConfig *pColorConfig;
-    const StdVideoVP9LoopFilter *pLoopFilter;
-    const StdVideoVP9Segmentation *pSegmentation;
+    const StdVideoVP9ColorConfig* pColorConfig;
+    const StdVideoVP9LoopFilter* pLoopFilter;
+    const StdVideoVP9Segmentation* pSegmentation;
 } StdVideoDecodeVP9PictureInfo;
 
 #ifdef __cplusplus

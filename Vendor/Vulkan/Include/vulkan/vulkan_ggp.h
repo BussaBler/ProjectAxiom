@@ -23,18 +23,18 @@ extern "C" {
 typedef VkFlags VkStreamDescriptorSurfaceCreateFlagsGGP;
 typedef struct VkStreamDescriptorSurfaceCreateInfoGGP {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     VkStreamDescriptorSurfaceCreateFlagsGGP flags;
     GgpStreamDescriptor streamDescriptor;
 } VkStreamDescriptorSurfaceCreateInfoGGP;
 
-typedef VkResult(VKAPI_PTR *PFN_vkCreateStreamDescriptorSurfaceGGP)(VkInstance instance, const VkStreamDescriptorSurfaceCreateInfoGGP *pCreateInfo,
-                                                                    const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
+typedef VkResult(VKAPI_PTR* PFN_vkCreateStreamDescriptorSurfaceGGP)(VkInstance instance, const VkStreamDescriptorSurfaceCreateInfoGGP* pCreateInfo,
+                                                                    const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkCreateStreamDescriptorSurfaceGGP(VkInstance instance, const VkStreamDescriptorSurfaceCreateInfoGGP *pCreateInfo,
-                                                                  const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateStreamDescriptorSurfaceGGP(VkInstance instance, const VkStreamDescriptorSurfaceCreateInfoGGP* pCreateInfo,
+                                                                  const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
 #endif
 #endif
 
@@ -44,7 +44,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkCreateStreamDescriptorSurfaceGGP(VkInstance ins
 #define VK_GGP_FRAME_TOKEN_EXTENSION_NAME "VK_GGP_frame_token"
 typedef struct VkPresentFrameTokenGGP {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     GgpFrameToken frameToken;
 } VkPresentFrameTokenGGP;
 

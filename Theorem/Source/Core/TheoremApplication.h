@@ -5,7 +5,7 @@
 
 class TheoremApplication : public Axiom::Application {
   public:
-    TheoremApplication(const Axiom::ApplicationInfo &appInfo);
+    TheoremApplication(const Axiom::ApplicationInfo& appInfo);
     ~TheoremApplication();
 
   private:

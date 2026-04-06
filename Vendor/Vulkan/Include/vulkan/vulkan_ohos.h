@@ -23,20 +23,20 @@ struct OH_NativeBuffer;
 #define VK_OHOS_EXTERNAL_MEMORY_EXTENSION_NAME "VK_OHOS_external_memory"
 typedef struct VkNativeBufferUsageOHOS {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     uint64_t OHOSNativeBufferUsage;
 } VkNativeBufferUsageOHOS;
 
 typedef struct VkNativeBufferPropertiesOHOS {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     VkDeviceSize allocationSize;
     uint32_t memoryTypeBits;
 } VkNativeBufferPropertiesOHOS;
 
 typedef struct VkNativeBufferFormatPropertiesOHOS {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     VkFormat format;
     uint64_t externalFormat;
     VkFormatFeatureFlags formatFeatures;
@@ -49,34 +49,34 @@ typedef struct VkNativeBufferFormatPropertiesOHOS {
 
 typedef struct VkImportNativeBufferInfoOHOS {
     VkStructureType sType;
-    const void *pNext;
-    struct OH_NativeBuffer *buffer;
+    const void* pNext;
+    struct OH_NativeBuffer* buffer;
 } VkImportNativeBufferInfoOHOS;
 
 typedef struct VkMemoryGetNativeBufferInfoOHOS {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     VkDeviceMemory memory;
 } VkMemoryGetNativeBufferInfoOHOS;
 
 typedef struct VkExternalFormatOHOS {
     VkStructureType sType;
-    void *pNext;
+    void* pNext;
     uint64_t externalFormat;
 } VkExternalFormatOHOS;
 
-typedef VkResult(VKAPI_PTR *PFN_vkGetNativeBufferPropertiesOHOS)(VkDevice device, const struct OH_NativeBuffer *buffer,
-                                                                 VkNativeBufferPropertiesOHOS *pProperties);
-typedef VkResult(VKAPI_PTR *PFN_vkGetMemoryNativeBufferOHOS)(VkDevice device, const VkMemoryGetNativeBufferInfoOHOS *pInfo, struct OH_NativeBuffer **pBuffer);
+typedef VkResult(VKAPI_PTR* PFN_vkGetNativeBufferPropertiesOHOS)(VkDevice device, const struct OH_NativeBuffer* buffer,
+                                                                 VkNativeBufferPropertiesOHOS* pProperties);
+typedef VkResult(VKAPI_PTR* PFN_vkGetMemoryNativeBufferOHOS)(VkDevice device, const VkMemoryGetNativeBufferInfoOHOS* pInfo, struct OH_NativeBuffer** pBuffer);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkGetNativeBufferPropertiesOHOS(VkDevice device, const struct OH_NativeBuffer *buffer,
-                                                               VkNativeBufferPropertiesOHOS *pProperties);
+VKAPI_ATTR VkResult VKAPI_CALL vkGetNativeBufferPropertiesOHOS(VkDevice device, const struct OH_NativeBuffer* buffer,
+                                                               VkNativeBufferPropertiesOHOS* pProperties);
 #endif
 
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryNativeBufferOHOS(VkDevice device, const VkMemoryGetNativeBufferInfoOHOS *pInfo, struct OH_NativeBuffer **pBuffer);
+VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryNativeBufferOHOS(VkDevice device, const VkMemoryGetNativeBufferInfoOHOS* pInfo, struct OH_NativeBuffer** pBuffer);
 #endif
 #endif
 
@@ -88,18 +88,18 @@ typedef struct NativeWindow OHNativeWindow;
 typedef VkFlags VkSurfaceCreateFlagsOHOS;
 typedef struct VkSurfaceCreateInfoOHOS {
     VkStructureType sType;
-    const void *pNext;
+    const void* pNext;
     VkSurfaceCreateFlagsOHOS flags;
-    OHNativeWindow *window;
+    OHNativeWindow* window;
 } VkSurfaceCreateInfoOHOS;
 
-typedef VkResult(VKAPI_PTR *PFN_vkCreateSurfaceOHOS)(VkInstance instance, const VkSurfaceCreateInfoOHOS *pCreateInfo, const VkAllocationCallbacks *pAllocator,
-                                                     VkSurfaceKHR *pSurface);
+typedef VkResult(VKAPI_PTR* PFN_vkCreateSurfaceOHOS)(VkInstance instance, const VkSurfaceCreateInfoOHOS* pCreateInfo, const VkAllocationCallbacks* pAllocator,
+                                                     VkSurfaceKHR* pSurface);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkCreateSurfaceOHOS(VkInstance instance, const VkSurfaceCreateInfoOHOS *pCreateInfo, const VkAllocationCallbacks *pAllocator,
-                                                   VkSurfaceKHR *pSurface);
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateSurfaceOHOS(VkInstance instance, const VkSurfaceCreateInfoOHOS* pCreateInfo, const VkAllocationCallbacks* pAllocator,
+                                                   VkSurfaceKHR* pSurface);
 #endif
 #endif
 

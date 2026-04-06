@@ -76,7 +76,7 @@ typedef struct StdVideoEncodeH265SliceSegmentHeader {
     int8_t slice_act_cr_qp_offset;
     int8_t slice_qp_delta;
     uint16_t reserved1;
-    const StdVideoEncodeH265WeightTable *pWeightTable;
+    const StdVideoEncodeH265WeightTable* pWeightTable;
 } StdVideoEncodeH265SliceSegmentHeader;
 
 typedef struct StdVideoEncodeH265ReferenceListsInfoFlags {
@@ -128,9 +128,9 @@ typedef struct StdVideoEncodeH265PictureInfo {
     int32_t PicOrderCntVal;
     uint8_t TemporalId;
     uint8_t reserved1[7];
-    const StdVideoEncodeH265ReferenceListsInfo *pRefLists;
-    const StdVideoH265ShortTermRefPicSet *pShortTermRefPicSet;
-    const StdVideoEncodeH265LongTermRefPics *pLongTermRefPics;
+    const StdVideoEncodeH265ReferenceListsInfo* pRefLists;
+    const StdVideoH265ShortTermRefPicSet* pShortTermRefPicSet;
+    const StdVideoEncodeH265LongTermRefPics* pLongTermRefPics;
 } StdVideoEncodeH265PictureInfo;
 
 typedef struct StdVideoEncodeH265ReferenceInfoFlags {

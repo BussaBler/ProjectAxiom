@@ -28,10 +28,10 @@ void EditorLayer::onUIRender() {
     Axiom::UI::text("AXIOM", Math::Vec2(640.0f, 48.0f), Math::Vec4(0.0f, 0.0f, 0.0f, 1.0f), 48);
 }
 
-void EditorLayer::onEvent(Axiom::Event &event) {
+void EditorLayer::onEvent(Axiom::Event& event) {
 }
 
-void EditorLayer::onRender(Axiom::CommandBuffer *commandBuffer) {
+void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
     renderPass.colorAttachments[0].texture = Axiom::Application::getRenderer()->getCurrentRenderTarget();
     viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
     renderPass.width = static_cast<uint32_t>(viewportSize.x());
