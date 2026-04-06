@@ -208,7 +208,7 @@ if targetPlatform.startswith('windows'):
 elif targetPlatform.startswith('linux'):
     baseEnv.Append(LIBS=['X11'])
 elif targetPlatform.startswith('macos'):
-    baseEnv.Append(FRAMEWORKS=['Cocoa', 'IOKit', 'CoreVideo'])
+    baseEnv.Append(FRAMEWORKS=['Cocoa', 'IOKit', 'CoreVideo', 'Metal', 'QuartzCore'])
 
 def getBuildFlags(compiler):
     # return build flags based on compiler type

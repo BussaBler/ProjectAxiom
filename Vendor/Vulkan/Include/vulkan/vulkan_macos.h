@@ -12,12 +12,9 @@
 **
 */
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-
 
 // VK_MVK_macos_surface is a preprocessor guard. Do not pass it to API calls.
 #define VK_MVK_macos_surface 1
@@ -25,21 +22,19 @@ extern "C" {
 #define VK_MVK_MACOS_SURFACE_EXTENSION_NAME "VK_MVK_macos_surface"
 typedef VkFlags VkMacOSSurfaceCreateFlagsMVK;
 typedef struct VkMacOSSurfaceCreateInfoMVK {
-    VkStructureType                 sType;
-    const void*                     pNext;
-    VkMacOSSurfaceCreateFlagsMVK    flags;
-    const void*                     pView;
+    VkStructureType sType;
+    const void *pNext;
+    VkMacOSSurfaceCreateFlagsMVK flags;
+    const void *pView;
 } VkMacOSSurfaceCreateInfoMVK;
 
-typedef VkResult (VKAPI_PTR *PFN_vkCreateMacOSSurfaceMVK)(VkInstance instance, const VkMacOSSurfaceCreateInfoMVK* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+typedef VkResult(VKAPI_PTR *PFN_vkCreateMacOSSurfaceMVK)(VkInstance instance, const VkMacOSSurfaceCreateInfoMVK *pCreateInfo,
+                                                         const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
 
 #ifndef VK_NO_PROTOTYPES
 #ifndef VK_ONLY_EXPORTED_PROTOTYPES
-VKAPI_ATTR VkResult VKAPI_CALL vkCreateMacOSSurfaceMVK(
-    VkInstance                                  instance,
-    const VkMacOSSurfaceCreateInfoMVK*          pCreateInfo,
-    const VkAllocationCallbacks*                pAllocator,
-    VkSurfaceKHR*                               pSurface);
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateMacOSSurfaceMVK(VkInstance instance, const VkMacOSSurfaceCreateInfoMVK *pCreateInfo,
+                                                       const VkAllocationCallbacks *pAllocator, VkSurfaceKHR *pSurface);
 #endif
 #endif
 

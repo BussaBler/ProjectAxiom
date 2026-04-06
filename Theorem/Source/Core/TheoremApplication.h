@@ -4,10 +4,9 @@
 #include "EditorLayer.h"
 
 class TheoremApplication : public Axiom::Application {
-public:
-	TheoremApplication(const Axiom::ApplicationInfo& appInfo);
-	~TheoremApplication();
+  public:
+    TheoremApplication(const Axiom::ApplicationInfo &appInfo);
+    ~TheoremApplication();
 
-private:
+  private:
 };
-
