@@ -199,9 +199,10 @@ if renderBackend == 'vulkan':
         LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
         LIBS=['shaderc_combined']
     )
-else:
-    printWithColor(f"ERROR: Renderer backend '{renderBackend}' not supported.", color=COLORS['red'])
-    Exit(1)
+elif renderBackend == "metal":
+    baseEnv.Append(
+        CPPPATH=[Dir('Vendor')]
+    )
 
 if targetPlatform.startswith('windows'):
     baseEnv.Append(LIBS=['user32', 'gdi32', 'winmm'])
@@ -264,7 +265,8 @@ buildInfo = {
     'architecture': architecture,
     'compiler': compilerType,
     'config': buildConfig,
-    'vsproj': vsproj
+    'vsproj': vsproj,
+    'renderer': renderBackend
 }
 
 def setupOutputColors(env):

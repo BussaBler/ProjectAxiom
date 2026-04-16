@@ -16,4 +16,5 @@ class EditorLayer : public Axiom::Layer {
   private:
     Axiom::RenderPass renderPass{};
     Math::uVec2 viewportSize{0, 0};
+    float sliderValue = 0.0f;
 };

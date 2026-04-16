@@ -8,7 +8,7 @@ void EditorLayer::onAttach() {
     Axiom::RenderAttachment colorAttachment;
     colorAttachment.loadOp = Axiom::LoadOp::Clear;
     colorAttachment.storeOp = Axiom::StoreOp::Store;
-    colorAttachment.clearColor = Math::Vec4(1.0f);
+    colorAttachment.clearColor = Axiom::Color::transparent();
     viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
     renderPass.colorAttachments[0] = colorAttachment;
@@ -25,7 +25,19 @@ void EditorLayer::onUpdate() {
 }
 
 void EditorLayer::onUIRender() {
-    Axiom::UI::text("AXIOM", Math::Vec2(640.0f, 48.0f), Math::Vec4(0.0f, 0.0f, 0.0f, 1.0f), 48);
+    Axiom::UI::beginPanel("Tool Bar", Math::Vec2(0.0f, 0.0f), Math::Vec2(Axiom::Application::getWindow()->getWidth() / 4.0f, 600.0f));
+    float fullWidth = Axiom::UI::getAvaibleWidth();
+    float halfWidth = (fullWidth - Axiom::UI::getCurrentStyle().itemSpacing) / 2.0f;
+    Axiom::UI::button("Button 1", Math::Vec2(halfWidth, 30.0f));
+    Axiom::UI::sameLine();
+    Axiom::UI::button("Button 2", Math::Vec2(halfWidth, 30.0f));
+    Axiom::UI::dragFloat("Slider", sliderValue);
+    if (Axiom::UI::treeNode("Tree Node 1")) {
+        Axiom::UI::text("Child 1", Axiom::Color::white(), 8);
+        Axiom::UI::text("Child 2", Axiom::Color::white(), 8);
+        Axiom::UI::treePop();
+    }
+    Axiom::UI::endPanel();
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
