@@ -1,58 +1,150 @@
 import os, shutil, platform, multiprocessing, subprocess
 import sys
 from SCons.Script import Environment, Dir, Depends
-from SCons.Script import Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption
+from SCons.Script import Exit, SConscript, ARGUMENTS, Default, SetOption, Alias, GetOption, Help
 
 def getPlatform():
     osName = platform.system().lower()
-    if osName.startswith('win'):
-        return 'windows'
-    elif osName.startswith('linux'):
-        return 'linux'
-    elif osName.startswith('darwin'):
-        return 'macos'
-    else:
-        return osName
-
-SetOption('num_jobs', multiprocessing.cpu_count())
-targetPlatform = ARGUMENTS.get('platform', getPlatform()).lower()
-buildConfig = ARGUMENTS.get('config', 'debug').lower()
-vsproj = ARGUMENTS.get('vsproj', 'no').lower() in ['yes', 'true', '1']
-verbose = ARGUMENTS.get('verbose', 'no').lower() in ['yes', 'true', '1']
-renderBackend = ARGUMENTS.get('renderer', 'vulkan').lower()
-compilerType = ARGUMENTS.get('compiler', 'msvc').lower()
-architecture = platform.machine()
-if architecture == 'AMD64':
-    architecture = 'x86_64'
-
-CPPVER = '23'
+    if osName.startswith('win'): return 'windows'
+    elif osName.startswith('linux'): return 'linux'
+    elif osName.startswith('darwin'): return 'macos'
+    return osName
 
 COLORS = {
-    'reset': '\033[0m',
-    'bold': '\033[1m',
-    'green': '\033[32m',
-    'blue': '\033[34m',
-    'yellow': '\033[33m',
-    'cyan': '\033[36m',
-    'magenta': '\033[35m',
-    'red': '\033[31m'
+    'reset': '\033[0m', 'bold': '\033[1m', 'green': '\033[32m',
+    'blue': '\033[34m', 'yellow': '\033[33m', 'cyan': '\033[36m',
+    'magenta': '\033[35m', 'red': '\033[31m'
 }
-
-def detectMsvc():
-    env = Environment(tools=['default', 'msvc'])
-
-    if not (env.WhereIs('cl') or env.WhereIs('cl.exe')):
-        return False
-    return True
 
 def printWithColor(*objects, color, sep=' ', end='\n', file=None, flush=False):
     print(f'{color}', end='', file=file, flush=flush)
     print(*objects, '\033[0m', sep=sep, end=end, file=file, flush=flush)
 
+SetOption('num_jobs', multiprocessing.cpu_count())
+current_platform = getPlatform()
+architecture = platform.machine()
+if architecture == 'AMD64':
+    architecture = 'x86_64'
+CPPVER = '23'
+
+DEFAULT_COMPILER = 'msvc' if current_platform == 'windows' else ('clang' if current_platform == 'macos' else 'gcc')
+DEFAULT_RENDERER = 'metal' if current_platform == 'macos' else 'vulkan'
+
+ALLOWED_CONFIGS = ['debug', 'release']
+ALLOWED_PLATFORMS = ['windows', 'linux', 'macos']
+ALLOWED_RENDERERS = ['vulkan', 'metal']
+ALLOWED_COMPILERS = ['msvc', 'gcc', 'g++', 'clang']
+
+def get_enum_arg(name, default, allowed):
+    val = ARGUMENTS.get(name, default).lower()
+    if val not in allowed:
+        printWithColor(f"ERROR: Invalid '{name}' = '{val}'. Allowed values are: {', '.join(allowed)}", color=COLORS['red'])
+        Exit(1)
+    return val
+
+def get_bool_arg(name, default):
+    raw_val = ARGUMENTS.get(name, str(default)).lower()
+    if raw_val in ['yes', 'true', '1']: return True
+    if raw_val in ['no', 'false', '0']: return False
+    printWithColor(f"ERROR: Invalid boolean value for '{name}' = '{raw_val}'. Use yes/no, true/false, or 1/0.", color=COLORS['red'])
+    Exit(1)
+
+targetPlatform = get_enum_arg('platform', current_platform, ALLOWED_PLATFORMS)
+buildConfig = get_enum_arg('config', 'debug', ALLOWED_CONFIGS)
+renderBackend = get_enum_arg('renderer', DEFAULT_RENDERER, ALLOWED_RENDERERS)
+compilerType = get_enum_arg('compiler', DEFAULT_COMPILER, ALLOWED_COMPILERS)
+
+vsproj = get_bool_arg('vsproj', False)
+verbose = get_bool_arg('verbose', False)
+disableColors = get_bool_arg('no-color', False)
+
+Help(f"""
+ProjectAxiom Build System
+
+Available Configurations:
+  config=<debug|release>       (default: debug)
+  platform=<windows|linux|macos> (default: auto-detected [{current_platform}])
+  compiler=<msvc|gcc|clang>    (default: OS specific [{DEFAULT_COMPILER}])
+  renderer=<vulkan|metal>      (default: OS specific [{DEFAULT_RENDERER}])
+  
+Flags:
+  vsproj=<yes|no>              Generate Visual Studio solution (default: no)
+  verbose=<yes|no>             Print full compiler commands (default: no)
+  no-color=<yes|no>            Disable colored build output (default: no)
+  
+Standard SCons flags:
+  -c, --clean                  Clean the build outputs
+  -j N                         Run N jobs in parallel
+""")
+
+def detectMsvc():
+    env = Environment(tools=['default', 'msvc'])
+    return bool(env.WhereIs('cl') or env.WhereIs('cl.exe'))
+
+def detectCompilerTools():
+    if targetPlatform == 'windows':
+        match compilerType:
+            case 'msvc':
+                if detectMsvc(): return ['msvc', 'mslib', 'mslink']
+                printWithColor("ERROR: No MSVC compiler found.", color=COLORS['red'])
+                Exit(1)
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'): return ['gcc', 'g++', 'ar', 'link']
+                printWithColor("ERROR: No GCC compiler found.", color=COLORS['red'])
+                Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'): return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
+                printWithColor("ERROR: No Clang compiler found.", color=COLORS['red'])
+                Exit(1)
+            case _:
+                printWithColor(f"ERROR: Compiler '{compilerType}' is not supported on Windows.", color=COLORS['red'])
+                Exit(1)
+
+    elif targetPlatform == 'linux':
+        match compilerType:
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'): return ['gcc', 'g++', 'ar', 'link']
+                printWithColor("ERROR: No GCC compiler found.", color=COLORS['red'])
+                Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'): return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
+                printWithColor("ERROR: No Clang compiler found.", color=COLORS['red'])
+                Exit(1)
+            case _:
+                printWithColor(f"ERROR: Compiler '{compilerType}' is not supported on Linux.", color=COLORS['red'])
+                Exit(1)
+
+    elif targetPlatform == 'macos':
+        match compilerType:
+            case 'gcc' | 'g++':
+                if shutil.which('g++') or shutil.which('gcc'): return ['gcc', 'g++', 'ar', 'link']
+                printWithColor("ERROR: No GCC compiler found.", color=COLORS['red'])
+                Exit(1)
+            case 'clang':
+                if shutil.which('clang') or shutil.which('clang++'): return ['clang', 'clang++', 'ar', 'applelink']
+                printWithColor("ERROR: No Clang compiler found.", color=COLORS['red'])
+                Exit(1)
+            case _:
+                printWithColor(f"ERROR: Compiler '{compilerType}' is not supported on macOS.", color=COLORS['red'])
+                Exit(1)
+
+tools = detectCompilerTools()
+
+printWithColor(f"Platform: {targetPlatform}, Compiler: {compilerType}, Architecture: {architecture}", color=COLORS['cyan'])
+
+if vsproj:
+    if compilerType == 'msvc':
+        tools.extend(['msvs'])
+        printWithColor("Visual Studio project generation enabled", color=COLORS['cyan'])
+    else:
+        printWithColor("ERROR: Visual Studio project generation requires the MSVC compiler.", color=COLORS['red'])
+        Exit(1)
+
+baseEnv = Environment(tools=tools, ENV=os.environ)
+
 def buildCMakeLibs(env):
     vendorDir = Dir('Vendor').get_path()
     shadercDir = os.path.join(vendorDir, 'Shaderc')
-
     shadercBuildDir = os.path.join(shadercDir, f'Build/{compilerType}')
 
     if compilerType == 'msvc':
@@ -69,42 +161,28 @@ def buildCMakeLibs(env):
         syncScript = os.path.join(shadercDir, 'utils', 'git-sync-deps')
         try:
             subprocess.run([sys.executable, syncScript], check=True)
-        except:
-            printWithColor("ERROR: Failed to sync Shaderc dependencies. Ensure you have Python installed and try again.", color=COLORS['red'])
+        except subprocess.CalledProcessError:
+            printWithColor("ERROR: Failed to sync Shaderc dependencies. Ensure you have Python/Git installed.", color=COLORS['red'])
             Exit(1)
     
     cmakeConfigCmd = [
-        'cmake',
-        '-S', shadercDir,
-        '-B', shadercBuildDir,
-        '-DSHADERC_SKIP_TESTS=ON',
-        '-DSHADERC_SKIP_EXAMPLES=ON',
-        '-DSHADERC_SKIP_COPYRIGHT_CHECK=ON',
-        '-DSHADERC_ENABLE_SHARED_CRT=ON',
+        'cmake', '-S', shadercDir, '-B', shadercBuildDir,
+        '-DSHADERC_SKIP_TESTS=ON', '-DSHADERC_SKIP_EXAMPLES=ON',
+        '-DSHADERC_SKIP_COPYRIGHT_CHECK=ON', '-DSHADERC_ENABLE_SHARED_CRT=ON',
         f'-DCMAKE_BUILD_TYPE={buildConfig.capitalize()}'
     ]
 
     if compilerType == 'msvc':
-        cmakeConfigCmd.extend([
-            '-DCMAKE_C_COMPILER=cl',
-            '-DCMAKE_CXX_COMPILER=cl'
-            ])
+        cmakeConfigCmd.extend(['-DCMAKE_C_COMPILER=cl', '-DCMAKE_CXX_COMPILER=cl'])
     elif compilerType in ['gcc', 'g++']:
-        cmakeConfigCmd.extend([
-            '-DCMAKE_C_COMPILER=gcc',
-            '-DCMAKE_CXX_COMPILER=g++'
-            ])
+        cmakeConfigCmd.extend(['-DCMAKE_C_COMPILER=gcc', '-DCMAKE_CXX_COMPILER=g++'])
         if targetPlatform == 'windows':
             cmakeConfigCmd.extend(['-G', 'MinGW Makefiles'])
     elif compilerType == 'clang':
-        cmakeConfigCmd.extend([
-            '-DCMAKE_C_COMPILER=clang',
-            '-DCMAKE_CXX_COMPILER=clang++'
-        ])
+        cmakeConfigCmd.extend(['-DCMAKE_C_COMPILER=clang', '-DCMAKE_CXX_COMPILER=clang++'])
 
     cmakeBuildCmd = [
-        'cmake',
-        '--build', shadercBuildDir,
+        'cmake', '--build', shadercBuildDir,
         '--config', buildConfig.capitalize(),
         '--parallel', str(multiprocessing.cpu_count())
     ]
@@ -121,78 +199,8 @@ def buildCMakeLibs(env):
 
     return expectedLib
 
-def detectCompilerTools():
-    """detect and return appropriate compiler tools for the target platform"""
-    if targetPlatform.startswith('windows'):
-        match compilerType:
-            case 'msvc':
-                if detectMsvc():
-                    return ['msvc', 'mslib', 'mslink']
-                else:
-                    printWithColor("ERROR: No MSVC compiler found; install a valid MSVC compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-            case 'gcc' | 'g++':
-                if shutil.which('g++') or shutil.which('gcc'):
-                    return ['gcc', 'g++', 'ar', 'link']
-                else:
-                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-            case 'clang':
-                if shutil.which('clang') or shutil.which('clang++'):
-                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
-                else:
-                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-    elif targetPlatform.startswith('linux'):
-        match compilerType:
-            case 'gcc' | 'g++':
-                if shutil.which('g++') or shutil.which('gcc'):
-                    return ['gcc', 'g++', 'ar', 'link']
-                else:
-                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-            case 'clang':
-                if shutil.which('clang') or shutil.which('clang++'):
-                    return ['clang', 'clang++', 'llvm-ar', 'llvm-link']
-                else:
-                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-    elif targetPlatform.startswith('macos'):
-        match compilerType:
-            case 'gcc' | 'g++':
-                if shutil.which('g++') or shutil.which('gcc'):
-                    return ['gcc', 'g++', 'ar', 'link']
-                else:
-                    printWithColor("ERROR: No GCC compiler found; install a valid GCC compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-            case 'clang':
-                if shutil.which('clang') or shutil.which('clang++'):
-                    return ['clang', 'clang++', 'ar', 'applelink']
-                else:
-                    printWithColor("ERROR: No Clang compiler found; install a valid Clang compiler or use a different one.", color=COLORS['red'])
-                    Exit(1)
-    else:
-        printWithColor(f'Current platform {targetPlatform} not supported.', color=COLORS['red'])
-        Exit(1)
-
-
-tools = detectCompilerTools()
-
-printWithColor(f"Platform: {targetPlatform}, Compiler: {compilerType}, Architecture: {architecture}", color=COLORS['cyan'])
-if vsproj and compilerType == 'msvc':
-    tools.extend(['msvs'])
-    printWithColor("Visual Studio project generation enabled", color=COLORS['cyan'])
-
-if vsproj and compilerType != 'msvc':
-    printWithColor("ERROR: Visual Studio project generation requires MSVC compiler", color=COLORS['red'])
-    Exit(1)
-
-baseEnv = Environment(
-    tools=tools,
-    ENV=os.environ,
-)
-
 shadercLibPath = buildCMakeLibs(baseEnv)
+
 baseEnv.Append(
     CPPPATH=[Dir('Vendor/Shaderc/libshaderc/include')],
     LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
@@ -200,23 +208,18 @@ baseEnv.Append(
 )
 
 if renderBackend == 'vulkan':
-    baseEnv.Append(
-        CPPPATH=[Dir('Vendor/Vulkan/Include')]
-    )
+    baseEnv.Append(CPPPATH=[Dir('Vendor/Vulkan/Include')])
 elif renderBackend == "metal":
-    baseEnv.Append(
-        CPPPATH=[Dir('Vendor')]
-    )
+    baseEnv.Append(CPPPATH=[Dir('Vendor')])
 
-if targetPlatform.startswith('windows'):
+if targetPlatform == 'windows':
     baseEnv.Append(LIBS=['user32', 'gdi32', 'winmm'])
-elif targetPlatform.startswith('linux'):
+elif targetPlatform == 'linux':
     baseEnv.Append(LIBS=['X11'])
-elif targetPlatform.startswith('macos'):
+elif targetPlatform == 'macos':
     baseEnv.Append(FRAMEWORKS=['Cocoa', 'IOKit', 'CoreVideo', 'Metal', 'QuartzCore'])
 
 def getBuildFlags(compiler):
-    # return build flags based on compiler type
     if compiler == 'msvc':
         return {
             'debugCcflags': ['/Zi', '/Od', '/EHsc', '/nologo', '/FS', '/MDd', '/permissive-'],
@@ -227,7 +230,7 @@ def getBuildFlags(compiler):
             'releaseDefines': ['AX_RELEASE'],
             'version': ['/std:c++' + CPPVER + 'preview']
         }
-    elif compiler == 'gcc' or compiler == 'g++':
+    elif compiler in ['gcc', 'g++']:
         return {
             'debugCcflags': ['-g', '-O0', '-pedantic'],
             'releaseCcflags': ['-O3', '-march=native'],
@@ -273,26 +276,23 @@ buildInfo = {
     'renderer': renderBackend
 }
 
-def setupOutputColors(env):
-    if verbose:
-        return {}
+def setupOutputColors(env_target):
+    if verbose: return
     
-    disableColors = ARGUMENTS.get('no-color', 'no').lower() in ['yes', 'true', '1']
     if disableColors:
-        env['CXXCOMSTR'] = f"{COLORS['reset']}[COMPILE]{COLORS['reset']} $SOURCE"
-        env['CCCOMSTR'] = f"{COLORS['reset']}[COMPILE]{COLORS['reset']} $SOURCE"
-        env['LINKCOMSTR'] = f"{COLORS['reset']}[LINK]{COLORS['reset']} $TARGET"
-        env['ARCOMSTR'] = f"{COLORS['reset']}[ARCHIVE]{COLORS['reset']} $TARGET"
-        env['RANLIBCOMSTR'] = f"{COLORS['reset']}[RANLIB]{COLORS['reset']} $TARGET"
-        env['LIBCOMSTR'] = f"{COLORS['reset']}[LIB]{COLORS['reset']} $TARGET"
+        env_target['CXXCOMSTR'] = "[COMPILE] $SOURCE"
+        env_target['CCCOMSTR'] = "[COMPILE] $SOURCE"
+        env_target['LINKCOMSTR'] = "[LINK] $TARGET"
+        env_target['ARCOMSTR'] = "[ARCHIVE] $TARGET"
+        env_target['RANLIBCOMSTR'] = "[RANLIB] $TARGET"
+        env_target['LIBCOMSTR'] = "[LIB] $TARGET"
     else:
-        env['CXXCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
-        env['CCCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
-        env['LINKCOMSTR'] = f"{COLORS['yellow']}[LINK]{COLORS['reset']} $TARGET"
-        env['ARCOMSTR'] = f"{COLORS['blue']}[ARCHIVE]{COLORS['reset']} $TARGET"
-        env['RANLIBCOMSTR'] = f"{COLORS['blue']}[RANLIB]{COLORS['reset']} $TARGET"
-        env['LIBCOMSTR'] = f"{COLORS['blue']}[LIB]{COLORS['reset']} $TARGET"
-
+        env_target['CXXCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env_target['CCCOMSTR'] = f"{COLORS['green']}[COMPILE]{COLORS['reset']} $SOURCE"
+        env_target['LINKCOMSTR'] = f"{COLORS['yellow']}[LINK]{COLORS['reset']} $TARGET"
+        env_target['ARCOMSTR'] = f"{COLORS['blue']}[ARCHIVE]{COLORS['reset']} $TARGET"
+        env_target['RANLIBCOMSTR'] = f"{COLORS['blue']}[RANLIB]{COLORS['reset']} $TARGET"
+        env_target['LIBCOMSTR'] = f"{COLORS['blue']}[LIB]{COLORS['reset']} $TARGET"
 
 def printInfo():
     action = 'Cleaning' if GetOption('clean') else 'Building'
@@ -300,43 +300,35 @@ def printInfo():
     printWithColor(f' Compiler: {compilerType}', color=COLORS['magenta'])
     printWithColor(f' Renderer: {renderBackend}', color=COLORS['magenta'])
     if not verbose:
-        printWithColor(' (Use \'verbose=yes\' to see full command lines)', color=COLORS['yellow'])
+        printWithColor(" (Use 'verbose=yes' to see full command lines)", color=COLORS['yellow'])
     print("")
-    return None
 
 printInfo()
 setupOutputColors(baseEnv)
 setupOutputColors(debugEnv)
 setupOutputColors(releaseEnv)
 
-env = buildConfig == 'debug' and debugEnv or releaseEnv
+env = debugEnv if buildConfig == 'debug' else releaseEnv
 
 axImageLoaderLib = SConscript('Vendor/AxImageLoader/SConscript', 
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/AxImageLoader',
-    src_dir='Vendor/AxImageLoader',
-    duplicate=0,
-    exports=['env', 'buildInfo'])
+    src_dir='Vendor/AxImageLoader', duplicate=0, exports=['env', 'buildInfo'])
 
 spirvCrossLib = SConscript('Vendor/SpirvCross/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/SpirvCross',
-    src_dir='Vendor/SpirvCross',
-    duplicate=0,
-    exports=['env', 'buildInfo'])
+    src_dir='Vendor/SpirvCross', duplicate=0, exports=['env', 'buildInfo'])
 
 axiomLib, axiomProject = SConscript('Axiom/SConscript', 
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
-    src_dir='Axiom',
-    duplicate=0,
+    src_dir='Axiom', duplicate=0,
     exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axImageLoaderLib', 'spirvCrossLib'])
 
 theoremApp, theoremProject = SConscript('Theorem/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
-    src_dir='Theorem',
-    duplicate=0,
+    src_dir='Theorem', duplicate=0,
     exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib'])
 
 Depends(theoremProject, axiomProject)
-
 Default(theoremApp)
 
 if vsproj and compilerType == 'msvc':
@@ -345,18 +337,14 @@ if vsproj and compilerType == 'msvc':
         projects=[theoremProject, axiomProject],
         variant=['Debug|x64'],
     )
-
     Alias('ProjectAxiom', projectAxiomSolution)
     Default('ProjectAxiom')
 
     if GetOption('clean'):
-        action = 'cleaned'
-        color = COLORS['red']
-        symbol = '-'
+        action, color, symbol = 'cleaned', COLORS['red'], '-'
     else:
-        action = 'generated'
-        color = COLORS['green']
-        symbol = '+'
+        action, color, symbol = 'generated', COLORS['green'], '+'
+        
     printWithColor(f'Visual Studio projects and solution will be {action}:', color=COLORS['cyan'])
     printWithColor(f' {symbol}', 'Axiom.vcxproj', color=color)
     printWithColor(f' {symbol}', 'Theorem.vcxproj', color=color)
