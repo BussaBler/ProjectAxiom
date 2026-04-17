@@ -15,6 +15,9 @@ void EditorLayer::onAttach() {
     renderPass.colorAttachmentCount = 1;
     renderPass.width = viewportSize.x();
     renderPass.height = viewportSize.y();
+
+    Axiom::UUID textureHandle = Axiom::AssetManager::loadTexture("Assets/Textures/redstone_block.png");
+    textureAsset = Axiom::AssetManager::getAsset<Axiom::TextureAsset>(textureHandle);
 }
 
 void EditorLayer::onDetach() {
@@ -37,6 +40,7 @@ void EditorLayer::onUIRender() {
         Axiom::UI::text("Child 2", Axiom::Color::white(), 8);
         Axiom::UI::treePop();
     }
+    Axiom::UI::image(textureAsset->getTexture().get(), Math::Vec2(64.0f, 64.0f));
     Axiom::UI::endPanel();
 }
 

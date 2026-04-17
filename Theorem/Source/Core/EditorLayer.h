@@ -17,4 +17,5 @@ class EditorLayer : public Axiom::Layer {
     Axiom::RenderPass renderPass{};
     Math::uVec2 viewportSize{0, 0};
     float sliderValue = 0.0f;
+    std::shared_ptr<Axiom::TextureAsset> textureAsset;
 };

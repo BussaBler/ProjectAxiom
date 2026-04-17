@@ -192,12 +192,16 @@ baseEnv = Environment(
     ENV=os.environ,
 )
 
+shadercLibPath = buildCMakeLibs(baseEnv)
+baseEnv.Append(
+    CPPPATH=[Dir('Vendor/Shaderc/libshaderc/include')],
+    LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
+    LIBS=['shaderc_combined']
+)
+
 if renderBackend == 'vulkan':
-    shadercLibPath = buildCMakeLibs(baseEnv)
     baseEnv.Append(
-        CPPPATH=[Dir('Vendor/Vulkan/Include'), Dir('Vendor/Shaderc/libshaderc/include')],
-        LIBPATH=[Dir(os.path.dirname(shadercLibPath))],
-        LIBS=['shaderc_combined']
+        CPPPATH=[Dir('Vendor/Vulkan/Include')]
     )
 elif renderBackend == "metal":
     baseEnv.Append(
@@ -311,22 +315,29 @@ axImageLoaderLib = SConscript('Vendor/AxImageLoader/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/AxImageLoader',
     src_dir='Vendor/AxImageLoader',
     duplicate=0,
-    exports=['env'])
+    exports=['env', 'buildInfo'])
+
+spirvCrossLib = SConscript('Vendor/SpirvCross/SConscript',
+    variant_dir=f'Bin-Int/{buildConfig.capitalize()}/SpirvCross',
+    src_dir='Vendor/SpirvCross',
+    duplicate=0,
+    exports=['env', 'buildInfo'])
 
 axiomLib, axiomProject = SConscript('Axiom/SConscript', 
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
     src_dir='Axiom',
     duplicate=0,
-    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo'])
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axImageLoaderLib', 'spirvCrossLib'])
 
 theoremApp, theoremProject = SConscript('Theorem/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
     src_dir='Theorem',
     duplicate=0,
-    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib'])
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib'])
 
-Depends(axiomLib, axImageLoaderLib)
 Depends(theoremProject, axiomProject)
+
+Default(theoremApp)
 
 if vsproj and compilerType == 'msvc':
     projectAxiomSolution = baseEnv.MSVSSolution(
