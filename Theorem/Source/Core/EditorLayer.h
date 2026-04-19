@@ -18,4 +18,8 @@ class EditorLayer : public Axiom::Layer {
     Math::uVec2 viewportSize{0, 0};
     float sliderValue = 0.0f;
     std::shared_ptr<Axiom::TextureAsset> textureAsset;
+    std::shared_ptr<Axiom::Scene> scene;
+    std::shared_ptr<Axiom::Texture> sceneTexture;
+    Axiom::Entity entity0;
+    Axiom::Entity entity1;
 };

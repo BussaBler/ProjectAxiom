@@ -216,3 +216,498 @@ fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant
 [2026-04-17 15:06:50][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
 [2026-04-17 15:06:50][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
 [2026-04-17 15:06:50][INFO][CORE] Initializing UI system...
+[2026-04-17 19:08:48][INFO][CORE] Application started: Axiom Application
+[2026-04-17 19:08:48][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-17 19:08:48][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-17 19:08:48][INFO][CORE] Initializing UI system...
+[2026-04-18 00:40:28][INFO][CORE] Application started: Axiom Application
+[2026-04-18 00:40:28][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-18 00:40:28][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-18 00:40:29][INFO][CORE] Initializing UI system...
+[2026-04-18 14:05:14][INFO][CORE] Application started: Axiom Application
+[2026-04-18 14:05:14][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-18 14:05:14][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-18 14:05:15][INFO][CORE] Initializing UI system...
+[2026-04-18 14:06:53][INFO][CORE] Application started: Axiom Application
+[2026-04-18 14:06:53][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-18 14:06:53][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-18 14:06:53][INFO][CORE] Initializing UI system...
+[2026-04-18 14:10:55][INFO][CORE] Application started: Axiom Application
+[2026-04-18 14:10:55][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-18 14:10:55][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-18 14:10:55][INFO][CORE] Initializing UI system...
+[2026-04-19 12:33:08][INFO][CORE] Application started: Axiom Application
+[2026-04-19 12:33:08][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 12:33:08][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 12:33:08][INFO][CORE] Initializing UI system...
+[[2026-04-19 15:37:42][INFO][CORE] Application started: Axiom Application
+[2026-04-19 15:37:42][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 15:37:42][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 15:37:42][INFO][CORE] Initializing UI system...
+[2026-04-19 15:42:35][INFO][CORE] Application started: Axiom Application
+[2026-04-19 15:42:35][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 15:42:35][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 15:42:35][INFO][CORE] Initializing UI system...
+[2026-04-19 18:18:46][INFO][CORE] Application started: Axiom Application
+[2026-04-19 18:18:46][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 18:18:46][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 18:18:46][INFO][CORE] Initializing UI system...
+[2026-04-19 18:19:57][INFO][CORE] Application started: Axiom Application
+[2026-04-19 18:19:57][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 18:19:57][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 18:19:57][INFO][CORE] Initializing UI system...
+[2026-04-19 18:20:25][INFO][CORE] Application started: Axiom Application
+[2026-04-19 18:20:25][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 18:20:25][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 18:20:25][INFO][CORE] Initializing UI system...
+[2026-04-19 18:20:45][INFO][CORE] Application started: Axiom Application
+[2026-04-19 18:20:45][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 18:20:45][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 18:20:45][INFO][CORE] Initializing UI system...
+[2026-04-19 19:25:43][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:25:43][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:25:43][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:25:43][INFO][CORE] Initializing UI system...
+[2026-04-19 19:34:35][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:34:35][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:34:35][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:34:35][INFO][CORE] Initializing UI system...
+[2026-04-19 19:35:23][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:35:23][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:35:23][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:35:23][INFO][CORE] Initializing UI system...
+[2026-04-19 19:43:26][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:43:26][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:43:26][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:43:26][INFO][CORE] Initializing UI system...
+[2026-04-19 19:45:04][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:45:04][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:45:04][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:45:04][INFO][CORE] Initializing UI system...
+[[2026-04-19 19:51:22][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:51:22][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:51:22][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:51:22][INFO][CORE] Initializing UI system...
+[2026-04-19 19:53:07][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:53:07][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:53:07][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:53:07][INFO][CORE] Initializing UI system...
+[2026-04-19 19:53:38][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:53:38][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:53:38][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:53:38][INFO][CORE] Initializing UI system...
+[2026-04-19 19:53:46][INFO][CORE] Application started: Axiom Application
+[2026-04-19 19:53:46][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 19:53:46][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 19:53:47][INFO][CORE] Initializing UI system...
+[[2026-04-19 20:11:48][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:11:48][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:11:48][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:11:49][INFO][CORE] Initializing UI system...
+[2026-04-19 20:12:44][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:12:44][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:12:44][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:12:44][INFO][CORE] Initializing UI system...
+[2026-04-19 20:12:47][DEBUG][CORE] Resource uTextures is an array of size 16, applying buffer offset accordingly
+[2026-04-19 20:15:16][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:15:16][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:15:16][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:15:16][INFO][CORE] Initializing UI system...
+[2026-04-19 20:15:26][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:15:26][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:15:26][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:15:26][INFO][CORE] Initializing UI system...
+[2026-04-19 20:15:51][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:15:51][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:15:51][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:15:51][INFO][CORE] Initializing UI system...
+[2026-04-19 20:16:05][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:16:05][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:16:05][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:16:05][INFO][CORE] Initializing UI system...
+[[[[[2026-04-19 20:22:41][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:22:41][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:22:41][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:22:42][INFO][CORE] Initializing UI system...
+[2026-04-19 20:22:44][DEBUG][CORE] Compiled MSL Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct PushConstants
+{
+    float4x4 proj;
+};
+
+struct vertexMain_out
+{
+    float2 vUv [[user(locn0)]];
+    float4 vColor [[user(locn1)]];
+    float4 gl_Position [[position]];
+};
+
+struct vertexMain_in
+{
+    float2 aPos [[attribute(0)]];
+    float2 aUv [[attribute(1)]];
+    float4 aColor [[attribute(2)]];
+};
+
+vertex vertexMain_out vertexMain(vertexMain_in in [[stage_in]], constant PushConstants& _19 [[buffer(4)]])
+{
+    vertexMain_out out = {};
+    out.gl_Position = _19.proj * float4(in.aPos, 0.0, 1.0);
+    out.vUv = in.aUv;
+    out.vColor = in.aColor;
+    return out;
+}
+
+
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct fragmentMain_out
+{
+    float4 oColor [[color(0)]];
+};
+
+struct fragmentMain_in
+{
+    float4 vColor [[user(locn1)]];
+};
+
+fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]])
+{
+    fragmentMain_out out = {};
+    out.oColor = in.vColor;
+    return out;
+}
+
+
+[2026-04-19 20:22:44][DEBUG][CORE] Compiled MSL Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct PushConstants
+{
+    float4x4 proj;
+};
+
+struct vertexMain_out
+{
+    float2 vUv [[user(locn0)]];
+    float4 vColor [[user(locn1)]];
+    float4 gl_Position [[position]];
+};
+
+struct vertexMain_in
+{
+    float2 aPos [[attribute(0)]];
+    float2 aUv [[attribute(1)]];
+    float4 aColor [[attribute(2)]];
+};
+
+vertex vertexMain_out vertexMain(vertexMain_in in [[stage_in]], constant PushConstants& _19 [[buffer(4)]])
+{
+    vertexMain_out out = {};
+    out.gl_Position = _19.proj * float4(in.aPos, 0.0, 1.0);
+    out.vUv = in.aUv;
+    out.vColor = in.aColor;
+    return out;
+}
+
+
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct spvDescriptorSetBuffer8
+{
+    texture2d<float> uFontTexture [[id(0)]];
+    sampler uFontSampler [[id(1)]];
+};
+
+struct fragmentMain_out
+{
+    float4 oColor [[color(0)]];
+};
+
+struct fragmentMain_in
+{
+    float2 vUv [[user(locn0)]];
+    float4 vColor [[user(locn1)]];
+};
+
+static inline __attribute__((always_inline))
+float median(thread const float& r, thread const float& g, thread const float& b)
+{
+    return fast::max(fast::min(r, g), fast::min(fast::max(r, g), b));
+}
+
+fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant spvDescriptorSetBuffer8& spvDescriptorSet8 [[buffer(8)]])
+{
+    fragmentMain_out out = {};
+    float3 msd = spvDescriptorSet8.uFontTexture.sample(spvDescriptorSet8.uFontSampler, in.vUv).xyz;
+    float param = msd.x;
+    float param_1 = msd.y;
+    float param_2 = msd.z;
+    float sd = median(param, param_1, param_2) - 0.5;
+    float2 texSize = float2(int2(spvDescriptorSet8.uFontTexture.get_width(), spvDescriptorSet8.uFontTexture.get_height()));
+    float2 dx = dfdx(in.vUv) * texSize;
+    float2 dy = dfdy(in.vUv) * texSize;
+    float toPixels = 4.0 * rsqrt(0.5 * (dot(dx, dx) + dot(dy, dy)));
+    float screenPxDistance = toPixels * sd;
+    float alpha = fast::clamp(screenPxDistance + 0.5, 0.0, 1.0);
+    out.oColor = float4(in.vColor.xyz * alpha, in.vColor.w * alpha);
+    return out;
+}
+
+
+[2026-04-19 20:22:44][DEBUG][CORE] Compiled MSL Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct PushConstants
+{
+    float4x4 proj;
+};
+
+struct vertexMain_out
+{
+    float2 vUv [[user(locn0)]];
+    float4 vColor [[user(locn1)]];
+    float4 gl_Position [[position]];
+};
+
+struct vertexMain_in
+{
+    float2 aPos [[attribute(0)]];
+    float2 aUv [[attribute(1)]];
+    float4 aColor [[attribute(2)]];
+};
+
+vertex vertexMain_out vertexMain(vertexMain_in in [[stage_in]], constant PushConstants& _19 [[buffer(4)]])
+{
+    vertexMain_out out = {};
+    out.gl_Position = _19.proj * float4(in.aPos, 0.0, 1.0);
+    out.vUv = in.aUv;
+    out.vColor = in.aColor;
+    return out;
+}
+
+
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct spvDescriptorSetBuffer8
+{
+    texture2d<float> uImageTexture [[id(0)]];
+    sampler uImageSampler [[id(1)]];
+};
+
+struct fragmentMain_out
+{
+    float4 oColor [[color(0)]];
+};
+
+struct fragmentMain_in
+{
+    float2 vUv [[user(locn0)]];
+    float4 vColor [[user(locn1)]];
+};
+
+fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant spvDescriptorSetBuffer8& spvDescriptorSet8 [[buffer(8)]])
+{
+    fragmentMain_out out = {};
+    out.oColor = in.vColor * spvDescriptorSet8.uImageTexture.sample(spvDescriptorSet8.uImageSampler, in.vUv);
+    return out;
+}
+
+
+[2026-04-19 20:22:45][DEBUG][CORE] Compiled MSL Shader:
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct SpriteInstance
+{
+    float4x4 model;
+    float4 color;
+};
+
+struct SpriteInstance_1
+{
+    float4x4 model;
+    float4 color;
+};
+
+struct InstanceBuffer
+{
+    SpriteInstance_1 instances[1];
+};
+
+struct PushConstants
+{
+    float4x4 proj;
+};
+
+struct spvDescriptorSetBuffer8
+{
+    const device InstanceBuffer* m_16 [[id(0)]];
+};
+
+struct vertexMain_out
+{
+    float4 vColor [[user(locn0)]];
+    float2 vUv [[user(locn1)]];
+    float4 gl_Position [[position]];
+};
+
+struct vertexMain_in
+{
+    float2 aPos [[attribute(0)]];
+    float2 aUv [[attribute(1)]];
+};
+
+vertex vertexMain_out vertexMain(vertexMain_in in [[stage_in]], constant spvDescriptorSetBuffer8& spvDescriptorSet8 [[buffer(8)]], constant PushConstants& _34 [[buffer(4)]], uint gl_InstanceIndex [[instance_id]])
+{
+    vertexMain_out out = {};
+    SpriteInstance _25;
+    _25.model = (*spvDescriptorSet8.m_16).instances[int(gl_InstanceIndex)].model;
+    _25.color = (*spvDescriptorSet8.m_16).instances[int(gl_InstanceIndex)].color;
+    SpriteInstance instance = _25;
+    out.gl_Position = (_34.proj * instance.model) * float4(in.aPos, 0.0, 1.0);
+    out.vColor = instance.color;
+    out.vUv = in.aUv;
+    return out;
+}
+
+
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct spvDescriptorSetBuffer9
+{
+    array<texture2d<float>, 16> uTextures [[id(0)]];
+    sampler uSampler [[id(16)]];
+};
+
+struct fragmentMain_out
+{
+    float4 oColor [[color(0)]];
+};
+
+struct fragmentMain_in
+{
+    float4 vColor [[user(locn0)]];
+    float2 vUv [[user(locn1)]];
+};
+
+fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant spvDescriptorSetBuffer9& spvDescriptorSet9 [[buffer(9)]])
+{
+    fragmentMain_out out = {};
+    float4 texColor = spvDescriptorSet9.uTextures[0].sample(spvDescriptorSet9.uSampler, in.vUv);
+    out.oColor = in.vColor * texColor;
+    return out;
+}
+
+
+[2026-04-19 20:41:57][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:41:57][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:41:57][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:41:58][INFO][CORE] Initializing UI system...
+[2026-04-19 20:42:21][INFO][CORE] Application started: Axiom Application
+[2026-04-19 20:42:21][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 20:42:21][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 20:42:22][INFO][CORE] Initializing UI system...
+[[2026-04-19 21:51:51][INFO][CORE] Application started: Axiom Application
+[2026-04-19 21:51:51][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 21:51:51][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 21:51:51][INFO][CORE] Initializing UI system...
+[2026-04-19 21:59:35][INFO][CORE] Application started: Axiom Application
+[2026-04-19 21:59:35][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 21:59:35][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 21:59:35][INFO][CORE] Initializing UI system...
+[2026-04-19 22:03:10][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:03:10][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:03:10][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:03:11][INFO][CORE] Initializing UI system...
+[2026-04-19 22:07:03][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:07:03][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:07:03][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:07:03][INFO][CORE] Initializing UI system...
+[2026-04-19 22:11:56][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:11:56][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:11:56][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:11:56][INFO][CORE] Initializing UI system...
+[2026-04-19 22:13:03][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:13:03][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:13:03][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:13:03][INFO][CORE] Initializing UI system...
+[2026-04-19 22:13:22][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:13:22][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:13:22][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:13:22][INFO][CORE] Initializing UI system...
+[2026-04-19 22:14:06][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:14:06][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:14:06][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:14:06][INFO][CORE] Initializing UI system...
+[2026-04-19 22:19:28][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:19:28][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:19:28][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:19:29][INFO][CORE] Initializing UI system...
+[2026-04-19 22:20:04][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:20:04][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:20:04][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:20:04][INFO][CORE] Initializing UI system...
+[2026-04-19 22:20:34][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:20:34][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:20:34][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:20:34][INFO][CORE] Initializing UI system...
+[2026-04-19 22:23:30][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:23:30][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:23:30][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:23:30][INFO][CORE] Initializing UI system...
+[2026-04-19 22:24:30][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:24:30][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:24:30][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:24:30][INFO][CORE] Initializing UI system...
+[2026-04-19 22:25:05][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:25:05][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:25:05][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:25:05][INFO][CORE] Initializing UI system...
+[2026-04-19 22:25:40][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:25:40][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:25:40][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:25:41][INFO][CORE] Initializing UI system...
+[2026-04-19 22:26:19][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:26:19][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:26:19][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:26:19][INFO][CORE] Initializing UI system...
+[2026-04-19 22:26:43][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:26:43][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:26:43][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:26:43][INFO][CORE] Initializing UI system...
+[2026-04-19 22:29:27][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:29:27][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:29:27][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:29:27][INFO][CORE] Initializing UI system...
+[2026-04-19 22:31:09][INFO][CORE] Application started: Axiom Application
+[2026-04-19 22:31:09][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-19 22:31:09][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-19 22:31:09][INFO][CORE] Initializing UI system...
