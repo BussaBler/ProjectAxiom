@@ -20,7 +20,7 @@ void EditorLayer::onAttach() {
     textureAsset = Axiom::AssetManager::getAsset<Axiom::TextureAsset>(textureHandle);
 
     scene = std::make_shared<Axiom::Scene>();
-    entity0 = scene->createEntity();
+    Axiom::Entity entity0 = scene->createEntity("Entity 0");
     Axiom::TransformComponent transform = {
         .position = Math::Vec3(500.0f, 50.0f, 0.0f),
         .rotation = Math::Vec3(0.0f, 0.0f, 0.0f),
@@ -30,7 +30,7 @@ void EditorLayer::onAttach() {
     Axiom::Sprite2DComponent sprite = {.textureId = textureHandle, .color = Axiom::Color::white()};
     entity0.addComponent<Axiom::Sprite2DComponent>(sprite);
 
-    entity1 = scene->createEntity();
+    Axiom::Entity entity1 = scene->createEntity("Entity 1");
     transform.position = Math::Vec3(0.0f, 0.0f, 0.0f);
     entity1.addComponent<Axiom::TransformComponent>(transform);
     sprite.textureId = Axiom::AssetManager::loadTexture("Assets/Textures/amethyst_block.png");
@@ -59,40 +59,66 @@ void EditorLayer::onDetach() {
 }
 
 void EditorLayer::onUpdate() {
+    editorCamera->onUpdate(0.125f);
     scene->onUpdate(0.125f);
 }
 
 void EditorLayer::onUIRender() {
     float winWidth = Axiom::Application::getWindow()->getWidth();
     float winHeight = Axiom::Application::getWindow()->getHeight();
+
     float sideWidth = winWidth * 0.20f;
-    float bottomHeight = winHeight * 0.25f;
-    float mainHeight = winHeight - bottomHeight;
+    float mainHeight = winHeight;
     float centerWidth = winWidth - (sideWidth * 2.0f);
 
     Axiom::UI::beginPanel("Hierarchy", Math::Vec2(0.0f, 0.0f), Math::Vec2(sideWidth, mainHeight));
-    if (Axiom::UI::treeNode("Scene Root")) {
-        Axiom::UI::text("Entity 1", Axiom::Color::white(), 8);
-        Axiom::UI::text("Entity 2", Axiom::Color::white(), 8);
-        Axiom::UI::treePop();
+
+    if (scene) {
+        auto view = scene->view<Axiom::TagComponent>();
+
+        for (auto entityId : view) {
+            Axiom::Entity entity = scene->getEntity(entityId);
+            auto& tag = entity.getComponent<Axiom::TagComponent>();
+
+            if (Axiom::UI::button(tag.tag, Math::Vec2(sideWidth - 10.0f, 24.0f))) {
+                selectedEntity = entity;
+            }
+        }
     }
     Axiom::UI::endPanel();
 
     Axiom::UI::beginPanel("Inspector", Math::Vec2(winWidth - sideWidth, 0.0f), Math::Vec2(sideWidth, mainHeight));
-    float fullWidth = Axiom::UI::getAvaibleWidth();
-    float halfWidth = (fullWidth - Axiom::UI::getCurrentStyle().itemSpacing) / 2.0f;
-    Axiom::UI::button("Button 1", Math::Vec2(halfWidth, 30.0f));
-    Axiom::UI::sameLine();
-    Axiom::UI::button("Button 2", Math::Vec2(halfWidth, 30.0f));
-    Axiom::UI::dragFloat("Slider", sliderValue);
-    Axiom::UI::endPanel();
 
+    if (selectedEntity) {
+        auto& tag = selectedEntity.getComponent<Axiom::TagComponent>();
+        Axiom::UI::text(tag.tag.c_str(), Axiom::Color::white(), 12);
+
+        if (selectedEntity.hasComponent<Axiom::TransformComponent>()) {
+            auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
+
+            if (Axiom::UI::treeNode("Transform")) {
+                Axiom::UI::dragFloat("Pos X", transform.position.x());
+                Axiom::UI::dragFloat("Pos Y", transform.position.y());
+                Axiom::UI::dragFloat("Pos Z", transform.position.z());
+
+                Axiom::UI::dragFloat("Scale X", transform.scale.x());
+
+                Axiom::UI::treePop();
+            }
+        }
+    } else {
+        Axiom::UI::text("No Entity Selected", Axiom::Color::gray(), 8);
+    }
+
+    Axiom::UI::endPanel();
     Axiom::UI::beginPanel("Viewport", Math::Vec2(sideWidth, 0.0f), Math::Vec2(centerWidth, mainHeight));
+
     float targetAspect = 1920.0f / 1080.0f;
     float availableHeight = mainHeight - 24.0f;
     float panelAspect = centerWidth / availableHeight;
     float imageWidth = 0.0f;
     float imageHeight = 0.0f;
+
     if (panelAspect > targetAspect) {
         imageHeight = availableHeight;
         imageWidth = imageHeight * targetAspect;
@@ -100,13 +126,12 @@ void EditorLayer::onUIRender() {
         imageWidth = centerWidth;
         imageHeight = imageWidth / targetAspect;
     }
+
     float offsetX = (centerWidth - imageWidth) / 2.0f;
     float offsetY = (availableHeight - imageHeight) / 2.0f;
+
     Axiom::UI::image(sceneTexture.get(), Math::Vec2(imageWidth, imageHeight));
-    Axiom::UI::endPanel();
-    Axiom::UI::beginPanel("Console", Math::Vec2(0.0f, mainHeight), Math::Vec2(winWidth, bottomHeight));
-    Axiom::UI::text("Theorem Editor Initialized.", Axiom::Color::white(), 8);
-    Axiom::UI::text("Batch Renderer: Ready.", Axiom::Color::white(), 8);
+
     Axiom::UI::endPanel();
 }
 

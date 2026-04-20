@@ -723,3 +723,71 @@ fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant
 [2026-04-20 16:28:50][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
 [2026-04-20 16:28:50][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
 [2026-04-20 16:28:50][INFO][CORE] Initializing UI system...
+[2026-04-20 16:29:58][INFO][CORE] Application started: Axiom Application
+[2026-04-20 16:29:58][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 16:29:58][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 16:29:58][INFO][CORE] Initializing UI system...
+[2026-04-20 19:32:29][INFO][CORE] Application started: Axiom Application
+[2026-04-20 19:32:29][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 19:32:29][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 19:32:29][INFO][CORE] Initializing UI system...
+[2026-04-20 19:33:10][INFO][CORE] Application started: Axiom Application
+[2026-04-20 19:33:10][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 19:33:10][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 19:33:10][INFO][CORE] Initializing UI system...
+[2026-04-20 19:33:52][INFO][CORE] Application started: Axiom Application
+[2026-04-20 19:33:52][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 19:33:52][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 19:33:52][INFO][CORE] Initializing UI system...
+[2026-04-20 19:36:28][INFO][CORE] Application started: Axiom Application
+[2026-04-20 19:36:28][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 19:36:28][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 19:36:28][INFO][CORE] Initializing UI system...
+[2026-04-20 21:05:02][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:05:02][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:05:02][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:05:02][INFO][CORE] Initializing UI system...
+[2026-04-20 21:07:13][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:07:13][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:07:13][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:07:14][INFO][CORE] Initializing UI system...
+[2026-04-20 21:12:01][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:12:01][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:12:01][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:12:01][INFO][CORE] Initializing UI system...
+[2026-04-20 21:12:36][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:12:36][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:12:36][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:12:36][INFO][CORE] Initializing UI system...
+[2026-04-20 21:13:32][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:13:32][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:13:32][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:13:32][INFO][CORE] Initializing UI system...
+[2026-04-20 21:17:02][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:17:02][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:17:02][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:17:02][INFO][CORE] Initializing UI system...
+[2026-04-20 21:21:32][INFO][CORE] Application started: Axiom Application
+[2026-04-20 21:21:32][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 21:21:32][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 21:21:33][INFO][CORE] Initializing UI system...
+[2026-04-20 22:10:16][INFO][CORE] Application started: Axiom Application
+[2026-04-20 22:10:16][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 22:10:16][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 22:10:16][INFO][CORE] Initializing UI system...
+[2026-04-20 22:12:02][INFO][CORE] Application started: Axiom Application
+[2026-04-20 22:12:02][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 22:12:02][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 22:12:02][INFO][CORE] Initializing UI system...
+[2026-04-20 22:12:55][INFO][CORE] Application started: Axiom Application
+[2026-04-20 22:12:55][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 22:12:55][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 22:12:55][INFO][CORE] Initializing UI system...
+[2026-04-20 22:13:15][INFO][CORE] Application started: Axiom Application
+[2026-04-20 22:13:15][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 22:13:15][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 22:13:15][INFO][CORE] Initializing UI system...
+[2026-04-20 22:13:36][INFO][CORE] Application started: Axiom Application
+[2026-04-20 22:13:36][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 22:13:36][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 22:13:36][INFO][CORE] Initializing UI system...

@@ -22,6 +22,5 @@ class EditorLayer : public Axiom::Layer {
     std::shared_ptr<Axiom::Scene> scene;
     std::shared_ptr<Axiom::Texture> sceneTexture;
     std::unique_ptr<EditorCamera> editorCamera;
-    Axiom::Entity entity0;
-    Axiom::Entity entity1;
+    Axiom::Entity selectedEntity;
 };
