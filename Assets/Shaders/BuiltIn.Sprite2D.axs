@@ -6,7 +6,7 @@ layout(location = 0) in vec2 aPos;
 layout(location = 1) in vec2 aUv;
 
 layout(push_constant, std430) uniform PushConstants {
-    mat4 proj;
+    mat4 viewProj;
 };
 
 struct SpriteInstance {
@@ -26,7 +26,7 @@ layout(location = 2) out flat uint vTextureSlotIndex;
 void main() {
     SpriteInstance instance = instances[gl_InstanceIndex];
 
-    gl_Position = proj * instance.model * vec4(aPos, 0.0, 1.0);
+    gl_Position = viewProj * instance.model * vec4(aPos, 0.0, 1.0);
     vColor = instance.color;
     vUv = aUv;
     vTextureSlotIndex = uint(instance.data.x);

@@ -711,3 +711,15 @@ fragment fragmentMain_out fragmentMain(fragmentMain_in in [[stage_in]], constant
 [2026-04-19 22:31:09][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
 [2026-04-19 22:31:09][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
 [2026-04-19 22:31:09][INFO][CORE] Initializing UI system...
+[2026-04-20 16:27:13][INFO][CORE] Application started: Axiom Application
+[2026-04-20 16:27:13][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 16:27:13][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 16:27:13][INFO][CORE] Initializing UI system...
+[2026-04-20 16:28:29][INFO][CORE] Application started: Axiom Application
+[2026-04-20 16:28:29][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 16:28:29][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 16:28:29][INFO][CORE] Initializing UI system...
+[2026-04-20 16:28:50][INFO][CORE] Application started: Axiom Application
+[2026-04-20 16:28:50][INFO][CORE] Current working directory: /Users/bussab/Documents/Codes/ProjectAxiom/Bin/Debug/Theorem/../../..
+[2026-04-20 16:28:50][INFO][CORE] Creating MacOS window Axiom Engine (1280, 720)
+[2026-04-20 16:28:50][INFO][CORE] Initializing UI system...

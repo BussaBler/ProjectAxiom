@@ -1,5 +1,6 @@
 #pragma once
 #include "Axiom.h"
+#include "EditorCamera.h"
 
 class EditorLayer : public Axiom::Layer {
   public:
@@ -20,6 +21,7 @@ class EditorLayer : public Axiom::Layer {
     std::shared_ptr<Axiom::TextureAsset> textureAsset;
     std::shared_ptr<Axiom::Scene> scene;
     std::shared_ptr<Axiom::Texture> sceneTexture;
+    std::unique_ptr<EditorCamera> editorCamera;
     Axiom::Entity entity0;
     Axiom::Entity entity1;
 };

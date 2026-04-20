@@ -31,7 +31,7 @@ void EditorLayer::onAttach() {
     entity0.addComponent<Axiom::Sprite2DComponent>(sprite);
 
     entity1 = scene->createEntity();
-    transform.position = Math::Vec3(500.0f, 200.0f, 0.0f);
+    transform.position = Math::Vec3(0.0f, 0.0f, 0.0f);
     entity1.addComponent<Axiom::TransformComponent>(transform);
     sprite.textureId = Axiom::AssetManager::loadTexture("Assets/Textures/amethyst_block.png");
     sprite.color = Axiom::Color::white();
@@ -49,6 +49,9 @@ void EditorLayer::onAttach() {
         .memoryUsage = Axiom::MemoryUsage::GPUOnly,
     };
     sceneTexture = Axiom::Application::getRenderer()->createTexture(createInfo);
+
+    editorCamera = std::make_unique<EditorCamera>(Math::Vec3(0.0f, 0.0f, 500.0f));
+    editorCamera->setPerspective(45.0f, static_cast<float>(viewportSize.x()) / static_cast<float>(viewportSize.y()), 0.1f, 1000.0f);
 }
 
 void EditorLayer::onDetach() {
@@ -111,5 +114,5 @@ void EditorLayer::onEvent(Axiom::Event& event) {
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
-    scene->onRender(commandBuffer, sceneTexture.get());
+    scene->onRender(commandBuffer, sceneTexture.get(), editorCamera->getProjection(), editorCamera->getView());
 }
