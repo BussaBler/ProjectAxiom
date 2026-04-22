@@ -48,7 +48,26 @@ void EditorLayer::onAttach() {
         .initialState = Axiom::TextureState::Undefined,
         .memoryUsage = Axiom::MemoryUsage::GPUOnly,
     };
-    sceneTexture = Axiom::Application::getRenderer()->createTexture(createInfo);
+    Axiom::Texture::CreateInfo depthCreateInfo = {
+        .width = 1920,
+        .height = 1080,
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .format = Axiom::Format::D32sFloat,
+        .usage = Axiom::TextureUsage::DepthStencilAttachment,
+        .aspect = Axiom::TextureAspect::Depth,
+        .initialState = Axiom::TextureState::Undefined,
+        .memoryUsage = Axiom::MemoryUsage::GPUOnly,
+    };
+    uint32_t frameCount = Axiom::Application::getRenderer()->getFrameCount();
+
+    sceneTextures.resize(frameCount);
+    depthTextures.resize(frameCount);
+
+    for (uint32_t i = 0; i < frameCount; ++i) {
+        sceneTextures[i] = Axiom::Application::getRenderer()->createTexture(createInfo);
+        depthTextures[i] = Axiom::Application::getRenderer()->createTexture(depthCreateInfo);
+    }
 
     editorCamera = std::make_unique<EditorCamera>(Math::Vec3(0.0f, 0.0f, 500.0f));
     editorCamera->setPerspective(45.0f, static_cast<float>(viewportSize.x()) / static_cast<float>(viewportSize.y()), 0.1f, 1000.0f);
@@ -163,7 +182,7 @@ void EditorLayer::onUIRender() {
     float offsetX = (centerWidth - imageWidth) / 2.0f;
     float offsetY = (availableHeight - imageHeight) / 2.0f;
 
-    Axiom::UI::image(sceneTexture.get(), Math::Vec2(imageWidth, imageHeight));
+    Axiom::UI::image(sceneTextures[Axiom::Application::getRenderer()->getCurrentFrameIndex()].get(), Math::Vec2(imageWidth, imageHeight));
 
     Axiom::UI::endPanel();
 }
@@ -172,5 +191,7 @@ void EditorLayer::onEvent(Axiom::Event& event) {
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
-    scene->onRender(commandBuffer, sceneTexture.get(), editorCamera->getProjection(), editorCamera->getView());
+    uint32_t currentFrameIndex = Axiom::Application::getRenderer()->getCurrentFrameIndex();
+    scene->onRender(commandBuffer, sceneTextures[currentFrameIndex].get(), depthTextures[currentFrameIndex].get(), editorCamera->getProjection(),
+                    editorCamera->getView());
 }
