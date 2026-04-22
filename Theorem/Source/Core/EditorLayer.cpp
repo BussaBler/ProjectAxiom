@@ -84,6 +84,13 @@ void EditorLayer::onUIRender() {
                 selectedEntity = entity;
             }
         }
+
+        Axiom::UI::text("", Axiom::Color::white(), 4);
+        if (Axiom::UI::button("Create Entity", Math::Vec2(sideWidth - 10.0f, 30.0f))) {
+            Axiom::Entity newEntity = scene->createEntity();
+            newEntity.addComponent<Axiom::TransformComponent>({});
+            selectedEntity = newEntity;
+        }
     }
     Axiom::UI::endPanel();
 
@@ -91,7 +98,7 @@ void EditorLayer::onUIRender() {
 
     if (selectedEntity) {
         auto& tag = selectedEntity.getComponent<Axiom::TagComponent>();
-        Axiom::UI::text(tag.tag.c_str(), Axiom::Color::white(), 12);
+        Axiom::UI::inputText("Tag", tag.tag, 8);
 
         if (selectedEntity.hasComponent<Axiom::TransformComponent>()) {
             auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
@@ -102,10 +109,36 @@ void EditorLayer::onUIRender() {
                 Axiom::UI::dragFloat("Pos Z", transform.position.z());
 
                 Axiom::UI::dragFloat("Scale X", transform.scale.x());
+                Axiom::UI::dragFloat("Scale Y", transform.scale.y());
 
                 Axiom::UI::treePop();
             }
         }
+
+        static bool showAddComponentMenu = false;
+        Axiom::UI::text("", Axiom::Color::white(), 8);
+
+        if (Axiom::UI::button("Add Component", Math::Vec2(Axiom::UI::getAvaibleWidth(), 30.0f))) {
+            showAddComponentMenu = !showAddComponentMenu;
+        }
+
+        if (showAddComponentMenu) {
+            if (!selectedEntity.hasComponent<Axiom::Sprite2DComponent>()) {
+                if (Axiom::UI::button("Sprite Renderer", Math::Vec2(Axiom::UI::getAvaibleWidth(), 24.0f))) {
+                    selectedEntity.addComponent<Axiom::Sprite2DComponent>(
+                        Axiom::Sprite2DComponent{.textureId = Axiom::AssetManager::loadTexture("adada"), .color = Axiom::Color::white()});
+                    showAddComponentMenu = false;
+                }
+            }
+
+            if (!selectedEntity.hasComponent<Axiom::CameraComponent>()) {
+                if (Axiom::UI::button("Camera", Math::Vec2(Axiom::UI::getAvaibleWidth(), 24.0f))) {
+                    selectedEntity.addComponent<Axiom::CameraComponent>({});
+                    showAddComponentMenu = false;
+                }
+            }
+        }
+
     } else {
         Axiom::UI::text("No Entity Selected", Axiom::Color::gray(), 8);
     }
