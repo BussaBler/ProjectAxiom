@@ -20,6 +20,7 @@ void EditorLayer::onAttach() {
     textureAsset = Axiom::AssetManager::getAsset<Axiom::TextureAsset>(textureHandle);
 
     scene = std::make_shared<Axiom::Scene>();
+    sceneRenderer = std::make_unique<Axiom::SceneRenderer>();
     Axiom::Entity entity0 = scene->createEntity("Entity 0");
     Axiom::TransformComponent transform = {
         .position = Math::Vec3(500.0f, 50.0f, 0.0f),
@@ -129,6 +130,7 @@ void EditorLayer::onUIRender() {
 
                 Axiom::UI::dragFloat("Scale X", transform.scale.x());
                 Axiom::UI::dragFloat("Scale Y", transform.scale.y());
+                Axiom::UI::dragFloat("Scale Z", transform.scale.z());
 
                 Axiom::UI::treePop();
             }
@@ -192,6 +194,22 @@ void EditorLayer::onEvent(Axiom::Event& event) {
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
     uint32_t currentFrameIndex = Axiom::Application::getRenderer()->getCurrentFrameIndex();
-    scene->onRender(commandBuffer, sceneTextures[currentFrameIndex].get(), depthTextures[currentFrameIndex].get(), editorCamera->getProjection(),
-                    editorCamera->getView());
+    std::shared_ptr<Axiom::Texture> renderTarget = sceneTextures[currentFrameIndex];
+    std::shared_ptr<Axiom::Texture> depthTexture = depthTextures[currentFrameIndex];
+    Math::Mat4 view = editorCamera->getView();
+    Math::Mat4 projection = editorCamera->getProjection();
+    Axiom::SceneRenderPassData data = {
+        .scene = scene.get(),
+        .commandBuffer = commandBuffer,
+        .renderTarget = renderTarget.get(),
+        .depthTarget = depthTexture.get(),
+        .projection = projection,
+        .view = view,
+    };
+
+    sceneRenderer->geometryPass(data);
+    if (selectedEntity && selectedEntity.hasComponent<Axiom::TransformComponent>()) {
+        auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
+        sceneRenderer->gizmoPass(data, transform.position);
+    }
 }

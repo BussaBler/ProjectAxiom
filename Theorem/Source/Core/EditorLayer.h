@@ -20,6 +20,7 @@ class EditorLayer : public Axiom::Layer {
     float sliderValue = 0.0f;
     std::shared_ptr<Axiom::TextureAsset> textureAsset;
     std::shared_ptr<Axiom::Scene> scene;
+    std::unique_ptr<Axiom::SceneRenderer> sceneRenderer;
     std::vector<std::shared_ptr<Axiom::Texture>> sceneTextures;
     std::vector<std::shared_ptr<Axiom::Texture>> depthTextures;
     std::unique_ptr<EditorCamera> editorCamera;
