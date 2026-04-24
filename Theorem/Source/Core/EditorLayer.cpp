@@ -42,8 +42,13 @@ void EditorLayer::onAttach() {
     transform.position = Math::Vec3(-500.0f, 50.0f, 0.0f);
     transform.scale = Math::Vec3(100.0f, 100.0f, 100.0f);
     entity2.addComponent<Axiom::TransformComponent>(transform);
-    Axiom::MeshComponent mesh = {.meshId = Axiom::AssetManager::loadMesh("Assets/Models/Cube.obj")};
+    Axiom::MeshComponent mesh = {.meshId = Axiom::AssetManager::loadMesh("Assets/Models/Sphere.obj")};
     entity2.addComponent<Axiom::MeshComponent>(mesh);
+
+    Axiom::Entity lightEntity = scene->createEntity("Directional Light");
+    Axiom::DirectionalLightComponent directionalLight = {.color = Axiom::Color::white()};
+    lightEntity.addComponent<Axiom::DirectionalLightComponent>(directionalLight);
+    lightEntity.addComponent<Axiom::TransformComponent>(transform);
 
     Axiom::Texture::CreateInfo createInfo = {
         .width = 1920,
@@ -131,14 +136,7 @@ void EditorLayer::onUIRender() {
             auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
 
             if (Axiom::UI::treeNode("Transform")) {
-                Axiom::UI::dragFloat("Pos X", transform.position.x());
-                Axiom::UI::dragFloat("Pos Y", transform.position.y());
-                Axiom::UI::dragFloat("Pos Z", transform.position.z());
-
-                Axiom::UI::dragFloat("Scale X", transform.scale.x());
-                Axiom::UI::dragFloat("Scale Y", transform.scale.y());
-                Axiom::UI::dragFloat("Scale Z", transform.scale.z());
-
+                Axiom::UI::component<Axiom::TransformComponent>(&transform);
                 Axiom::UI::treePop();
             }
         }

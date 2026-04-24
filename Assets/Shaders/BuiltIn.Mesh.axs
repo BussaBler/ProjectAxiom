@@ -14,7 +14,7 @@ struct MeshInstance {
     mat4 model;
 };
 
-layout(std430, set = 0, binding = 0) readonly buffer InstanceBuffer {
+layout(std430, set = 1, binding = 0) readonly buffer InstanceBuffer {
     MeshInstance instances[];
 };
 
@@ -36,8 +36,26 @@ void main() {
 layout(location = 0) in vec3 vNormal;
 layout(location = 1) in vec2 vTexCoord;
 
+layout(set = 0, binding = 0) uniform GlobalData {
+    vec4 uAmbientColor;
+    vec4 uDirectionalLightDir;
+    vec4 uDirectionalLightColor;
+} globalData;
+
 layout(location = 0) out vec4 oColor;
 
 void main() {
-    oColor = vec4(normalize(vNormal) * 0.5 + 0.5, 1.0);
+    vec3 abledo = vec3(1.0, 0.0, 0.0);
+
+    vec3 normal = normalize(vNormal);
+    vec3 lightDir = normalize(-globalData.uDirectionalLightDir.xyz);
+
+    float diffuse = max(dot(normal, lightDir), 0.0);
+    vec3 diffuseColor = diffuse * globalData.uDirectionalLightColor.xyz;
+
+    vec3 ambientColor = globalData.uAmbientColor.xyz;
+
+    vec3 finalColor = ambientColor + diffuseColor;
+
+    oColor = vec4(finalColor * abledo, 1.0);
 }
