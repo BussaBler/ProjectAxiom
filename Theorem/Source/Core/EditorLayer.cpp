@@ -38,6 +38,13 @@ void EditorLayer::onAttach() {
     sprite.color = Axiom::Color::white();
     entity1.addComponent<Axiom::Sprite2DComponent>(sprite);
 
+    Axiom::Entity entity2 = scene->createEntity("Entity 2");
+    transform.position = Math::Vec3(-500.0f, 50.0f, 0.0f);
+    transform.scale = Math::Vec3(100.0f, 100.0f, 100.0f);
+    entity2.addComponent<Axiom::TransformComponent>(transform);
+    Axiom::MeshComponent mesh = {.meshId = Axiom::AssetManager::loadMesh("Assets/Models/Cube.obj")};
+    entity2.addComponent<Axiom::MeshComponent>(mesh);
+
     Axiom::Texture::CreateInfo createInfo = {
         .width = 1920,
         .height = 1080,
