@@ -318,15 +318,19 @@ spirvCrossLib = SConscript('Vendor/SpirvCross/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/SpirvCross',
     src_dir='Vendor/SpirvCross', duplicate=0, exports=['env', 'buildInfo'])
 
+axModelLoaderLib = SConscript('Vendor/AxModelLoader/SConscript',
+    variant_dir=f'Bin-Int/{buildConfig.capitalize()}/AxModelLoader',
+    src_dir='Vendor/AxModelLoader', duplicate=0, exports=['env', 'buildInfo'])
+
 axiomLib, axiomProject = SConscript('Axiom/SConscript', 
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Axiom',
     src_dir='Axiom', duplicate=0,
-    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axImageLoaderLib', 'spirvCrossLib'])
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axImageLoaderLib', 'spirvCrossLib', 'axModelLoaderLib'])
 
 theoremApp, theoremProject = SConscript('Theorem/SConscript',
     variant_dir=f'Bin-Int/{buildConfig.capitalize()}/Theorem',
     src_dir='Theorem', duplicate=0,
-    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib'])
+    exports=['baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib', 'axModelLoaderLib'])
 
 Depends(theoremProject, axiomProject)
 Default(theoremApp)

@@ -1,4 +1,4 @@
-Import('baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib')
+Import('baseEnv', 'debugEnv', 'releaseEnv', 'buildInfo', 'axiomLib', 'axImageLoaderLib', 'spirvCrossLib', 'axModelLoaderLib')
 
 def createVcprojUserFile(target, source, env):
     userFilePath = str(target[0]) + '.user'
@@ -46,12 +46,13 @@ localEnv.Append(
     LIBPATH=[
         Dir(f'#/Bin/{configName}/Axiom'),
         Dir(f'#/Bin/{configName}/AxImageLoader'),
-        Dir(f'#/Bin/{configName}/SpirvCross')
+        Dir(f'#/Bin/{configName}/SpirvCross'),
+        Dir(f'#/Bin/{configName}/AxModelLoader')
     ],
     CPPDEFINES=[platformMap[key]['define']] if key else []
 )
 
-localEnv.Prepend(LIBS=[axiomLib, axImageLoaderLib, spirvCrossLib])
+localEnv.Prepend(LIBS=[axiomLib, axImageLoaderLib, spirvCrossLib, axModelLoaderLib])
 
 theoremApp = localEnv.Program(f'#Bin/{configName}/Theorem/Theorem', coreSources)
 
