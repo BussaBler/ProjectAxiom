@@ -15,9 +15,7 @@ class EditorLayer : public Axiom::Layer {
     void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
   private:
-    Axiom::RenderPass renderPass{};
     Math::uVec2 viewportSize{0, 0};
-    float sliderValue = 0.0f;
     std::shared_ptr<Axiom::TextureAsset> textureAsset;
     std::shared_ptr<Axiom::Scene> scene;
     std::unique_ptr<Axiom::SceneRenderer> sceneRenderer;

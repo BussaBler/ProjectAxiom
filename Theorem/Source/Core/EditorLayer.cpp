@@ -5,50 +5,18 @@ EditorLayer::EditorLayer() : Layer("EditorLayer") {
 
 void EditorLayer::onAttach() {
     Axiom::AX_LOG_INFO("EditorLayer atached");
-    Axiom::RenderAttachment colorAttachment;
-    colorAttachment.loadOp = Axiom::LoadOp::Clear;
-    colorAttachment.storeOp = Axiom::StoreOp::Store;
-    colorAttachment.clearColor = Axiom::Color::transparent();
     viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
-    renderPass.colorAttachments[0] = colorAttachment;
-    renderPass.colorAttachmentCount = 1;
-    renderPass.width = viewportSize.x();
-    renderPass.height = viewportSize.y();
+    scene = std::make_shared<Axiom::Scene>();
+    Axiom::SceneSerializer deserializer(scene.get());
+    if (!deserializer.deserialize("Assets/Scenes/scene.json")) {
+        Axiom::AX_LOG_ERROR("Failed to deserialize the scene");
+    }
 
-    Axiom::UUID textureHandle = Axiom::AssetManager::loadTexture("Assets/Textures/redstone_block.png");
+    Axiom::UUID textureHandle = Axiom::AssetManager::importAsset("Assets/Textures/redstone_block.png", Axiom::AssetType::Texture);
     textureAsset = Axiom::AssetManager::getAsset<Axiom::TextureAsset>(textureHandle);
 
-    scene = std::make_shared<Axiom::Scene>();
     sceneRenderer = std::make_unique<Axiom::SceneRenderer>();
-    Axiom::Entity entity0 = scene->createEntity("Entity 0");
-    Axiom::TransformComponent transform = {
-        .position = Math::Vec3(500.0f, 50.0f, 0.0f),
-        .rotation = Math::Vec3(0.0f, 0.0f, 0.0f),
-        .scale = Math::Vec3(100.0f, 100.0f, 1.0f),
-    };
-    entity0.addComponent<Axiom::TransformComponent>(transform);
-    Axiom::Sprite2DComponent sprite = {.textureId = textureHandle, .color = Axiom::Color::white()};
-    entity0.addComponent<Axiom::Sprite2DComponent>(sprite);
-
-    Axiom::Entity entity1 = scene->createEntity("Entity 1");
-    transform.position = Math::Vec3(0.0f, 0.0f, 0.0f);
-    entity1.addComponent<Axiom::TransformComponent>(transform);
-    sprite.textureId = Axiom::AssetManager::loadTexture("Assets/Textures/amethyst_block.png");
-    sprite.color = Axiom::Color::white();
-    entity1.addComponent<Axiom::Sprite2DComponent>(sprite);
-
-    Axiom::Entity entity2 = scene->createEntity("Entity 2");
-    transform.position = Math::Vec3(-500.0f, 50.0f, 0.0f);
-    transform.scale = Math::Vec3(100.0f, 100.0f, 100.0f);
-    entity2.addComponent<Axiom::TransformComponent>(transform);
-    Axiom::MeshComponent mesh = {.meshId = Axiom::AssetManager::loadMesh("Assets/Models/Sphere.obj")};
-    entity2.addComponent<Axiom::MeshComponent>(mesh);
-
-    Axiom::Entity lightEntity = scene->createEntity("Directional Light");
-    Axiom::DirectionalLightComponent directionalLight = {.color = Axiom::Color::white()};
-    lightEntity.addComponent<Axiom::DirectionalLightComponent>(directionalLight);
-    lightEntity.addComponent<Axiom::TransformComponent>(transform);
 
     Axiom::Texture::CreateInfo createInfo = {
         .width = 1920,
@@ -87,6 +55,8 @@ void EditorLayer::onAttach() {
 }
 
 void EditorLayer::onDetach() {
+    Axiom::SceneSerializer serializer(scene.get());
+    serializer.serialize("Assets/Scenes/scene.json");
     Axiom::AX_LOG_INFO("EditorLayer detached");
 }
 
@@ -132,11 +102,10 @@ void EditorLayer::onUIRender() {
         auto& tag = selectedEntity.getComponent<Axiom::TagComponent>();
         Axiom::UI::inputText("Tag", tag.tag, 8);
 
-        if (selectedEntity.hasComponent<Axiom::TransformComponent>()) {
-            auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
-
-            if (Axiom::UI::treeNode("Transform")) {
-                Axiom::UI::component<Axiom::TransformComponent>(&transform);
+        auto components = selectedEntity.getComponents();
+        for (auto& [componentId, componentData] : components) {
+            if (Axiom::UI::treeNode(Axiom::ComponentReflection::getComponentInfo(componentId)->name)) {
+                Axiom::UI::component(componentId, componentData);
                 Axiom::UI::treePop();
             }
         }
@@ -151,8 +120,7 @@ void EditorLayer::onUIRender() {
         if (showAddComponentMenu) {
             if (!selectedEntity.hasComponent<Axiom::Sprite2DComponent>()) {
                 if (Axiom::UI::button("Sprite Renderer", Math::Vec2(Axiom::UI::getAvaibleWidth(), 24.0f))) {
-                    selectedEntity.addComponent<Axiom::Sprite2DComponent>(
-                        Axiom::Sprite2DComponent{.textureId = Axiom::AssetManager::loadTexture("adada"), .color = Axiom::Color::white()});
+                    selectedEntity.addComponent<Axiom::Sprite2DComponent>(Axiom::Sprite2DComponent{.textureId = 0, .color = Axiom::Color::white()});
                     showAddComponentMenu = false;
                 }
             }

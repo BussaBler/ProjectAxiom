@@ -1,0 +1,32 @@
+{
+    "Assets": {
+        "10844204521739876551": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "10788562350301369643": {
+            "FilePath": "Assets/Shaders/BuiltIn.Sprite2D.axs",
+            "Type": 5
+        },
+        "15471021209606049030": {
+            "FilePath": "Assets/Textures/redstone_block.png",
+            "Type": 1
+        },
+        "5883874457857940226": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "4972242995914329739": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "17280106316225597347": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Gizmo.axs",
+            "Type": 5
+        },
+        "6063981691213813354": {
+            "FilePath": "Assets/Shaders/BuiltIn.Mesh.axs",
+            "Type": 5
+        }
+    }
+}
