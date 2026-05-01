@@ -10,7 +10,7 @@ class EditorLayer : public Axiom::Layer {
     void onAttach() override;
     void onDetach() override;
     void onUpdate() override;
-    void onUIRender() override;
+    void onUIRender(Axiom::UIRenderer* uiRenderer) override;
     void onEvent(Axiom::Event& event) override;
     void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
@@ -22,5 +22,8 @@ class EditorLayer : public Axiom::Layer {
     std::vector<std::shared_ptr<Axiom::Texture>> sceneTextures;
     std::vector<std::shared_ptr<Axiom::Texture>> depthTextures;
     std::unique_ptr<EditorCamera> editorCamera;
+
+    std::shared_ptr<Axiom::UIElement> uiRoot;
+
     Axiom::Entity selectedEntity;
 };

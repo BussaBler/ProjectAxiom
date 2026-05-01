@@ -1,22 +1,26 @@
 {
     "Assets": {
-        "10844204521739876551": {
-            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
-            "Type": 5
-        },
-        "10788562350301369643": {
-            "FilePath": "Assets/Shaders/BuiltIn.Sprite2D.axs",
+        "10177987608970998120": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
             "Type": 5
         },
         "15471021209606049030": {
             "FilePath": "Assets/Textures/redstone_block.png",
             "Type": 1
         },
-        "5883874457857940226": {
+        "4291067882519325471": {
             "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
             "Type": 5
         },
-        "4972242995914329739": {
+        "3429288568965995813": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "13470222090343893972": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "17504552009616376306": {
             "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
             "Type": 5
         },
@@ -24,8 +28,484 @@
             "FilePath": "Assets/Shaders/BuiltIn.UI.Gizmo.axs",
             "Type": 5
         },
+        "769284358897653565": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "5571060647877357402": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "3069405228404456202": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "2503151221517945207": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "687895881977316304": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "4821249938424249551": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "6257307275846943402": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "11058321469611285263": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "3925858076889843394": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "9957935119835052516": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "10580249903384912617": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "5887801811939908229": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "16223013530333774414": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "4404771144147377518": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7807370284309125647": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "11008417824118972096": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "8104055664299784893": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "17254730641209556468": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "2955035883485332606": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "9265273462179050531": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "4479621906094905479": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "3463488357629806200": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "15697925558662566766": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "17084264931005165390": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "8192970704236616507": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "17073021196426130228": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "9798925310770400265": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7523181779762325429": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "4664889790320294897": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "12437065479613241379": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "4574676322558473943": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "10234023314372051183": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "11866868316858572926": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "4972242995914329739": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "14736851392572921332": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "5837424871134561706": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "11416562513186400099": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "16088817846922257057": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "15265252420471247679": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "17953215720928572471": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "15814850039096580302": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7169280182007186345": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "4930793156834876383": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "14857242491644354005": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "133378488558775": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "15412839051743414350": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "9762371997350154631": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "13973210274398036508": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "257679949476055568": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "14702037047150626492": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "12791236242338633296": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "10168164076175955104": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7553077704900730196": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "11471787417255539835": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "8503852790795383248": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "16762278443930304577": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "15199602641161825878": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "6299142742787594735": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "15585460771233328464": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "5920291960758387118": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "5580160855596988085": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "12259624225004239527": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "13210445753784743674": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "3010202937353530780": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "16613091117714033562": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "12605121984622738983": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "11877010689010423991": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "11346654060632416468": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "18205048661137215145": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "2290452077552745795": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "13377110208347512162": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "4295226188142296284": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "15671771034116884490": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "1831752441994052764": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "5266586517362940450": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "14163061013905377375": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "9572832775259659059": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "8713801207223942963": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "1430968152522313324": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "17417262256215310879": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "5922730083544960524": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
         "6063981691213813354": {
             "FilePath": "Assets/Shaders/BuiltIn.Mesh.axs",
+            "Type": 5
+        },
+        "6748593651393524439": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "7794465985642364407": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "17173957673423290982": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "6107454107079809272": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7080553746504458665": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "514243516502196070": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "8683071549521671588": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "1117178267725869231": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "10844204521739876551": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "11025698458769132318": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "8301223219771029483": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "2892289862889549142": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "7795003334538952888": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "3825690853842633965": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "11518148932269909586": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "875893266370664964": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "3324200018368692036": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "6921764378475350581": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "7953042469250162851": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "14813328576238607665": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "11889724403309763719": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "3890023760062701094": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "10788562350301369643": {
+            "FilePath": "Assets/Shaders/BuiltIn.Sprite2D.axs",
+            "Type": 5
+        },
+        "1782968067019614666": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "5399668422991272448": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "9115937466845985075": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Image.axs",
+            "Type": 5
+        },
+        "18322979841729809090": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "3782336685037926898": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "5883874457857940226": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "11750812312849657282": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "4008137120809944877": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "14221995231704905263": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "6170631180588069878": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "7308905416696007927": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "14348854843390047072": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "5151377117138729251": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
+            "Type": 5
+        },
+        "8836606918805261311": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.axs",
+            "Type": 5
+        },
+        "17603232882942228868": {
+            "FilePath": "Assets/Shaders/BuiltIn.UI.Font.axs",
             "Type": 5
         }
     }

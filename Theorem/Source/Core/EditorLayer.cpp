@@ -7,6 +7,44 @@ void EditorLayer::onAttach() {
     Axiom::AX_LOG_INFO("EditorLayer atached");
     viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
+    uiRoot = std::make_shared<Axiom::UICanvas>();
+
+    auto panel1 = std::make_shared<Axiom::UIPanel>();
+    panel1->setID("Panel1");
+    panel1->setHorizontalAlignment(Axiom::UIAlignment::Start);
+    panel1->setFixedSize({300, -1});
+
+    auto verticalBox1 = std::make_shared<Axiom::UIVerticalBox>();
+    verticalBox1->setID("VerticalBox1");
+
+    auto button1 = std::make_shared<Axiom::UIButton>("Button 1");
+    button1->setID("Button1");
+    button1->setVerticalAlignment(Axiom::UIAlignment::Start);
+    verticalBox1->addChild(button1);
+    auto button2 = std::make_shared<Axiom::UIButton>("Button 2");
+    button2->setID("Button2");
+    verticalBox1->addChild(button2);
+    auto button3 = std::make_shared<Axiom::UIButton>("Button 3");
+    button3->setID("Button3");
+    verticalBox1->addChild(button3);
+
+    auto text1 = std::make_shared<Axiom::UIText>("Hello, World!");
+    text1->setID("Text1");
+    text1->setHorizontalAlignment(Axiom::UIAlignment::Center);
+    text1->setFontSize(8.0f);
+    verticalBox1->addChild(text1);
+
+    auto dragFloat1 = std::make_shared<Axiom::UIDragFloat>();
+    dragFloat1->setID("DragFloat1");
+    static float dragValue = 0.0f;
+    dragFloat1->setValueGetter([&]() { return dragValue; });
+    dragFloat1->setValueSetter([&](float newValue) { dragValue = newValue; });
+    // dragFloat1->setFloatLimit({0.0f, 100.0f});
+    verticalBox1->addChild(dragFloat1);
+
+    panel1->addChild(verticalBox1);
+    uiRoot->addChild(panel1);
+
     scene = std::make_shared<Axiom::Scene>();
     Axiom::SceneSerializer deserializer(scene.get());
     if (!deserializer.deserialize("Assets/Scenes/scene.json")) {
@@ -63,106 +101,17 @@ void EditorLayer::onDetach() {
 void EditorLayer::onUpdate() {
     editorCamera->onUpdate(0.125f);
     scene->onUpdate(0.125f);
-}
-
-void EditorLayer::onUIRender() {
     float winWidth = Axiom::Application::getWindow()->getWidth();
     float winHeight = Axiom::Application::getWindow()->getHeight();
+    uiRoot->arrange(Math::Vec2(0, 0), Math::Vec2(winWidth, winHeight));
+}
 
-    float sideWidth = winWidth * 0.20f;
-    float mainHeight = winHeight;
-    float centerWidth = winWidth - (sideWidth * 2.0f);
-
-    Axiom::UI::beginPanel("Hierarchy", Math::Vec2(0.0f, 0.0f), Math::Vec2(sideWidth, mainHeight));
-
-    if (scene) {
-        auto view = scene->view<Axiom::TagComponent>();
-
-        for (auto entityId : view) {
-            Axiom::Entity entity = scene->getEntity(entityId);
-            auto& tag = entity.getComponent<Axiom::TagComponent>();
-
-            if (Axiom::UI::button(tag.tag, Math::Vec2(sideWidth - 10.0f, 24.0f))) {
-                selectedEntity = entity;
-            }
-        }
-
-        Axiom::UI::text("", Axiom::Color::white(), 4);
-        if (Axiom::UI::button("Create Entity", Math::Vec2(sideWidth - 10.0f, 30.0f))) {
-            Axiom::Entity newEntity = scene->createEntity();
-            newEntity.addComponent<Axiom::TransformComponent>({});
-            selectedEntity = newEntity;
-        }
-    }
-    Axiom::UI::endPanel();
-
-    Axiom::UI::beginPanel("Inspector", Math::Vec2(winWidth - sideWidth, 0.0f), Math::Vec2(sideWidth, mainHeight));
-
-    if (selectedEntity) {
-        auto& tag = selectedEntity.getComponent<Axiom::TagComponent>();
-        Axiom::UI::inputText("Tag", tag.tag, 8);
-
-        auto components = selectedEntity.getComponents();
-        for (auto& [componentId, componentData] : components) {
-            if (Axiom::UI::treeNode(Axiom::ComponentReflection::getComponentInfo(componentId)->name)) {
-                Axiom::UI::component(componentId, componentData);
-                Axiom::UI::treePop();
-            }
-        }
-
-        static bool showAddComponentMenu = false;
-        Axiom::UI::text("", Axiom::Color::white(), 8);
-
-        if (Axiom::UI::button("Add Component", Math::Vec2(Axiom::UI::getAvaibleWidth(), 30.0f))) {
-            showAddComponentMenu = !showAddComponentMenu;
-        }
-
-        if (showAddComponentMenu) {
-            if (!selectedEntity.hasComponent<Axiom::Sprite2DComponent>()) {
-                if (Axiom::UI::button("Sprite Renderer", Math::Vec2(Axiom::UI::getAvaibleWidth(), 24.0f))) {
-                    selectedEntity.addComponent<Axiom::Sprite2DComponent>(Axiom::Sprite2DComponent{.textureId = 0, .color = Axiom::Color::white()});
-                    showAddComponentMenu = false;
-                }
-            }
-
-            if (!selectedEntity.hasComponent<Axiom::CameraComponent>()) {
-                if (Axiom::UI::button("Camera", Math::Vec2(Axiom::UI::getAvaibleWidth(), 24.0f))) {
-                    selectedEntity.addComponent<Axiom::CameraComponent>({});
-                    showAddComponentMenu = false;
-                }
-            }
-        }
-
-    } else {
-        Axiom::UI::text("No Entity Selected", Axiom::Color::gray(), 8);
-    }
-
-    Axiom::UI::endPanel();
-    Axiom::UI::beginPanel("Viewport", Math::Vec2(sideWidth, 0.0f), Math::Vec2(centerWidth, mainHeight));
-
-    float targetAspect = 1920.0f / 1080.0f;
-    float availableHeight = mainHeight - 24.0f;
-    float panelAspect = centerWidth / availableHeight;
-    float imageWidth = 0.0f;
-    float imageHeight = 0.0f;
-
-    if (panelAspect > targetAspect) {
-        imageHeight = availableHeight;
-        imageWidth = imageHeight * targetAspect;
-    } else {
-        imageWidth = centerWidth;
-        imageHeight = imageWidth / targetAspect;
-    }
-
-    float offsetX = (centerWidth - imageWidth) / 2.0f;
-    float offsetY = (availableHeight - imageHeight) / 2.0f;
-
-    Axiom::UI::image(sceneTextures[Axiom::Application::getRenderer()->getCurrentFrameIndex()].get(), Math::Vec2(imageWidth, imageHeight));
-
-    Axiom::UI::endPanel();
+void EditorLayer::onUIRender(Axiom::UIRenderer* uiRenderer) {
+    uiRoot->onRender(uiRenderer);
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
+    uiRoot->onEvent(event);
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
