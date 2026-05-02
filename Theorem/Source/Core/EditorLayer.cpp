@@ -4,46 +4,39 @@ EditorLayer::EditorLayer() : Layer("EditorLayer") {
 }
 
 void EditorLayer::onAttach() {
-    Axiom::AX_LOG_INFO("EditorLayer atached");
+    Axiom::AX_LOG_INFO("EditorLayer attached");
     viewportSize = Axiom::Application::getRenderer()->getCurrentRenderTargetSize();
 
     uiRoot = std::make_shared<Axiom::UICanvas>();
 
-    auto panel1 = std::make_shared<Axiom::UIPanel>();
-    panel1->setID("Panel1");
-    panel1->setHorizontalAlignment(Axiom::UIAlignment::Start);
-    panel1->setFixedSize({300, -1});
+    auto mainLayout = std::make_shared<Axiom::UIHorizontalBox>();
+    mainLayout->setID("MainHBox");
+    uiRoot->addChild(mainLayout);
 
-    auto verticalBox1 = std::make_shared<Axiom::UIVerticalBox>();
-    verticalBox1->setID("VerticalBox1");
+    auto leftPanel = std::make_shared<Axiom::UIPanel>();
+    leftPanel->setID("LeftPanel");
+    leftPanel->setFixedSize({320.0f, -1.0f});
+    leftPanel->setHorizontalAlignment(Axiom::UIAlignment::Start);
+    leftPanel->setPadding({10.0f, 10.0f, 10.0f, 10.0f});
+    mainLayout->addChild(leftPanel);
 
-    auto button1 = std::make_shared<Axiom::UIButton>("Button 1");
-    button1->setID("Button1");
-    button1->setVerticalAlignment(Axiom::UIAlignment::Start);
-    verticalBox1->addChild(button1);
-    auto button2 = std::make_shared<Axiom::UIButton>("Button 2");
-    button2->setID("Button2");
-    verticalBox1->addChild(button2);
-    auto button3 = std::make_shared<Axiom::UIButton>("Button 3");
-    button3->setID("Button3");
-    verticalBox1->addChild(button3);
+    hierarchyPanel = std::make_shared<Axiom::UIVerticalBox>();
+    hierarchyPanel->setID("HierarchyPanel");
+    hierarchyPanel->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
+    leftPanel->addChild(hierarchyPanel);
 
-    auto text1 = std::make_shared<Axiom::UIText>("Hello, World!");
-    text1->setID("Text1");
-    text1->setHorizontalAlignment(Axiom::UIAlignment::Center);
-    text1->setFontSize(8.0f);
-    verticalBox1->addChild(text1);
+    viewportImage = std::make_shared<Axiom::UIImage>();
+    viewportImage->setID("Viewport");
+    viewportImage->setFixedSize({-1.0f, 360.0f});
+    viewportImage->setVerticalAlignment(Axiom::UIAlignment::Start);
+    mainLayout->addChild(viewportImage);
 
-    auto dragFloat1 = std::make_shared<Axiom::UIDragFloat>();
-    dragFloat1->setID("DragFloat1");
-    static float dragValue = 0.0f;
-    dragFloat1->setValueGetter([&]() { return dragValue; });
-    dragFloat1->setValueSetter([&](float newValue) { dragValue = newValue; });
-    // dragFloat1->setFloatLimit({0.0f, 100.0f});
-    verticalBox1->addChild(dragFloat1);
-
-    panel1->addChild(verticalBox1);
-    uiRoot->addChild(panel1);
+    auto rightPanel = std::make_shared<Axiom::UIPanel>();
+    rightPanel->setID("RightPanel");
+    rightPanel->setFixedSize({320.0f, -1.0f});
+    rightPanel->setHorizontalAlignment(Axiom::UIAlignment::End);
+    rightPanel->setPadding({10.0f, 10.0f, 10.0f, 10.0f});
+    mainLayout->addChild(rightPanel);
 
     scene = std::make_shared<Axiom::Scene>();
     Axiom::SceneSerializer deserializer(scene.get());
@@ -90,6 +83,8 @@ void EditorLayer::onAttach() {
 
     editorCamera = std::make_unique<EditorCamera>(Math::Vec3(0.0f, 0.0f, 500.0f));
     editorCamera->setPerspective(45.0f, static_cast<float>(viewportSize.x()) / static_cast<float>(viewportSize.y()), 0.1f, 1000.0f);
+
+    refreshHierarchyPanel();
 }
 
 void EditorLayer::onDetach() {
@@ -133,5 +128,29 @@ void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
     if (selectedEntity && selectedEntity.hasComponent<Axiom::TransformComponent>()) {
         auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
         sceneRenderer->gizmoPass(data, transform.position);
+    }
+
+    viewportImage->setTexture(renderTarget);
+}
+
+void EditorLayer::refreshHierarchyPanel() {
+    hierarchyPanel->clearChildren();
+
+    auto headerText = std::make_shared<Axiom::UIText>("Hierarchy");
+    headerText->setID("HierarchyHeader");
+    headerText->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
+    hierarchyPanel->addChild(headerText);
+
+    Axiom::View entityView = scene->view();
+    for (uint32_t entityId : entityView) {
+        Axiom::Entity entity = scene->getEntity(entityId);
+        auto& tag = entity.getComponent<Axiom::TagComponent>();
+        auto entityButton = std::make_shared<Axiom::UIButton>(tag.tag);
+        entityButton->setID("Entity_" + std::to_string(entityId));
+        entityButton->setMargin({0.0f, 0.0f, 0.0f, 5.0f});
+        entityButton->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
+        entityButton->setVerticalAlignment(Axiom::UIAlignment::Start);
+        entityButton->setOnClick([this, entity]() { selectedEntity = entity; });
+        hierarchyPanel->addChild(entityButton);
     }
 }

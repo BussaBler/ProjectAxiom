@@ -15,6 +15,9 @@ class EditorLayer : public Axiom::Layer {
     void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
   private:
+    void refreshHierarchyPanel();
+
+  private:
     Math::uVec2 viewportSize{0, 0};
     std::shared_ptr<Axiom::TextureAsset> textureAsset;
     std::shared_ptr<Axiom::Scene> scene;
@@ -24,6 +27,8 @@ class EditorLayer : public Axiom::Layer {
     std::unique_ptr<EditorCamera> editorCamera;
 
     std::shared_ptr<Axiom::UIElement> uiRoot;
+    std::shared_ptr<Axiom::UIImage> viewportImage;
+    std::shared_ptr<Axiom::UIVerticalBox> hierarchyPanel;
 
     Axiom::Entity selectedEntity;
 };
