@@ -10,12 +10,23 @@ class EditorLayer : public Axiom::Layer {
     void onAttach() override;
     void onDetach() override;
     void onUpdate() override;
-    void onUIRender(Axiom::UIRenderer* uiRenderer) override;
+    void onUIRender() override;
     void onEvent(Axiom::Event& event) override;
     void onRender(Axiom::CommandBuffer* commandBuffer) override;
 
   private:
     void refreshHierarchyPanel();
+    void refreshInspectorPanel();
+
+    std::shared_ptr<Axiom::UIElement> createFieldUI(const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildFloatUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildIntUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildBoolUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildStringUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildVec2UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildVec3UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildVec4UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+    void buildColorUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
 
   private:
     Math::uVec2 viewportSize{0, 0};
@@ -26,9 +37,11 @@ class EditorLayer : public Axiom::Layer {
     std::vector<std::shared_ptr<Axiom::Texture>> depthTextures;
     std::unique_ptr<EditorCamera> editorCamera;
 
+    Axiom::UIContext uiContext;
     std::shared_ptr<Axiom::UIElement> uiRoot;
     std::shared_ptr<Axiom::UIImage> viewportImage;
     std::shared_ptr<Axiom::UIVerticalBox> hierarchyPanel;
+    std::shared_ptr<Axiom::UIVerticalBox> inspectorPanel;
 
     Axiom::Entity selectedEntity;
 };
