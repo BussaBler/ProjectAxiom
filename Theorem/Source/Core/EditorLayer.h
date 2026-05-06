@@ -17,6 +17,7 @@ class EditorLayer : public Axiom::Layer {
   private:
     void refreshHierarchyPanel();
     void refreshInspectorPanel();
+    void spawnHierarchyContextMenu();
 
     std::shared_ptr<Axiom::UIElement> createFieldUI(const Axiom::FieldInfo& field, void* fieldPtr);
     void buildFloatUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
@@ -37,11 +38,17 @@ class EditorLayer : public Axiom::Layer {
     std::vector<std::shared_ptr<Axiom::Texture>> depthTextures;
     std::unique_ptr<EditorCamera> editorCamera;
 
-    Axiom::UIContext uiContext;
+    Axiom::UIContext mainUiContext;
     std::shared_ptr<Axiom::UIElement> uiRoot;
     std::shared_ptr<Axiom::UIImage> viewportImage;
     std::shared_ptr<Axiom::UIVerticalBox> hierarchyPanel;
     std::shared_ptr<Axiom::UIVerticalBox> inspectorPanel;
+    bool shouldRefreshHierarchy = false;
+    bool shouldRefreshInspector = false;
+    bool shouldDeleteContextMenu = false;
 
-    Axiom::Entity selectedEntity;
+    std::shared_ptr<Axiom::UIPanel> contextMenu = nullptr;
+    Math::Vec2 lastMousePos = Math::Vec2::zero();
+
+    Axiom::Entity selectedEntity = Axiom::Entity();
 };

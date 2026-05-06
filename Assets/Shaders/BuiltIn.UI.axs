@@ -52,5 +52,6 @@ float sdRoundedBox(vec2 p, vec2 b, vec4 r) {
 void main() {
     float dist = sdRoundedBox(vUv, vSize, vRadii);
     float alpha = 1.0 - smoothstep(-1.0, 1.0, dist);
-    oColor = vec4(vColor.rgb, vColor.a * alpha);
+
+    oColor = vec4(vColor.rgb * alpha, vColor.a * alpha);
 }

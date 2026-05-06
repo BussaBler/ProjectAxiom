@@ -7,9 +7,10 @@ void EditorLayer::onAttach() {
     Axiom::AX_LOG_INFO("EditorLayer attached");
     viewportSize = Axiom::Locator::getRenderer()->getCurrentRenderTargetSize();
 
-    uiContext = {
+    mainUiContext = {
         .renderer = Axiom::Locator::getUIRenderer(),
         .dpiScale = Axiom::Locator::getWindow()->getWindowDPI() / 72.0f,
+        .layer = 0,
     };
 
     uiRoot = std::make_shared<Axiom::UICanvas>();
@@ -108,15 +109,69 @@ void EditorLayer::onUpdate() {
     scene->onUpdate(0.125f);
     float winWidth = Axiom::Locator::getWindow()->getWidth();
     float winHeight = Axiom::Locator::getWindow()->getHeight();
-    uiRoot->arrange(uiContext, Math::Vec2(0, 0), Math::Vec2(winWidth, winHeight));
+    if (shouldRefreshHierarchy) {
+        refreshHierarchyPanel();
+        shouldRefreshHierarchy = false;
+    }
+    if (shouldRefreshInspector) {
+        refreshInspectorPanel();
+        shouldRefreshInspector = false;
+    }
+    if (shouldDeleteContextMenu) {
+        contextMenu = nullptr;
+        shouldDeleteContextMenu = false;
+    }
+    uiRoot->arrange(mainUiContext, Math::Vec2(0, 0), Math::Vec2(winWidth, winHeight));
 }
 
 void EditorLayer::onUIRender() {
-    uiRoot->onRender(uiContext);
+    uiRoot->onRender(mainUiContext);
+
+    if (contextMenu) {
+        mainUiContext.layer = 1;
+        contextMenu->onRender(mainUiContext);
+        mainUiContext.layer = 0;
+    }
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
-    uiRoot->onEvent(event);
+    Axiom::EventDispatcher dispatcher(event);
+
+    dispatcher.dispatch<Axiom::MouseMovedEvent>([this](const Axiom::MouseMovedEvent& e) {
+        lastMousePos = {e.getMouseX(), e.getMouseY()};
+        return false;
+    });
+
+    dispatcher.dispatch<Axiom::MouseButtonPressedEvent>([this](const Axiom::MouseButtonPressedEvent& e) {
+        if (e.getMouseButton() == Axiom::KeyCode::RightButton) {
+            auto bounds = hierarchyPanel->getArrangedPosition();
+            auto size = hierarchyPanel->getArrangedSize();
+
+            if (lastMousePos.x() >= bounds.x() && lastMousePos.x() <= bounds.x() + size.x() && lastMousePos.y() >= bounds.y() &&
+                lastMousePos.y() <= bounds.y() + size.y()) {
+                spawnHierarchyContextMenu();
+                return true;
+            }
+        }
+        if (e.getMouseButton() == Axiom::KeyCode::LeftButton) {
+            if (contextMenu) {
+                auto bounds = contextMenu->getArrangedPosition();
+                auto size = contextMenu->getArrangedSize();
+                if (lastMousePos.x() < bounds.x() || lastMousePos.x() > bounds.x() + size.x() || lastMousePos.y() < bounds.y() ||
+                    lastMousePos.y() > bounds.y() + size.y()) {
+                    shouldDeleteContextMenu = true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    });
+
+    if (contextMenu) {
+        contextMenu->onEvent(event);
+    } else {
+        uiRoot->onEvent(event);
+    }
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
@@ -146,54 +201,160 @@ void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
 void EditorLayer::refreshHierarchyPanel() {
     hierarchyPanel->clearChildren();
 
+    auto headerRow = std::make_shared<Axiom::UIHorizontalBox>();
+    headerRow->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
+
     auto headerText = std::make_shared<Axiom::UIText>("Hierarchy");
-    headerText->setID("HierarchyHeader");
-    headerText->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
-    hierarchyPanel->addChild(headerText);
+    headerText->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+    headerRow->addChild(headerText);
+    hierarchyPanel->addChild(headerRow);
 
     Axiom::View entityView = scene->view();
     for (uint32_t entityId : entityView) {
         Axiom::Entity entity = scene->getEntity(entityId);
         auto& tag = entity.getComponent<Axiom::TagComponent>();
+
+        auto row = std::make_shared<Axiom::UIHorizontalBox>();
+        row->setMargin({0.0f, 0.0f, 0.0f, 2.0f});
+
         auto entityButton = std::make_shared<Axiom::UIButton>(tag.tag);
         entityButton->setID("Entity_" + std::to_string(entityId));
-        entityButton->setMargin({0.0f, 0.0f, 0.0f, 5.0f});
+        entityButton->setHorizontalAlignment(Axiom::UIAlignment::Fill);
         entityButton->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
-        entityButton->setVerticalAlignment(Axiom::UIAlignment::Start);
+        entityButton->setMargin({0.0f, 0.0f, 5.0f, 0.0f});
+        entityButton->setFixedSize({-1.0f, 20.0f});
+        entityButton->setFontSize(6.0f);
+
+        if (selectedEntity == entity) {
+            entityButton->setNormalColor(Axiom::Color(0.2f, 0.4f, 0.8f));
+        }
+
         entityButton->setOnClick([this, entity]() {
             selectedEntity = entity;
-            refreshInspectorPanel();
+            shouldRefreshHierarchy = true;
+            shouldRefreshInspector = true;
         });
-        hierarchyPanel->addChild(entityButton);
+        row->addChild(entityButton);
+
+        auto deleteBtn = std::make_shared<Axiom::UIButton>("X");
+        deleteBtn->setFixedSize({20.0f, 20.0f});
+        deleteBtn->setNormalColor(Axiom::Color(0.8f, 0.2f, 0.2f));
+        deleteBtn->setFontSize(6.0f);
+        deleteBtn->setOnClick([this, entity]() {
+            if (selectedEntity == entity) {
+                selectedEntity = {};
+                inspectorPanel->clearChildren();
+            }
+            scene->destroyEntity(entity);
+            shouldRefreshHierarchy = true;
+        });
+        row->addChild(deleteBtn);
+
+        hierarchyPanel->addChild(row);
     }
 }
 
 void EditorLayer::refreshInspectorPanel() {
     inspectorPanel->clearChildren();
-    if (!selectedEntity)
+    if (!selectedEntity) {
         return;
+    }
+
+    if (selectedEntity.hasComponent<Axiom::TagComponent>()) {
+        auto tagRow = std::make_shared<Axiom::UIHorizontalBox>();
+        tagRow->setMargin({0.0f, 0.0f, 0.0f, 15.0f});
+
+        auto label = std::make_shared<Axiom::UIText>("Name:");
+        label->setVerticalAlignment(Axiom::UIAlignment::Center);
+        label->setHorizontalAlignment(Axiom::UIAlignment::Start);
+        label->setMargin({0.0f, 0.0f, 10.0f, 0.0f});
+        label->setFontSize(8.0f);
+        tagRow->addChild(label);
+
+        auto nameInput = std::make_shared<Axiom::UITextInput>();
+        nameInput->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+
+        Axiom::Entity capturedEntity = selectedEntity;
+        nameInput->setValueGetter([capturedEntity]() { return capturedEntity.getComponent<Axiom::TagComponent>().tag; });
+        nameInput->setValueSetter([this, capturedEntity](const std::string& v) mutable {
+            capturedEntity.getComponent<Axiom::TagComponent>().tag = v;
+            shouldRefreshHierarchy = true;
+        });
+        tagRow->addChild(nameInput);
+        inspectorPanel->addChild(tagRow);
+    }
 
     for (const auto& [typeIndex, dataPtr] : selectedEntity.getComponents()) {
         const Axiom::ComponentInfo* componentInfo = Axiom::ComponentReflection::getComponentInfo(typeIndex);
-        if (!componentInfo) {
+
+        if (!componentInfo || componentInfo->name == "TagComponent" || componentInfo->name == "Tag") {
             continue;
         }
-        auto componentBox = std::make_shared<Axiom::UIVerticalBox>();
-        componentBox->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
 
-        auto headerText = std::make_shared<Axiom::UIText>(componentInfo->name);
-        headerText->setMargin({0.0f, 0.0f, 0.0f, 5.0f});
-        componentBox->addChild(headerText);
+        auto componentGroup = std::make_shared<Axiom::UICollapsableGroup>(componentInfo->name.substr(0, componentInfo->name.find("Component")));
+        componentGroup->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
+
         for (const auto& field : componentInfo->fields) {
             void* fieldPtr = static_cast<char*>(dataPtr) + field.offset;
-
             auto fieldUI = createFieldUI(field, fieldPtr);
+
             if (fieldUI) {
-                componentBox->addChild(fieldUI);
+                auto row = std::make_shared<Axiom::UIHorizontalBox>();
+                row->setMargin({5.0f, 2.0f, 5.0f, 2.0f});
+                fieldUI->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+                row->addChild(fieldUI);
+                componentGroup->addChild(row);
             }
         }
-        inspectorPanel->addChild(componentBox);
+        inspectorPanel->addChild(componentGroup);
     }
+
+    auto addComponentGroup = std::make_shared<Axiom::UICollapsableGroup>("+ Add Component");
+    addComponentGroup->setMargin({0.0f, 20.0f, 0.0f, 0.0f});
+
+    auto createAddButton = [this](const std::string& name, auto checkHas, auto addComp) {
+        auto btn = std::make_shared<Axiom::UIButton>(name);
+        btn->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+        btn->setMargin({5.0f, 2.0f, 5.0f, 2.0f});
+        btn->setOnClick([this, checkHas, addComp]() {
+            if (!checkHas()) {
+                addComp();
+                shouldRefreshInspector = true;
+            }
+        });
+        return btn;
+    };
+
+    addComponentGroup->addChild(createAddButton(
+        "Camera", [this]() { return selectedEntity.hasComponent<Axiom::CameraComponent>(); },
+        [this]() { selectedEntity.addComponent<Axiom::CameraComponent>({}); }));
+
+    addComponentGroup->addChild(createAddButton(
+        "Transform", [this]() { return selectedEntity.hasComponent<Axiom::TransformComponent>(); },
+        [this]() { selectedEntity.addComponent<Axiom::TransformComponent>({}); }));
+
+    inspectorPanel->addChild(addComponentGroup);
+}
+
+void EditorLayer::spawnHierarchyContextMenu() {
+    contextMenu = std::make_shared<Axiom::UIPanel>();
+    contextMenu->setBackgroundColor(Axiom::Color::transparent());
+
+    auto createBtn = std::make_shared<Axiom::UIButton>("Create Empty Entity");
+    createBtn->setPadding({10.0f, 5.0f, 10.0f, 5.0f});
+    createBtn->setFontSize(6.0f);
+    createBtn->setOnClick([this]() {
+        Axiom::Entity newEntity = scene->createEntity();
+        newEntity.addComponent<Axiom::TagComponent>({"New Entity"});
+        selectedEntity = newEntity;
+
+        shouldRefreshHierarchy = true;
+        shouldRefreshInspector = true;
+        shouldDeleteContextMenu = true;
+    });
+
+    contextMenu->addChild(createBtn);
+    contextMenu->arrange(mainUiContext, lastMousePos, contextMenu->getDesiredSize(mainUiContext));
 }
 
 std::shared_ptr<Axiom::UIElement> EditorLayer::createFieldUI(const Axiom::FieldInfo& field, void* fieldPtr) {
@@ -274,7 +435,7 @@ void EditorLayer::buildStringUI(std::shared_ptr<Axiom::UIHorizontalBox> horizont
     textInput->setValueGetter([valuePtr]() { return *valuePtr; });
     textInput->setValueSetter([this, valuePtr](const std::string& v) {
         *valuePtr = v;
-        refreshHierarchyPanel();
+        shouldRefreshHierarchy = true;
     });
     horizontalBox->addChild(textInput);
 }
