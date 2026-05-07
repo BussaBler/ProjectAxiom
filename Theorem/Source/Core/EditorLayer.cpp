@@ -9,7 +9,7 @@ void EditorLayer::onAttach() {
 
     mainUiContext = {
         .renderer = Axiom::Locator::getUIRenderer(),
-        .dpiScale = Axiom::Locator::getWindow()->getWindowDPI() / 72.0f,
+        .dpiScale = Axiom::Locator::getWindow()->getWindowDPI() / 96.0f,
         .layer = 0,
     };
 
@@ -125,13 +125,15 @@ void EditorLayer::onUpdate() {
 }
 
 void EditorLayer::onUIRender() {
-    uiRoot->onRender(mainUiContext);
+    mainUiContext.renderer->pushScissorRect({{0, 0}, {Axiom::Locator::getWindow()->getWidth(), Axiom::Locator::getWindow()->getHeight()}}, mainUiContext.layer);
+    uiRoot->onRender(mainUiContext, Math::Rect({0, 0}, {Axiom::Locator::getWindow()->getWidth(), Axiom::Locator::getWindow()->getHeight()}));
 
     if (contextMenu) {
         mainUiContext.layer = 1;
-        contextMenu->onRender(mainUiContext);
+        contextMenu->onRender(mainUiContext, Math::Rect({0, 0}, {Axiom::Locator::getWindow()->getWidth(), Axiom::Locator::getWindow()->getHeight()}));
         mainUiContext.layer = 0;
     }
+    mainUiContext.renderer->popScissorRect(mainUiContext.layer);
 }
 
 void EditorLayer::onEvent(Axiom::Event& event) {
@@ -168,9 +170,9 @@ void EditorLayer::onEvent(Axiom::Event& event) {
     });
 
     if (contextMenu) {
-        contextMenu->onEvent(event);
+        event.handled = contextMenu->onEvent(event);
     } else {
-        uiRoot->onEvent(event);
+        event.handled = uiRoot->onEvent(event);
     }
 }
 
@@ -202,6 +204,7 @@ void EditorLayer::refreshHierarchyPanel() {
     hierarchyPanel->clearChildren();
 
     auto headerRow = std::make_shared<Axiom::UIHorizontalBox>();
+    headerRow->setVerticalAlignment(Axiom::UIAlignment::Start);
     headerRow->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
 
     auto headerText = std::make_shared<Axiom::UIText>("Hierarchy");
@@ -215,15 +218,15 @@ void EditorLayer::refreshHierarchyPanel() {
         auto& tag = entity.getComponent<Axiom::TagComponent>();
 
         auto row = std::make_shared<Axiom::UIHorizontalBox>();
+        row->setVerticalAlignment(Axiom::UIAlignment::Start);
         row->setMargin({0.0f, 0.0f, 0.0f, 2.0f});
 
         auto entityButton = std::make_shared<Axiom::UIButton>(tag.tag);
         entityButton->setID("Entity_" + std::to_string(entityId));
-        entityButton->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+        entityButton->setVerticalAlignment(Axiom::UIAlignment::Start);
         entityButton->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
         entityButton->setMargin({0.0f, 0.0f, 5.0f, 0.0f});
         entityButton->setFixedSize({-1.0f, 20.0f});
-        entityButton->setFontSize(6.0f);
 
         if (selectedEntity == entity) {
             entityButton->setNormalColor(Axiom::Color(0.2f, 0.4f, 0.8f));
@@ -238,8 +241,8 @@ void EditorLayer::refreshHierarchyPanel() {
 
         auto deleteBtn = std::make_shared<Axiom::UIButton>("X");
         deleteBtn->setFixedSize({20.0f, 20.0f});
+        deleteBtn->setVerticalAlignment(Axiom::UIAlignment::Start);
         deleteBtn->setNormalColor(Axiom::Color(0.8f, 0.2f, 0.2f));
-        deleteBtn->setFontSize(6.0f);
         deleteBtn->setOnClick([this, entity]() {
             if (selectedEntity == entity) {
                 selectedEntity = {};
@@ -268,7 +271,6 @@ void EditorLayer::refreshInspectorPanel() {
         label->setVerticalAlignment(Axiom::UIAlignment::Center);
         label->setHorizontalAlignment(Axiom::UIAlignment::Start);
         label->setMargin({0.0f, 0.0f, 10.0f, 0.0f});
-        label->setFontSize(8.0f);
         tagRow->addChild(label);
 
         auto nameInput = std::make_shared<Axiom::UITextInput>();
@@ -342,7 +344,6 @@ void EditorLayer::spawnHierarchyContextMenu() {
 
     auto createBtn = std::make_shared<Axiom::UIButton>("Create Empty Entity");
     createBtn->setPadding({10.0f, 5.0f, 10.0f, 5.0f});
-    createBtn->setFontSize(6.0f);
     createBtn->setOnClick([this]() {
         Axiom::Entity newEntity = scene->createEntity();
         newEntity.addComponent<Axiom::TagComponent>({"New Entity"});
@@ -364,7 +365,6 @@ std::shared_ptr<Axiom::UIElement> EditorLayer::createFieldUI(const Axiom::FieldI
     std::string fieldName = field.name;
     fieldName[0] = std::toupper(fieldName[0]);
     auto label = std::make_shared<Axiom::UIText>(fieldName);
-    label->setFontSize(6.0f);
     label->setFixedSize({80.0f, -1.0f});
     label->setVerticalAlignment(Axiom::UIAlignment::Center);
     horizontalBox->addChild(label);
@@ -448,7 +448,6 @@ void EditorLayer::buildVec2UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontal
         drag->setValueGetter(getter);
         drag->setValueSetter(setter);
         drag->setNormalColor(color);
-        drag->setFontSize(6.0f);
         horizontalBox->addChild(drag);
     };
 
@@ -465,7 +464,6 @@ void EditorLayer::buildVec3UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontal
         drag->setValueGetter(getter);
         drag->setValueSetter(setter);
         drag->setNormalColor(color);
-        drag->setFontSize(6.0f);
         horizontalBox->addChild(drag);
     };
 
@@ -483,7 +481,6 @@ void EditorLayer::buildVec4UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontal
         drag->setValueGetter(getter);
         drag->setValueSetter(setter);
         drag->setNormalColor(color);
-        drag->setFontSize(6.0f);
         horizontalBox->addChild(drag);
     };
 
@@ -511,7 +508,6 @@ void EditorLayer::buildColorUI(std::shared_ptr<Axiom::UIHorizontalBox> horizonta
         slider->setValueSetter(setter);
         slider->setNormalColor(Axiom::Color(0.5f, 0.5f, 0.5f));
         slider->setLimits(0.0f, 1.0f);
-        slider->setFontSize(6.0f);
         horizontalBox->addChild(slider);
     };
 
