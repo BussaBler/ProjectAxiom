@@ -29,6 +29,8 @@ class EditorLayer : public Axiom::Layer {
     void buildVec4UI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
     void buildColorUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
 
+    void buildEnumUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
+
   private:
     Math::uVec2 viewportSize{0, 0};
     std::shared_ptr<Axiom::TextureAsset> textureAsset;

@@ -130,7 +130,10 @@ void EditorLayer::onUIRender() {
 
     if (contextMenu) {
         mainUiContext.layer = 1;
+        mainUiContext.renderer->pushScissorRect({{0, 0}, {Axiom::Locator::getWindow()->getWidth(), Axiom::Locator::getWindow()->getHeight()}},
+                                                mainUiContext.layer);
         contextMenu->onRender(mainUiContext, Math::Rect({0, 0}, {Axiom::Locator::getWindow()->getWidth(), Axiom::Locator::getWindow()->getHeight()}));
+        mainUiContext.renderer->popScissorRect(mainUiContext.layer);
         mainUiContext.layer = 0;
     }
     mainUiContext.renderer->popScissorRect(mainUiContext.layer);
@@ -266,15 +269,17 @@ void EditorLayer::refreshInspectorPanel() {
     if (selectedEntity.hasComponent<Axiom::TagComponent>()) {
         auto tagRow = std::make_shared<Axiom::UIHorizontalBox>();
         tagRow->setMargin({0.0f, 0.0f, 0.0f, 15.0f});
+        tagRow->setVerticalAlignment(Axiom::UIAlignment::Start);
 
         auto label = std::make_shared<Axiom::UIText>("Name:");
-        label->setVerticalAlignment(Axiom::UIAlignment::Center);
+        label->setVerticalAlignment(Axiom::UIAlignment::Start);
         label->setHorizontalAlignment(Axiom::UIAlignment::Start);
         label->setMargin({0.0f, 0.0f, 10.0f, 0.0f});
         tagRow->addChild(label);
 
         auto nameInput = std::make_shared<Axiom::UITextInput>();
         nameInput->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+        nameInput->setVerticalAlignment(Axiom::UIAlignment::Start);
 
         Axiom::Entity capturedEntity = selectedEntity;
         nameInput->setValueGetter([capturedEntity]() { return capturedEntity.getComponent<Axiom::TagComponent>().tag; });
@@ -294,7 +299,8 @@ void EditorLayer::refreshInspectorPanel() {
         }
 
         auto componentGroup = std::make_shared<Axiom::UICollapsableGroup>(componentInfo->name.substr(0, componentInfo->name.find("Component")));
-        componentGroup->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
+        componentGroup->setMargin({0.0f, 0.0f, 0.0f, 5.0f});
+        componentGroup->setVerticalAlignment(Axiom::UIAlignment::Start);
 
         for (const auto& field : componentInfo->fields) {
             void* fieldPtr = static_cast<char*>(dataPtr) + field.offset;
@@ -312,7 +318,8 @@ void EditorLayer::refreshInspectorPanel() {
     }
 
     auto addComponentGroup = std::make_shared<Axiom::UICollapsableGroup>("+ Add Component");
-    addComponentGroup->setMargin({0.0f, 20.0f, 0.0f, 0.0f});
+    addComponentGroup->setMargin({0.0f, 10.0f, 0.0f, 0.0f});
+    addComponentGroup->setVerticalAlignment(Axiom::UIAlignment::Start);
 
     auto createAddButton = [this](const std::string& name, auto checkHas, auto addComp) {
         auto btn = std::make_shared<Axiom::UIButton>(name);
@@ -334,6 +341,9 @@ void EditorLayer::refreshInspectorPanel() {
     addComponentGroup->addChild(createAddButton(
         "Transform", [this]() { return selectedEntity.hasComponent<Axiom::TransformComponent>(); },
         [this]() { selectedEntity.addComponent<Axiom::TransformComponent>({}); }));
+    addComponentGroup->addChild(createAddButton(
+        "Sprite Renderer", [this]() { return selectedEntity.hasComponent<Axiom::Sprite2DComponent>(); },
+        [this]() { selectedEntity.addComponent<Axiom::Sprite2DComponent>({}); }));
 
     inspectorPanel->addChild(addComponentGroup);
 }
@@ -395,6 +405,7 @@ std::shared_ptr<Axiom::UIElement> EditorLayer::createFieldUI(const Axiom::FieldI
         buildColorUI(horizontalBox, field, fieldPtr);
         break;
     case Axiom::FieldType::AssetHandle:
+    case Axiom::FieldType::Enum:
     default:
         break;
     }
@@ -543,4 +554,12 @@ void EditorLayer::buildColorUI(std::shared_ptr<Axiom::UIHorizontalBox> horizonta
             colorPreview->setHoverColor(*valuePtr);
             colorPreview->setActiveColor(*valuePtr);
         });
+}
+
+void EditorLayer::buildEnumUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr) {
+    int* valuePtr = static_cast<int*>(fieldPtr);
+    auto dropdown = std::make_shared<Axiom::UIDropdown>(field.enumOptions);
+    dropdown->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+
+    horizontalBox->addChild(dropdown);
 }
