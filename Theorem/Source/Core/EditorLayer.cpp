@@ -26,16 +26,37 @@ void EditorLayer::onAttach() {
     leftPanel->setPadding({10.0f, 10.0f, 10.0f, 10.0f});
     mainLayout->addChild(leftPanel);
 
+    auto leftVBox = std::make_shared<Axiom::UIVerticalBox>();
+    leftVBox->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+    leftVBox->setVerticalAlignment(Axiom::UIAlignment::Fill);
+    leftPanel->addChild(leftVBox);
+
     hierarchyPanel = std::make_shared<Axiom::UIVerticalBox>();
     hierarchyPanel->setID("HierarchyPanel");
     hierarchyPanel->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
-    leftPanel->addChild(hierarchyPanel);
+    hierarchyPanel->setVerticalAlignment(Axiom::UIAlignment::Fill);
+    leftVBox->addChild(hierarchyPanel);
+
+    profilerPanel = std::make_shared<Axiom::UIVerticalBox>();
+    profilerPanel->setID("ProfilerPanel");
+    profilerPanel->setPadding({5.0f, 5.0f, 5.0f, 5.0f});
+    profilerPanel->setVerticalAlignment(Axiom::UIAlignment::End);
+    leftVBox->addChild(profilerPanel);
+
+    auto viewportPanel = std::make_shared<Axiom::UIPanel>();
+    viewportPanel->setID("ViewportPanel");
+    viewportPanel->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+    viewportPanel->setVerticalAlignment(Axiom::UIAlignment::Fill);
+    viewportPanel->setPadding({0.0f, 0.0f, 0.0f, 0.0f});
+    viewportPanel->setBackgroundColor(Axiom::Color::lightGray());
+    mainLayout->addChild(viewportPanel);
 
     viewportImage = std::make_shared<Axiom::UIImage>();
     viewportImage->setID("Viewport");
-    viewportImage->setFixedSize({-1.0f, 360.0f});
+    viewportImage->setFixedSize({640.0f, 360.0f});
     viewportImage->setVerticalAlignment(Axiom::UIAlignment::Start);
-    mainLayout->addChild(viewportImage);
+    viewportImage->setHorizontalAlignment(Axiom::UIAlignment::Center);
+    viewportPanel->addChild(viewportImage);
 
     auto rightPanel = std::make_shared<Axiom::UIPanel>();
     rightPanel->setID("RightPanel");
@@ -92,8 +113,8 @@ void EditorLayer::onAttach() {
         depthTextures[i] = Axiom::Locator::getRenderer()->createTexture(depthCreateInfo);
     }
 
-    editorCamera = std::make_unique<EditorCamera>(Math::Vec3(0.0f, 0.0f, 500.0f));
-    editorCamera->setPerspective(45.0f, static_cast<float>(viewportSize.x()) / static_cast<float>(viewportSize.y()), 0.1f, 1000.0f);
+    editorCamera = std::make_unique<EditorCamera>(Math::Vec3(0.0f, 250.0f, 500.0f), -25.0f);
+    editorCamera->setPerspective(45.0f, static_cast<float>(viewportSize.x()) / static_cast<float>(viewportSize.y()), 0.1f, 3000.0f);
 
     refreshHierarchyPanel();
 }
@@ -121,6 +142,7 @@ void EditorLayer::onUpdate() {
         contextMenu = nullptr;
         shouldDeleteContextMenu = false;
     }
+    refreshProfilerPanel();
     uiRoot->arrange(mainUiContext, Math::Vec2(0, 0), Math::Vec2(winWidth, winHeight));
 }
 
@@ -180,21 +202,24 @@ void EditorLayer::onEvent(Axiom::Event& event) {
 }
 
 void EditorLayer::onRender(Axiom::CommandBuffer* commandBuffer) {
+    Math::Mat4 view = editorCamera->getView();
+    Math::Mat4 projection = editorCamera->getProjection();
+    Math::Vec3 camPos = editorCamera->getPosition();
+    sceneRenderer->beginScene(scene.get(), projection, view, camPos);
+
     uint32_t currentFrameIndex = Axiom::Locator::getRenderer()->getCurrentFrameIndex();
     std::shared_ptr<Axiom::Texture> renderTarget = sceneTextures[currentFrameIndex];
     std::shared_ptr<Axiom::Texture> depthTexture = depthTextures[currentFrameIndex];
-    Math::Mat4 view = editorCamera->getView();
-    Math::Mat4 projection = editorCamera->getProjection();
     Axiom::SceneRenderPassData data = {
         .scene = scene.get(),
         .commandBuffer = commandBuffer,
         .renderTarget = renderTarget.get(),
         .depthTarget = depthTexture.get(),
-        .projection = projection,
-        .view = view,
     };
 
-    sceneRenderer->geometryPass(data);
+    sceneRenderer->opaquePass(data);
+    sceneRenderer->skyboxPass(data);
+    sceneRenderer->worldGridPass(data);
     if (selectedEntity && selectedEntity.hasComponent<Axiom::TransformComponent>()) {
         auto& transform = selectedEntity.getComponent<Axiom::TransformComponent>();
         sceneRenderer->gizmoPass(data, transform.position);
@@ -366,6 +391,28 @@ void EditorLayer::spawnHierarchyContextMenu() {
 
     contextMenu->addChild(createBtn);
     contextMenu->arrange(mainUiContext, lastMousePos, contextMenu->getDesiredSize(mainUiContext));
+}
+
+void EditorLayer::refreshProfilerPanel() {
+    profilerPanel->clearChildren();
+
+    auto headerRow = std::make_shared<Axiom::UIHorizontalBox>();
+    headerRow->setVerticalAlignment(Axiom::UIAlignment::Start);
+    headerRow->setMargin({0.0f, 0.0f, 0.0f, 10.0f});
+
+    auto headerText = std::make_shared<Axiom::UIText>("Profiler");
+    headerText->setHorizontalAlignment(Axiom::UIAlignment::Fill);
+    headerRow->addChild(headerText);
+    profilerPanel->addChild(headerRow);
+
+    const auto& profiles = Axiom::Profiler::getProfiles();
+    for (const auto& profile : profiles) {
+        auto ms = std::chrono::duration_cast<std::chrono::duration<double>>(profile.duration);
+        auto labelText = std::format("{}: {:.4f} ms", profile.name, ms.count());
+        auto label = std::make_shared<Axiom::UIText>(labelText);
+        label->setVerticalAlignment(Axiom::UIAlignment::Start);
+        profilerPanel->addChild(label);
+    }
 }
 
 std::shared_ptr<Axiom::UIElement> EditorLayer::createFieldUI(const Axiom::FieldInfo& field, void* fieldPtr) {

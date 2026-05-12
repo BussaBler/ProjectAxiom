@@ -1,6 +1,7 @@
 #include "EditorCamera.h"
 
-EditorCamera::EditorCamera(const Math::Vec3& position, float pitch, float yaw) : position(position), pitch(pitch), yaw(yaw) {
+EditorCamera::EditorCamera(const Math::Vec3& position, float pitch, float yaw)
+    : position(position), pitch(pitch * Math::DEG_TO_RAD), yaw(yaw * Math::DEG_TO_RAD) {
     updateVectors();
     updateView();
 }

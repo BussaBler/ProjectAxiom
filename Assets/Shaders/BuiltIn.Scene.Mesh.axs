@@ -6,9 +6,15 @@ layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoord;
 
-layout(push_constant, std430) uniform PushConstants {
-    mat4 uProjectionView;
-} pushConstants;
+layout(set = 0, binding = 0) uniform GlobalData {
+    mat4 uProjection;
+    mat4 uView;
+    vec4 uCameraPosition;
+
+    vec4 uAmbientColor;
+    vec4 uDirectionalLightDir;
+    vec4 uDirectionalLightColor;
+} globalData;
 
 struct MeshInstance {
     mat4 model;
@@ -24,7 +30,7 @@ layout(location = 1) out vec2 vTexCoord;
 void main() {
     MeshInstance instance = instances[gl_InstanceIndex];
 
-    gl_Position = pushConstants.uProjectionView * instance.model * vec4(aPosition, 1.0);
+    gl_Position = globalData.uProjection * globalData.uView * instance.model * vec4(aPosition, 1.0);
     vNormal = mat3(transpose(inverse(instance.model))) * aNormal;
     vTexCoord = aTexCoord;
 }
@@ -37,6 +43,10 @@ layout(location = 0) in vec3 vNormal;
 layout(location = 1) in vec2 vTexCoord;
 
 layout(set = 0, binding = 0) uniform GlobalData {
+    mat4 uProjection;
+    mat4 uView;
+    vec4 uCameraPosition;
+
     vec4 uAmbientColor;
     vec4 uDirectionalLightDir;
     vec4 uDirectionalLightColor;

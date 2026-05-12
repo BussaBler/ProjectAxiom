@@ -1,6 +1,8 @@
 #pragma once
 #include "Axiom.h"
 #include "EditorCamera.h"
+#include <string>
+#include <format>
 
 class EditorLayer : public Axiom::Layer {
   public:
@@ -18,6 +20,7 @@ class EditorLayer : public Axiom::Layer {
     void refreshHierarchyPanel();
     void refreshInspectorPanel();
     void spawnHierarchyContextMenu();
+    void refreshProfilerPanel();
 
     std::shared_ptr<Axiom::UIElement> createFieldUI(const Axiom::FieldInfo& field, void* fieldPtr);
     void buildFloatUI(std::shared_ptr<Axiom::UIHorizontalBox> horizontalBox, const Axiom::FieldInfo& field, void* fieldPtr);
@@ -45,6 +48,7 @@ class EditorLayer : public Axiom::Layer {
     std::shared_ptr<Axiom::UIImage> viewportImage;
     std::shared_ptr<Axiom::UIVerticalBox> hierarchyPanel;
     std::shared_ptr<Axiom::UIVerticalBox> inspectorPanel;
+    std::shared_ptr<Axiom::UIVerticalBox> profilerPanel;
     bool shouldRefreshHierarchy = false;
     bool shouldRefreshInspector = false;
     bool shouldDeleteContextMenu = false;
