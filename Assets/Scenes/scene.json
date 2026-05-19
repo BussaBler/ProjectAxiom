@@ -10,7 +10,7 @@
                     "position": {
                         "x": 0.000000,
                         "z": 0.000000,
-                        "y": 66.601578
+                        "y": 0.000000
                     },
                     "rotation": {
                         "x": 0.000000,
@@ -18,42 +18,42 @@
                         "y": 0.000000
                     },
                     "scale": {
-                        "x": 100.000000,
+                        "x": 1.000000,
                         "z": 1.000000,
-                        "y": 100.000000
+                        "y": 1.000000
                     }
                 },
                 "Sprite2DComponent": {
+                    "filterMode": 1,
                     "textureId": "15471021209606049030",
+                    "addressMode": 0,
                     "color": {
                         "g": 0.000000,
                         "b": 0.000000,
-                        "r": 0.934764,
+                        "r": 1.000000,
                         "a": 1.000000
-                    },
-                    "textureFilterMode": null,
-                    "textureAddressMode": null
+                    }
                 }
             }
         },
         {
             "Components": {
                 "Sprite2DComponent": {
-                    "textureAddressMode": null,
-                    "textureFilterMode": null,
                     "color": {
                         "a": 1.000000,
                         "r": 1.000000,
                         "b": 1.000000,
                         "g": 1.000000
                     },
-                    "textureId": "0"
+                    "addressMode": 2,
+                    "textureId": "0",
+                    "filterMode": 1
                 },
                 "TransformComponent": {
                     "scale": {
-                        "y": 100.000000,
+                        "y": 1.000000,
                         "z": 1.000000,
-                        "x": 100.000000
+                        "x": 1.000000
                     },
                     "rotation": {
                         "y": 0.000000,
@@ -63,7 +63,7 @@
                     "position": {
                         "y": 0.000000,
                         "z": 0.000000,
-                        "x": 100.000000
+                        "x": 1.000000
                     }
                 },
                 "TagComponent": {

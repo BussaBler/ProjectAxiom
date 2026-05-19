@@ -60,8 +60,8 @@ float drawGrid(vec2 coord, float spacing) {
 }
 
 void main() {
-    float minorGrid = drawGrid(vWorldPosition.xz, 10.0);
-    float majorGrid = drawGrid(vWorldPosition.xz, 100.0);
+    float minorGrid = drawGrid(vWorldPosition.xz, 1.0);
+    float majorGrid = drawGrid(vWorldPosition.xz, 10.0);
     
     vec4 gridColor = vec4(0.0, 0.0, 0.0, 0.3 * minorGrid);
     gridColor = mix(gridColor, vec4(0.0, 0.0, 0.0, 0.8 * majorGrid), majorGrid);

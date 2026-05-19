@@ -19,7 +19,7 @@ void EditorCamera::onUpdate(float deltaTime) {
 
         updateVectors();
 
-        float speed = 5.0f * deltaTime;
+        float speed = 1.0f * deltaTime;
 
         if (Axiom::Input::isKeyPressed(Axiom::KeyCode::W)) {
             position += forward * speed;

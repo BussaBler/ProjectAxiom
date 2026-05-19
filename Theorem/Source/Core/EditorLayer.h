@@ -44,7 +44,7 @@ class EditorLayer : public Axiom::Layer {
     std::unique_ptr<EditorCamera> editorCamera;
 
     Axiom::UIContext mainUiContext;
-    std::shared_ptr<Axiom::UIElement> uiRoot;
+    std::shared_ptr<Axiom::UIContainer> uiRoot;
     std::shared_ptr<Axiom::UIImage> viewportImage;
     std::shared_ptr<Axiom::UIVerticalBox> hierarchyPanel;
     std::shared_ptr<Axiom::UIVerticalBox> inspectorPanel;
